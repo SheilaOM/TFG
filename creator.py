@@ -1,45 +1,33 @@
 import os
 import csv
+from collections import namedtuple
+
 
 id = 1
-with open('datos2.csv', 'rb') as csvfile:
+with open('datos.csv', 'rb') as csvfile:
     spamreader = csv.reader(csvfile, delimiter=',')
-    for row in spamreader:
-        name = row[1]
-        position = row[2]
-        affiliation = row[3]
-        nationality = row[4]
-        yearPhD = row[5]
-        picture = row[7]
-        os.system ("wget " + picture + " -O img/%s" % str(id))
-        topics =  row[8]
-        homepage = row[10]
-        twitter = row[11].replace("_", "\_")
-        description = row[12]
-        language = row[13]
-        hobbies = row[14]
-        tabs = row[15]
-        looking = row[16]
-        hiring = row[17]
-        if name != "Name":
-            print r"\noindent\begin{minipage}{0.3\textwidth}"
-            print r"\includegraphics[width=\linewidth]{img/" + str(id) +"}"
-            print r"\end{minipage}"
-            print r"\hfill"
-            print r"\begin{minipage}{0.6\textwidth}\raggedright"
-            #print r"\color{color1}\uppercase{\textbf{"+name+r"}} \hspace{0.2cm}\color{black}"+email+r"\\"
-            print r"\color{color1}\uppercase{\textbf{"+name+r"}} \hspace{0.2cm}\color{black}"+twitter+r"\\"
-            print position+r" at "+affiliation+r"\\"
-            print description+r"\\"
-            print r"Hobbies: " + hobbies+r"\\"
-            print r"Fav. programming language: " + language+r"}} - "+tabs+r"\\"
-            if looking == "Yes":
-                print r"Looking for a new position\\"
-            if looking == "Yes":
-                print r"Hiring\\"
-            print r"\end{minipage}"
-            print r"\newline"
-            print r"\newline"
-            print r"\newline"
+    form = 'name position affiliation email twitter description hobbies language tabs looking hiring'
+    Datos = namedtuple('Datos', form)
+    dat = map(Datos._make, spamreader)
+    msg = ''
+    for row in dat:
+#Faltan meter todos los datos
+        msg += (r"\noindent\begin{minipage}{0.3\textwidth}" + "\n" +
+            #   r"\includegraphics[width=\linewidth]{img" + str(id) +".png}" + "\n" +
+               r"\includegraphics[width=\linewidth]{img1.jpg}" + "\n" +
+               r"\end{minipage}" + "\n" +
+               r"\hfill" + "\n" +
+               r"\begin{minipage}{0.6\textwidth}\raggedright" + "\n" +
+               r"\color{color1}\uppercase{\textbf{"+row.name+r"}} \hspace{0.2cm}\color{black}"+row.email+r"\\" + "\n" +
+               r"\color{color1}\uppercase{\textbf{"+row.name+r"}} \hspace{0.2cm}\color{black}"+row.twitter+r"\\" + "\n" +
+               row.position+r" at "+row.affiliation+r"\\" + "\n" +
+               row.description+r"\\" + "\n" +
+               r"Hobbies: " + row.hobbies+r"\\" + "\n" +
+               r"Fav. programming language: " + row.language+r" - "+row.tabs+r"\\" + "\n")
+        if row.looking == "Yes":
+            msg += r"Looking for a new position\\"
+        if row.hiring == "Yes":
+            msg += r"Hiring\\"
+        msg += r"\end{minipage}\newline\newline\newline"
         id += 1
-        
+    print(msg)
