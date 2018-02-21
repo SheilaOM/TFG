@@ -13,6 +13,8 @@ from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
 
+from PIL import Image
+
 class Creator():
 
     def __init__(self):
@@ -51,7 +53,48 @@ class Creator():
         return credentials
 
 
+    def get_datos(self, form):
+        """
+        Datos: https://docs.google.com/spreadsheets/d/1NtocNeyy0B2nOnz-Sw84EMRzejJIXcPm1g8E5Wk36u4/edit
+
+        """
+        credentials = c.get_credentials()
+        http = credentials.authorize(httplib2.Http())
+        discoveryUrl = ('https://sheets.googleapis.com/$discovery/rest?'
+                        'version=v4')
+        service = discovery.build('sheets', 'v4', http=http,
+                                  discoveryServiceUrl=discoveryUrl)
+
+        spreadsheetId = '1NtocNeyy0B2nOnz-Sw84EMRzejJIXcPm1g8E5Wk36u4'      #id de la hoja de cálculo
+        rangeName = 'Form Responses 1!2:43'                                      #hoja y filas y columnas
+        result = service.spreadsheets().values().get(
+            spreadsheetId=spreadsheetId, range=rangeName).execute()
+        values = result.get('values', [])
+
+        if not values:
+            print('No data found.')
+        else:
+            Data = namedtuple("Data", form)
+            for row in values:
+                while len(row) != 18:
+                    row.append("")
+                data = Data(*row)
+                self.values.append(data)
+
+
+    #    form = 'name position affiliation twitter url description hobbies language tabs looking hiring'
+    """    with open('datos.csv', 'r') as csvfile:
+            reader = csv.reader(csvfile, delimiter=',')
+            Data = namedtuple("Data", form)
+            for row in reader:
+                data = Data(*row)
+                self.values.append(data)
+    """
+
     def DataIn(self):
+        """
+        Campos: https://docs.google.com/spreadsheets/d/1tX2SheuK8BFyp_bPEaFt_rs4gjRr_eXPEBnNadVdCaI/edit
+        """
         credentials = c.get_credentials()
         http = credentials.authorize(httplib2.Http())
         discoveryUrl = ('https://sheets.googleapis.com/$discovery/rest?'
@@ -70,35 +113,39 @@ class Creator():
         else:
             form = ""
             for row in values:
-                self.formato[row[0]] = row[1]
-                form += row[0] + " "
-
-            print(self.formato)
+                self.formato[row[0]] = row[1]           #Formato: diccionario[campo]=tipo --En el diccionario no se guardan por orden
+                form += row[0] + " "                    #form para Namedtuple
 
 
-    #    form = 'name position affiliation email twitter url description hobbies language tabs looking hiring'
-        with open('datos.csv', 'r') as csvfile:
-            reader = csv.reader(csvfile, delimiter=',')
-            Data = namedtuple("Data", form)
-            for row in reader:
-                data = Data(*row)
-                self.values.append(data)
+        c.get_datos(form)
 
 
     def DataOut (self):
         id = 1
         msg = ''
         for row in self.values:
-            urllib.request.urlretrieve(row.url, "img" + str(id) + ".jpg")
+            print (id)
+            if row.twitter.find("_") != -1:
+                pos = row.twitter.find("_")
+                twitter = (row.twitter[0:pos] + "\\" + row.twitter[pos:-1])
+            else:
+                twitter = row.twitter
+
+            try:
+                urllib.request.urlretrieve(row.url, "images/img" + str(id) + ".jpg")
+                image = "images/img" + str(id) + ".jpg"
+            except urllib.error.HTTPError:
+                print("Error en img de " + row.name)
+                image = "images/img0.png"
 
             msg += (r"\noindent\begin{minipage}{0.3\textwidth}" + "\n" +
-                   r"\includegraphics[width=\linewidth]{img" + str(id) + ".jpg}" + "\n" +
+                   r"\includegraphics[width=\linewidth]{" + image + "}" + "\n" +
                    r"\end{minipage}" + "\n" +
                    r"\hfill" + "\n" +
                    r"\begin{minipage}{0.6\textwidth}\raggedright" + "\n" +
-                   r"\color{color1}\uppercase{\textbf{"+row.name+r"}}\\" + "\n" +
-                   r"\color{color2}\textit{" + row.email + "}\hspace{0.2cm}" +
-                   r"\color{color2}\textit{" + row.twitter + r"}\\" + "\n" +
+                   r"\color{color1}\uppercase{\textbf{" + row.name + r"}}\\" + "\n" +
+#                   r"\color{color2}\textit{" + row.email + "}\hspace{0.2cm}" +
+                   r"\color{color2}\textit{" + twitter + r"}\\" + "\n" +
                    row.position + " at " + row.affiliation + r"\\" + "\n" +
                    row.description + r"\\" + "\n" +
                    r"Hobbies: " + row.hobbies + r"\\" + "\n" +
