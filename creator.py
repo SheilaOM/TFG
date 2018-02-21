@@ -82,15 +82,6 @@ class Creator():
                 self.values.append(data)
 
 
-    #    form = 'name position affiliation twitter url description hobbies language tabs looking hiring'
-    """    with open('datos.csv', 'r') as csvfile:
-            reader = csv.reader(csvfile, delimiter=',')
-            Data = namedtuple("Data", form)
-            for row in reader:
-                data = Data(*row)
-                self.values.append(data)
-    """
-
     def DataIn(self):
         """
         Campos: https://docs.google.com/spreadsheets/d/1tX2SheuK8BFyp_bPEaFt_rs4gjRr_eXPEBnNadVdCaI/edit
@@ -120,23 +111,34 @@ class Creator():
         c.get_datos(form)
 
 
+    def CorrectCharacters(self, row):               #Corrige los caracteres especiales
+        for data, name in zip(row, row._fields):
+            if (name != "url") & (name != "HomePage"):
+                for c in ["_", "&", "#", "$", "%", "{", "}"]:
+                    if data.find(c) != -1:
+                        data = data.replace(c, "\\" + c)
+                        print(data)
+                        row = row._replace(**{name:data})
+        return row
+
+
+    def DownloadImage (self, url, id):
+        try:
+            urllib.request.urlretrieve(url, "images/img" + str(id) + ".jpg")
+            image = "images/img" + str(id) + ".jpg"
+        except urllib.error.HTTPError:
+            image = "images/img0.png"
+
+        return image
+
+
     def DataOut (self):
         id = 1
         msg = ''
         for row in self.values:
             print (id)
-            if row.twitter.find("_") != -1:
-                pos = row.twitter.find("_")
-                twitter = (row.twitter[0:pos] + "\\" + row.twitter[pos:-1])
-            else:
-                twitter = row.twitter
-
-            try:
-                urllib.request.urlretrieve(row.url, "images/img" + str(id) + ".jpg")
-                image = "images/img" + str(id) + ".jpg"
-            except urllib.error.HTTPError:
-                print("Error en img de " + row.name)
-                image = "images/img0.png"
+            row = c.CorrectCharacters(row)
+            image = c.DownloadImage(row.url, id)
 
             msg += (r"\noindent\begin{minipage}{0.3\textwidth}" + "\n" +
                    r"\includegraphics[width=\linewidth]{" + image + "}" + "\n" +
@@ -145,7 +147,7 @@ class Creator():
                    r"\begin{minipage}{0.6\textwidth}\raggedright" + "\n" +
                    r"\color{color1}\uppercase{\textbf{" + row.name + r"}}\\" + "\n" +
 #                   r"\color{color2}\textit{" + row.email + "}\hspace{0.2cm}" +
-                   r"\color{color2}\textit{" + twitter + r"}\\" + "\n" +
+                   r"\color{color2}\textit{" + row.twitter + r"}\\" + "\n" +
                    row.position + " at " + row.affiliation + r"\\" + "\n" +
                    row.description + r"\\" + "\n" +
                    r"Hobbies: " + row.hobbies + r"\\" + "\n" +
