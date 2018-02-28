@@ -15,6 +15,7 @@ from oauth2client.file import Storage
 
 from PIL import Image
 
+
 class Creator():
 
     def __init__(self):
@@ -123,8 +124,20 @@ class Creator():
 
     def DownloadImage (self, url, id):
         try:
-            urllib.request.urlretrieve(url, "images/img" + str(id) + ".jpg")
-            image = "images/img" + str(id) + ".jpg"
+            resp = urllib.request.urlopen(url)          #Lee la url (no descarga nada)
+            contentType = resp.info().get("Content-Type")
+            if contentType.startswith("image/"):
+                imgType = contentType.split('/')[-1]
+                urllib.request.urlretrieve(url, "images/img" + str(id) + "." + imgType)     #Si la url es de una imagen, la descarga
+                if imgType == "webp":       #Si la imagen es de tipo webp lo convierte a jpg
+                    im = Image.open("images/img" + str(id) + ".webp").convert("RGB")
+                    im.save("images/img" + str(id) +".jpg","jpeg")
+                    imgType = "jpg"
+                    os.remove("images/img" + str(id) + ".webp")
+                image = "images/img" + str(id) + "." + imgType
+            else:
+                image = "images/img0.png"
+
         except urllib.error.HTTPError:
             image = "images/img0.png"
 
