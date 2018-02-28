@@ -117,7 +117,6 @@ class Creator():
                 for c in ["_", "&", "#", "$", "%", "{", "}"]:
                     if data.find(c) != -1:
                         data = data.replace(c, "\\" + c)
-                        print(data)
                         row = row._replace(**{name:data})
         return row
 
@@ -131,6 +130,16 @@ class Creator():
 
         return image
 
+    def CutDescription (self, desc):
+        limDesc = 150;
+        if len(desc) > limDesc:
+            description = desc[0:limDesc-1]
+            description = description.split(" ")[0:-1]
+            description = " ".join(description) + r" \ldots"
+        else:
+            description = desc
+        return description
+
 
     def DataOut (self):
         id = 1
@@ -139,24 +148,36 @@ class Creator():
             print (id)
             row = c.CorrectCharacters(row)
             image = c.DownloadImage(row.url, id)
+            description = c.CutDescription(row.description)
 
             msg += (r"\noindent\begin{minipage}{0.3\textwidth}" + "\n" +
-                   r"\includegraphics[width=\linewidth]{" + image + "}" + "\n" +
+                   r"\centering" + "\n" +
+                   r"\includegraphics[height=5cm]{" + image + "}" + "\n" +
                    r"\end{minipage}" + "\n" +
                    r"\hfill" + "\n" +
                    r"\begin{minipage}{0.6\textwidth}\raggedright" + "\n" +
-                   r"\color{color1}\uppercase{\textbf{" + row.name + r"}}\\" + "\n" +
-#                   r"\color{color2}\textit{" + row.email + "}\hspace{0.2cm}" +
-                   r"\color{color2}\textit{" + row.twitter + r"}\\" + "\n" +
-                   row.position + " at " + row.affiliation + r"\\" + "\n" +
-                   row.description + r"\\" + "\n" +
+                   r"\color{color1}\uppercase{\textbf{" + row.name + r"}}" + "\n" +
+                   r"\color{color2}")
+
+            #Comprueba si es un login de twitter
+            if len(row.twitter.split()) == 1 and row.twitter[0] == "@":
+                msg += r"\hspace{0.2cm}\textit{" + row.twitter + r"}" + "\n"
+
+            msg += (r"\\" + row.position + " at " + row.affiliation + r"\\" + "\n" +
+                   description + r"\\" + "\n" +
                    r"Hobbies: " + row.hobbies + r"\\" + "\n" +
                    r"Fav. programming language: " + row.language + r" - " + row.tabs + r"\\" + "\n")
+
             if row.looking == "Yes":
                 msg += r"Looking for a new position\\"
             if row.hiring == "Yes":
                 msg += r"Hiring\\"
-            msg += r"\end{minipage}\newline\newline\newline"
+            msg += r"\end{minipage}"
+
+            if id%4 == 0:           #4 participantes por página. Si llega al 4º salta de página
+                msg += r"\newpage" + "\n"
+            else:
+                msg += r"\newline\newline\newline\newline" + "\n"
             id += 1
         return msg
 
