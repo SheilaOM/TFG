@@ -130,19 +130,19 @@ class Creator():
             contentType = resp.info().get("Content-Type")
             if contentType.startswith("image/"):
                 imgType = contentType.split('/')[-1]
-                urllib.request.urlretrieve(url, "images/img" + str(id) + "." + imgType)     #Si la url es de una imagen, la descarga
+                urllib.request.urlretrieve(url, "images/img" + str(id))     #Si la url es de una imagen, la descarga
+
                 if imgType == "webp":       #Si la imagen es de tipo webp lo convierte a jpg
-                    im = Image.open("images/img" + str(id) + ".webp").convert("RGB")
-                    im.save("images/img" + str(id) +".jpg","jpeg")
-                    imgType = "jpg"
-                    os.remove("images/img" + str(id) + ".webp")
-                image = "images/img" + str(id) + "." + imgType
+                    im = Image.open("images/img" + str(id)).convert("RGB")
+                    im.save("images/img" + str(id),"jpeg")
+
+                image = "images/img" + str(id)
             else:
-                image = "images/img0.jpg"
+                image = "images/img0"
                 self.err.write("-Error in image of " + row.name + " (pos. " + str(id) + ") -> Download image manually (change the name of the image in generated.tex).\n")
 
         except urllib.error.HTTPError:
-            image = "images/img0.jpg"
+            image = "images/img0"
             self.err.write("-Error in image of " + row.name + " (pos. " + str(id) + ") -> URL not found.\n")
 
         return image
