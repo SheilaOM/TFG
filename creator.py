@@ -12,8 +12,8 @@ from apiclient import discovery
 from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
-
 from PIL import Image
+import pycountry
 
 
 class Creator():
@@ -21,6 +21,8 @@ class Creator():
     def __init__(self):
         self.values = []
         self.formato = {}
+        self.err = open("errores.txt", "w")
+
 
         try:
             import argparse
@@ -108,7 +110,6 @@ class Creator():
                 self.formato[row[0]] = row[1]           #Formato: diccionario[campo]=tipo --En el diccionario no se guardan por orden
                 form += row[0] + " "                    #form para Namedtuple
 
-
         c.get_datos(form)
 
 
@@ -122,7 +123,8 @@ class Creator():
         return row
 
 
-    def DownloadImage (self, url, id):
+    def DownloadImage (self, row, id):
+        url = row.url
         try:
             resp = urllib.request.urlopen(url)          #Lee la url (no descarga nada)
             contentType = resp.info().get("Content-Type")
@@ -136,12 +138,24 @@ class Creator():
                     os.remove("images/img" + str(id) + ".webp")
                 image = "images/img" + str(id) + "." + imgType
             else:
-                image = "images/img0.png"
+                image = "images/img0.jpg"
+                self.err.write("-Error in image of " + row.name + " (pos. " + str(id) + ") -> Download image manually (change the name of the image in generated.tex).\n")
 
         except urllib.error.HTTPError:
-            image = "images/img0.png"
+            image = "images/img0.jpg"
+            self.err.write("-Error in image of " + row.name + " (pos. " + str(id) + ") -> URL not found.\n")
 
         return image
+
+    def GetFlag (self, row, id):
+        try:
+            nac = pycountry.countries.get(name=row.nationality)
+            flag_icon = "flags/" + nac.alpha_2.lower() + ".png"
+        except KeyError:
+            self.err.write("-Error in nationality of " + row.name + " (pos. " + str(id) + ") -> It's not a country.\n")
+            flag_icon = ""
+
+        return flag_icon
 
     def CutDescription (self, desc):
         limDesc = 150;
@@ -160,7 +174,8 @@ class Creator():
         for row in self.values:
             print (id)
             row = c.CorrectCharacters(row)
-            image = c.DownloadImage(row.url, id)
+            image = c.DownloadImage(row, id)
+            flag = c.GetFlag(row, id)
             description = c.CutDescription(row.description)
 
             msg += (r"\noindent\begin{minipage}{0.3\textwidth}" + "\n" +
@@ -175,6 +190,10 @@ class Creator():
             #Comprueba si es un login de twitter
             if len(row.twitter.split()) == 1 and row.twitter[0] == "@":
                 msg += r"\hspace{0.2cm}\textit{" + row.twitter + r"}" + "\n"
+
+            if flag != "":
+                msg += r"\hspace{0.2cm}\includegraphics{" + flag + "}" + "\n"
+
 
             msg += (r"\\" + row.position + " at " + row.affiliation + r"\\" + "\n" +
                    description + r"\\" + "\n" +
@@ -192,6 +211,7 @@ class Creator():
             else:
                 msg += r"\newline\newline\newline\newline" + "\n"
             id += 1
+        self.err.close()
         return msg
 
 
