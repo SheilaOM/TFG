@@ -20,7 +20,7 @@ class Creator():
 
     def __init__(self):
         self.values = []
-        self.formato = {}
+        self.show = {}
         self.err = open("errores.txt", "w")
 
 
@@ -59,7 +59,6 @@ class Creator():
     def get_datos(self, form):
         """
         Datos: https://docs.google.com/spreadsheets/d/1NtocNeyy0B2nOnz-Sw84EMRzejJIXcPm1g8E5Wk36u4/edit
-
         """
         credentials = c.get_credentials()
         http = credentials.authorize(httplib2.Http())
@@ -68,8 +67,9 @@ class Creator():
         service = discovery.build('sheets', 'v4', http=http,
                                   discoveryServiceUrl=discoveryUrl)
 
-        spreadsheetId = '1NtocNeyy0B2nOnz-Sw84EMRzejJIXcPm1g8E5Wk36u4'      #id de la hoja de cálculo
-        rangeName = 'Form Responses 1!2:43'                                      #hoja y filas y columnas
+        #spreadsheetId = '1NtocNeyy0B2nOnz-Sw84EMRzejJIXcPm1g8E5Wk36u4'      #id de la hoja de cálculo
+        spreadsheetId = '1tX2SheuK8BFyp_bPEaFt_rs4gjRr_eXPEBnNadVdCaI'      #id de la hoja de cálculo (campos)
+        rangeName = 'Form Responses 1!A2:ZZZ'                               #hoja y filas y columnas
         result = service.spreadsheets().values().get(
             spreadsheetId=spreadsheetId, range=rangeName).execute()
         values = result.get('values', [])
@@ -97,7 +97,7 @@ class Creator():
                                   discoveryServiceUrl=discoveryUrl)
 
         spreadsheetId = '1tX2SheuK8BFyp_bPEaFt_rs4gjRr_eXPEBnNadVdCaI'      #id de la hoja de cálculo
-        rangeName = 'form!A2:B'                                             #hoja y filas y columnas
+        rangeName = 'form!A2:Z'                                             #hoja y filas y columnas
         result = service.spreadsheets().values().get(
             spreadsheetId=spreadsheetId, range=rangeName).execute()
         values = result.get('values', [])
@@ -107,7 +107,9 @@ class Creator():
         else:
             form = ""
             for row in values:
-                self.formato[row[0]] = row[1]           #Formato: diccionario[campo]=tipo --En el diccionario no se guardan por orden
+                self.show[row[0]] = []
+                self.show[row[0]].append(row[1])              #show: diccionario[campo]=[text, yes/no/ob] --En el diccionario no se guardan por orden
+                self.show[row[0]].append(row[2])
                 form += row[0] + " "                    #form para Namedtuple
 
         c.get_datos(form)
@@ -115,7 +117,7 @@ class Creator():
 
     def CorrectCharacters(self, row):               #Corrige los caracteres especiales
         for data, name in zip(row, row._fields):
-            if (name != "url") & (name != "HomePage"):
+            if (name != "picture") & (name != "HomePage"):
                 for c in ["_", "&", "#", "$", "%", "{", "}"]:
                     if data.find(c) != -1:
                         data = data.replace(c, "\\" + c)
@@ -124,7 +126,7 @@ class Creator():
 
 
     def DownloadImage (self, row, id):
-        url = row.url
+        url = row.picture
         try:
             resp = urllib.request.urlopen(url)          #Lee la url (no descarga nada)
             contentType = resp.info().get("Content-Type")
@@ -171,6 +173,7 @@ class Creator():
     def DataOut (self):
         id = 1
         msg = ''
+
         for row in self.values:
             print (id)
             row = c.CorrectCharacters(row)
@@ -178,6 +181,7 @@ class Creator():
             flag = c.GetFlag(row, id)
             description = c.CutDescription(row.description)
 
+        #DATOS OBLIGATORIOS
             msg += (r"\noindent\begin{minipage}{0.3\textwidth}" + "\n" +
                    r"\centering" + "\n" +
                    r"\includegraphics[height=5cm]{" + image + "}" + "\n" +
@@ -187,23 +191,28 @@ class Creator():
                    r"\color{color1}\uppercase{\textbf{" + row.name + r"}}" + "\n" +
                    r"\color{color2}")
 
+            if flag != "":
+                msg += r"\hspace{0.2cm}\includegraphics{" + flag + "}" + "\n"
+
             #Comprueba si es un login de twitter
             if len(row.twitter.split()) == 1 and row.twitter[0] == "@":
                 msg += r"\hspace{0.2cm}\textit{" + row.twitter + r"}" + "\n"
 
-            if flag != "":
-                msg += r"\hspace{0.2cm}\includegraphics{" + flag + "}" + "\n"
-
 
             msg += (r"\\" + row.position + " at " + row.affiliation + r"\\" + "\n" +
-                   description + r"\\" + "\n" +
-                   r"Hobbies: " + row.hobbies + r"\\" + "\n" +
-                   r"Fav. programming language: " + row.language + r" - " + row.tabs + r"\\" + "\n")
+                   description + r"\\" + "\n")
 
-            if row.looking == "Yes":
-                msg += r"Looking for a new position\\"
-            if row.hiring == "Yes":
-                msg += r"Hiring\\"
+        #DATOS OPCIONALES
+            n = 1
+            for fld in row._fields:
+                if self.show[fld][1] == "yes":
+                    if (getattr(row, fld) != ""):
+                        if self.show[fld][0] != "-":
+                            msg += self.show[fld][0] + ": " + getattr(row, fld) + r" - "
+                        else:
+                            msg += getattr(row, fld) + r" - "
+
+            msg = msg[:len(msg)-3]
             msg += r"\end{minipage}"
 
             if id%4 == 0:           #4 participantes por página. Si llega al 4º salta de página
