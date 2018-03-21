@@ -226,32 +226,33 @@ class Creator():
 
     # GRÁFICAS DE ESTADÍSTICAS
         n = 1
-        data = pd.DataFrame(self.data_form, columns=self.field_names.split(" ")[:-1])
 
         df = pd.DataFrame(self.fields,columns=["name","text","show","statistics"])
         stats = pd.crosstab(index=df["statistics"],columns="frecuencia")
         fila = stats.loc[stats.index == "yes"]
-        n_graph = int(fila["frecuencia"])
 
-        plt.figure(figsize=(7,10))
-        for fld in self.fields:
-            if fld.statistics == "yes":
-                plt.subplot(n_graph, 1, n)
+        if not fila.empty:
+            n_graph = int(fila["frecuencia"])
+            data = pd.DataFrame(self.data_form, columns=self.field_names.split(" ")[:-1])
+            plt.figure(figsize=(7,10))
+            for fld in self.fields:
+                if fld.statistics == "yes":
+                    plt.subplot(n_graph, 1, n)
 
-                tab = pd.crosstab(index=data[fld.name],columns="frecuencia")
-                plt.pie(tab, autopct="%1.1f%%", radius=0.8)
-                plt.legend(labels=tab.index,loc='center left',bbox_to_anchor=(0.8, 0.5))
-                if fld.text != "":
-                    plt.title(fld.text)
-                else:
-                    plt.title(fld.name)
-                n += 1
-        plt.savefig("graph.png")
+                    tab = pd.crosstab(index=data[fld.name],columns="frecuencia")
+                    plt.pie(tab, autopct="%1.1f%%", radius=0.8)
+                    plt.legend(labels=tab.index,loc='center left',bbox_to_anchor=(0.8, 0.5))
+                    if fld.text != "":
+                        plt.title(fld.text)
+                    else:
+                        plt.title(fld.name)
+                    n += 1
+            plt.savefig("graph.png")
 
-        msg += (r"\begin{figure}" + "\n" +
-               r"\centering" + "\n" +
-               r"\includegraphics{graph}" + "\n" +
-               r"\end{figure}" + "\n")
+            msg += (r"\begin{figure}" + "\n" +
+                   r"\centering" + "\n" +
+                   r"\includegraphics{graph}" + "\n" +
+                   r"\end{figure}" + "\n")
 
         self.err.close()
         return msg
