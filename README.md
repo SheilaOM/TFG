@@ -5,11 +5,12 @@ ConfBookGenerator is a tool to create Conference Books with information from par
 ## Usage
 
 ```
-usage: python3 creator.py
+usage: python3 ...
 
 ```
 
 ## Requirements
 
 * Python >= 3
-* python-apiclient >= 1.0.3
+* google-api-python-client >= 1.6.5
+* pycountry >= 18.2.23
