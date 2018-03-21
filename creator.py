@@ -15,12 +15,24 @@ from oauth2client.file import Storage
 from PIL import Image
 import pycountry
 
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 
+
+
+
+"""
+URL original: https://docs.google.com/spreadsheets/d/1NtocNeyy0B2nOnz-Sw84EMRzejJIXcPm1g8E5Wk36u4/edit
+Campos y datos (URL utilizada): https://docs.google.com/spreadsheets/d/1tX2SheuK8BFyp_bPEaFt_rs4gjRr_eXPEBnNadVdCaI/edit
+"""
 class Creator():
 
     def __init__(self):
-        self.values = []
-        self.show = {}
+        self.values = []        #NamedTuple of data
+        self.fields = []        #NamedTuple of fields and their info
+        self.data = []     #data
+        self.field_names = ""
         self.err = open("errores.txt", "w")
 
 
@@ -32,7 +44,7 @@ class Creator():
 
         SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
         CLIENT_SECRET_FILE = 'client_secret.json'
-        APPLICATION_NAME = 'Google Sheets API Python Quickstart'
+        APPLICATION_NAME = 'Yearbook Generator'
 
 
     def get_credentials(self):
@@ -56,10 +68,7 @@ class Creator():
         return credentials
 
 
-    def get_datos(self, form):
-        """
-        Datos: https://docs.google.com/spreadsheets/d/1NtocNeyy0B2nOnz-Sw84EMRzejJIXcPm1g8E5Wk36u4/edit
-        """
+    def get_datos(self):
         credentials = c.get_credentials()
         http = credentials.authorize(httplib2.Http())
         discoveryUrl = ('https://sheets.googleapis.com/$discovery/rest?'
@@ -72,23 +81,18 @@ class Creator():
         rangeName = 'Form Responses 1!A2:ZZZ'                               #hoja y filas y columnas
         result = service.spreadsheets().values().get(
             spreadsheetId=spreadsheetId, range=rangeName).execute()
-        values = result.get('values', [])
+        self.data_form = result.get('values', [])
 
-        if not values:
+        if not self.data_form:
             print('No data found.')
         else:
-            Data = namedtuple("Data", form)
-            for row in values:
-                while len(row) != 18:
-                    row.append("")
+            Data = namedtuple("Data", self.field_names)
+            for row in self.data_form:
                 data = Data(*row)
                 self.values.append(data)
 
 
     def DataIn(self):
-        """
-        Campos: https://docs.google.com/spreadsheets/d/1tX2SheuK8BFyp_bPEaFt_rs4gjRr_eXPEBnNadVdCaI/edit
-        """
         credentials = c.get_credentials()
         http = credentials.authorize(httplib2.Http())
         discoveryUrl = ('https://sheets.googleapis.com/$discovery/rest?'
@@ -105,14 +109,13 @@ class Creator():
         if not values:
             print('No data found.')
         else:
-            form = ""
+            Fields = namedtuple("Fields", "name text show statistics")
             for row in values:
-                self.show[row[0]] = []
-                self.show[row[0]].append(row[1])              #show: diccionario[campo]=[text, yes/no/ob] --En el diccionario no se guardan por orden
-                self.show[row[0]].append(row[2])
-                form += row[0] + " "                    #form para Namedtuple
+                fields = Fields(*row)
+                self.fields.append(fields)
+                self.field_names += row[0] + " "                    #fields para Namedtuple de datos
 
-        c.get_datos(form)
+        c.get_datos()
 
 
     def CorrectCharacters(self, row):               #Corrige los caracteres especiales
@@ -132,11 +135,13 @@ class Creator():
             contentType = resp.info().get("Content-Type")
             if contentType.startswith("image/"):
                 imgType = contentType.split('/')[-1]
-                urllib.request.urlretrieve(url, "images/img" + str(id))     #Si la url es de una imagen, la descarga
+                urllib.request.urlretrieve(url, "images/img" + str(id) + "." + imgType)     #Si la url es de una imagen, la descarga
+                #urllib.request.urlretrieve(url, "images/img" + str(id))     #Si la url es de una imagen, la descarga
 
                 if imgType == "webp":       #Si la imagen es de tipo webp lo convierte a jpg
-                    im = Image.open("images/img" + str(id)).convert("RGB")
-                    im.save("images/img" + str(id),"jpeg")
+                    im = Image.open("images/img" + str(id) + ".webp").convert("RGB")
+                    im.save("images/img" + str(id) + ".jpg","jpeg")
+                    os.remove("images/img" + str(id) + ".webp")
 
                 image = "images/img" + str(id)
             else:
@@ -198,21 +203,18 @@ class Creator():
             if len(row.twitter.split()) == 1 and row.twitter[0] == "@":
                 msg += r"\hspace{0.2cm}\textit{" + row.twitter + r"}" + "\n"
 
-
             msg += (r"\\" + row.position + " at " + row.affiliation + r"\\" + "\n" +
                    description + r"\\" + "\n")
 
         #DATOS OPCIONALES
-            n = 1
-            for fld in row._fields:
-                if self.show[fld][1] == "yes":
-                    if (getattr(row, fld) != ""):
-                        if self.show[fld][0] != "-":
-                            msg += self.show[fld][0] + ": " + getattr(row, fld) + r" - "
-                        else:
-                            msg += getattr(row, fld) + r" - "
-
+            for fld in self.fields:
+                if fld.show == "yes":
+                    if fld.text != "":
+                        msg += fld.text + ": " + getattr(row, fld.name) + r" - "
+                    else:
+                        msg += getattr(row, fld.name) + r" - "
             msg = msg[:len(msg)-3]
+
             msg += r"\end{minipage}"
 
             if id%4 == 0:           #4 participantes por página. Si llega al 4º salta de página
@@ -220,6 +222,37 @@ class Creator():
             else:
                 msg += r"\newline\newline\newline\newline" + "\n"
             id += 1
+
+
+    # GRÁFICAS DE ESTADÍSTICAS
+        n = 1
+        data = pd.DataFrame(self.data_form, columns=self.field_names.split(" ")[:-1])
+
+        df = pd.DataFrame(self.fields,columns=["name","text","show","statistics"])
+        stats = pd.crosstab(index=df["statistics"],columns="frecuencia")
+        fila = stats.loc[stats.index == "yes"]
+        n_graph = int(fila["frecuencia"])
+
+        plt.figure(figsize=(7,10))
+        for fld in self.fields:
+            if fld.statistics == "yes":
+                plt.subplot(n_graph, 1, n)
+
+                tab = pd.crosstab(index=data[fld.name],columns="frecuencia")
+                plt.pie(tab, autopct="%1.1f%%", radius=0.8)
+                plt.legend(labels=tab.index,loc='center left',bbox_to_anchor=(0.8, 0.5))
+                if fld.text != "":
+                    plt.title(fld.text)
+                else:
+                    plt.title(fld.name)
+                n += 1
+        plt.savefig("graph.png")
+
+        msg += (r"\begin{figure}" + "\n" +
+               r"\centering" + "\n" +
+               r"\includegraphics{graph}" + "\n" +
+               r"\end{figure}" + "\n")
+
         self.err.close()
         return msg
 
@@ -228,6 +261,6 @@ if __name__ == "__main__":
     c = Creator()
     c.DataIn()
     generated = c.DataOut()
-    f = open("generated.tex", "w")
+    f = open("generated.tex", "w", encoding="utf-8")
     f.write(generated)
     f.close()
