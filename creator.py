@@ -201,9 +201,9 @@ class Creator():
 
             #Comprueba si es un login de twitter
             if len(row.twitter.split()) == 1 and row.twitter[0] == "@":
-                msg += r"\hspace{0.2cm}\textit{" + row.twitter + r"}" + "\n"
+                msg += r"\hspace{0.2cm}\textit{" + row.twitter + r"}"
 
-            msg += (r"\\" + row.position + " at " + row.affiliation + r"\\" + "\n" +
+            msg += (r"\\" + "\n" + row.position + " at " + row.affiliation + r"\\" + "\n" +
                    description + r"\\" + "\n")
 
         #DATOS OPCIONALES
@@ -215,7 +215,7 @@ class Creator():
                         msg += getattr(row, fld.name) + r" - "
             msg = msg[:len(msg)-3]
 
-            msg += r"\end{minipage}"
+            msg += "\n" + r"\end{minipage}" + "\n"
 
             if id%4 == 0:           #4 participantes por página. Si llega al 4º salta de página
                 msg += r"\newpage" + "\n"
@@ -262,6 +262,16 @@ if __name__ == "__main__":
     c = Creator()
     c.DataIn()
     generated = c.DataOut()
-    f = open("generated.tex", "w", encoding="utf-8")
-    f.write(generated)
-    f.close()
+    gener = open("generated.tex", "w", encoding="utf-8")
+    gener.write(generated)
+    gener.close()
+
+    introd = open("report.tex", "r", encoding="utf-8")
+    text = introd.read().replace("\input{generated}", generated)
+    introd.close()
+
+    file = open("all.tex", "w", encoding="utf-8")
+    file.write(text)
+    file.close()
+
+    os.system("xelatex all.tex")
