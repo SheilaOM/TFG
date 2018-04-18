@@ -175,6 +175,42 @@ class Creator():
         return description
 
 
+    def GenerateGraphics (self):
+        df = pd.DataFrame(self.fields,columns=["name","text","show","statistics"])
+        stats = pd.crosstab(index=df["statistics"],columns="frecuencia")
+        fila = stats.loc[stats.index == "yes"]
+
+        msg = ""
+        n = 1
+        if not fila.empty:
+            n_graph = int(fila["frecuencia"])
+            data = pd.DataFrame(self.data_form, columns=self.field_names.split(" ")[:-1])
+            for fld in self.fields:
+                if fld.statistics == "yes":
+                    plt.figure();
+                    tab = pd.crosstab(index=data[fld.name],columns="frecuencia")
+                    plt.pie(tab, autopct="%1.1f%%", pctdistance=0.8, radius=1.2)
+                    plt.legend(labels=tab.index,bbox_to_anchor=(0.9, 1), loc="upper left")
+                    if fld.text != "":
+                        plt.title(fld.text, fontsize=15)
+                    else:
+                        plt.title(fld.name, fontsize=15)
+
+                    plt.savefig("graph" + str(n) + ".png", bbox_inches="tight")
+                    n += 1
+
+            msg += (r"\newpage" + "\n" +
+                    r"\begin{figure}" + "\n" +
+                    r"\centering" + "\n")
+
+            for i in range(n-1):
+                #msg += r"\subfigure{\includegraphics[width=0.49\textwidth]{graph" + str(i+1) + "}}" + "\n"
+                msg += r"\subfigure{\includegraphics[height=6cm]{graph" + str(i+1) + "}}" + "\n"
+
+            msg += r"\end{figure}" + "\n"
+
+        return msg
+
     def DataOut (self):
         id = 1
         msg = ''
@@ -223,36 +259,8 @@ class Creator():
                 msg += r"\newline\newline\newline\newline" + "\n"
             id += 1
 
-
-    # GRÁFICAS DE ESTADÍSTICAS
-        n = 1
-
-        df = pd.DataFrame(self.fields,columns=["name","text","show","statistics"])
-        stats = pd.crosstab(index=df["statistics"],columns="frecuencia")
-        fila = stats.loc[stats.index == "yes"]
-
-        if not fila.empty:
-            n_graph = int(fila["frecuencia"])
-            data = pd.DataFrame(self.data_form, columns=self.field_names.split(" ")[:-1])
-            plt.figure(figsize=(7,10))
-            for fld in self.fields:
-                if fld.statistics == "yes":
-                    plt.subplot(n_graph, 1, n)
-
-                    tab = pd.crosstab(index=data[fld.name],columns="frecuencia")
-                    plt.pie(tab, autopct="%1.1f%%", radius=0.8)
-                    plt.legend(labels=tab.index,loc='center left',bbox_to_anchor=(0.8, 0.5))
-                    if fld.text != "":
-                        plt.title(fld.text)
-                    else:
-                        plt.title(fld.name)
-                    n += 1
-            plt.savefig("graph.png")
-
-            msg += (r"\begin{figure}" + "\n" +
-                   r"\centering" + "\n" +
-                   r"\includegraphics{graph}" + "\n" +
-                   r"\end{figure}" + "\n")
+        # GRÁFICAS DE ESTADÍSTICAS
+        msg += c.GenerateGraphics()
 
         self.err.close()
         return msg
@@ -274,4 +282,8 @@ if __name__ == "__main__":
     file.write(text)
     file.close()
 
-    os.system("xelatex all.tex")
+    try:
+        os.system("xelatex all.tex")
+        print("PDF has been generated --> all.pdf")
+    except:
+        print("Impossible to generate PDF automatically. You must compile in Latex manually")
