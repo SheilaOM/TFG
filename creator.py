@@ -20,7 +20,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-
+SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
+CLIENT_SECRET_FILE = 'client_secret.json'
+APPLICATION_NAME = 'Yearbook Generator'
 
 """
 URL original: https://docs.google.com/spreadsheets/d/1NtocNeyy0B2nOnz-Sw84EMRzejJIXcPm1g8E5Wk36u4/edit
@@ -38,13 +40,9 @@ class Creator():
 
         try:
             import argparse
-            flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
+            self.flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
         except ImportError:
-            flags = None
-
-        SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
-        CLIENT_SECRET_FILE = 'client_secret.json'
-        APPLICATION_NAME = 'Yearbook Generator'
+            self.flags = None
 
 
     def get_credentials(self):
@@ -60,8 +58,8 @@ class Creator():
         if not credentials or credentials.invalid:
             flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPES)
             flow.user_agent = APPLICATION_NAME
-            if flags:
-                credentials = tools.run_flow(flow, store, flags)
+            if self.flags:
+                credentials = tools.run_flow(flow, store, self.flags)
             else: # Needed only for compatibility with Python 2.6
                 credentials = tools.run(flow, store)
             print('Storing credentials to ' + credential_path)
