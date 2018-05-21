@@ -211,7 +211,7 @@ class Creator():
 
     def DataOut (self):
         id = 1
-        msg = ''
+        msg = r"\section*{Participants}" + "\n"
 
         for row in self.values:
             print (id)
@@ -269,19 +269,21 @@ if __name__ == "__main__":
     c.DataIn()
     generated = c.DataOut()
     gener = open("generated.tex", "w", encoding="utf-8")
-    gener.write(generated)
-    gener.close()
 
-    introd = open("report.tex", "r", encoding="utf-8")
-    text = introd.read().replace("\input{generated}", generated)
-    introd.close()
-
-    file = open("all.tex", "w", encoding="utf-8")
-    file.write(text)
-    file.close()
 
     try:
-        os.system("xelatex all.tex")
-        print("PDF has been generated --> all.pdf")
-    except:
-        print("Impossible to generate PDF automatically. You must compile in Latex manually")
+        introd = open("report.tex", "r", encoding="utf-8")
+        text = introd.read().replace("\input{generated}", generated)
+        introd.close()
+        gener.write(text)
+        try:
+            os.system("xelatex generated.tex")
+            print("PDF has been generated --> generated.pdf")
+        except:
+            print("Impossible to generate PDF automatically. You must compile in Latex manually")
+
+    except FileNotFoundError:
+        gener.write(generated)
+        print("Participants section created. Include it in your .txt")
+
+    gener.close()
