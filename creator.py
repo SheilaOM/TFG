@@ -65,7 +65,7 @@ class Creator():
             print('Storing credentials to ' + credential_path)
         return credentials
 
-
+    #Obtiene datos personales de la hoja de cálculo y crea el NamedTuple con todos esos datos
     def get_datos(self):
         credentials = c.get_credentials()
         http = credentials.authorize(httplib2.Http())
@@ -76,7 +76,8 @@ class Creator():
 
         #spreadsheetId = '1NtocNeyy0B2nOnz-Sw84EMRzejJIXcPm1g8E5Wk36u4'      #id de la hoja de cálculo
         spreadsheetId = '1tX2SheuK8BFyp_bPEaFt_rs4gjRr_eXPEBnNadVdCaI'      #id de la hoja de cálculo (campos)
-        rangeName = 'Form Responses 1!A2:ZZZ'                               #hoja y filas y columnas
+        #rangeName = 'Form Responses 1!A2:ZZZ'                               #hoja y filas y columnas
+        rangeName = 'MSR!A2:ZZZ'                               #hoja y filas y columnas
         result = service.spreadsheets().values().get(
             spreadsheetId=spreadsheetId, range=rangeName).execute()
         self.data_form = result.get('values', [])
@@ -89,7 +90,7 @@ class Creator():
                 data = Data(*row)
                 self.values.append(data)
 
-
+    #
     def DataIn(self):
         credentials = c.get_credentials()
         http = credentials.authorize(httplib2.Http())
@@ -133,6 +134,7 @@ class Creator():
             contentType = resp.info().get("Content-Type")
             if contentType.startswith("image/"):
                 imgType = contentType.split('/')[-1]
+                imgType = imgType.split(';')[0]
                 urllib.request.urlretrieve(url, "images/img" + str(id) + "." + imgType)     #Si la url es de una imagen, la descarga
                 #urllib.request.urlretrieve(url, "images/img" + str(id))     #Si la url es de una imagen, la descarga
 
@@ -141,16 +143,21 @@ class Creator():
                     im.save("images/img" + str(id) + ".jpg","jpeg")
                     os.remove("images/img" + str(id) + ".webp")
 
-                image = "images/img" + str(id)
+                image = "images/img" + str(id) + "." + imgType
             else:
-                image = "images/img0"
+                image = "images/img0.jpg"
                 self.err.write("-Error in image of " + row.name + " (pos. " + str(id) + ") -> Download image manually (change the name of the image in generated.tex).\n")
 
-        except urllib.error.HTTPError:
-            image = "images/img0"
+        except (urllib.error.HTTPError, urllib.error.URLError) as e:
+            image = "images/img0.jpg"
             self.err.write("-Error in image of " + row.name + " (pos. " + str(id) + ") -> URL not found.\n")
 
+        except ValueError:
+            image = "images/img0.jpg"
+            self.err.write("-Error in image of " + row.name + " (pos. " + str(id) + ") -> There aren't URL.\n")
+
         return image
+
 
     def GetFlag (self, row, id):
         try:
@@ -170,6 +177,10 @@ class Creator():
             description = " ".join(description) + r" \ldots"
         else:
             description = desc
+
+        if len(description) != 0:
+            description += r"\\" + "\n"
+
         return description
 
 
@@ -220,11 +231,21 @@ class Creator():
             flag = c.GetFlag(row, id)
             description = c.CutDescription(row.description)
 
+            im = Image.open(image)
+            width, height = im.size
+
+
         #DATOS OBLIGATORIOS
             msg += (r"\noindent\begin{minipage}{0.3\textwidth}" + "\n" +
-                   r"\centering" + "\n" +
-                   r"\includegraphics[height=5cm]{" + image + "}" + "\n" +
-                   r"\end{minipage}" + "\n" +
+                   r"\centering" + "\n")
+
+            if (width/height) > 1.2:
+                msg += r"\includegraphics[width=5cm]{" + image + "}" + "\n"
+
+            else:
+                msg += r"\includegraphics[height=5cm]{" + image + "}" + "\n"
+
+            msg += (r"\end{minipage}" + "\n" +
                    r"\hfill" + "\n" +
                    r"\begin{minipage}{0.6\textwidth}\raggedright" + "\n" +
                    r"\color{color1}\uppercase{\textbf{" + row.name + r"}}" + "\n" +
@@ -238,7 +259,7 @@ class Creator():
                 msg += r"\hspace{0.2cm}\textit{" + row.twitter + r"}"
 
             msg += (r"\\" + "\n" + row.position + " at " + row.affiliation + r"\\" + "\n" +
-                   description + r"\\" + "\n")
+                   description)
 
         #DATOS OPCIONALES
             for fld in self.fields:
@@ -272,8 +293,8 @@ if __name__ == "__main__":
 
 
     try:
-        introd = open("report.tex", "r", encoding="utf-8")
-        text = introd.read().replace("\input{generated}", generated)
+        introd = open("intro.tex", "r", encoding="utf-8")
+        text = introd.read().replace("\input{participants}", generated)
         introd.close()
         gener.write(text)
         try:
@@ -284,6 +305,6 @@ if __name__ == "__main__":
 
     except FileNotFoundError:
         gener.write(generated)
-        print("Participants section created. Include it in your .txt")
+        print("Participants section created. Include it in your .tex")
 
     gener.close()
