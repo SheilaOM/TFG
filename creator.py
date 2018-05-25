@@ -24,6 +24,10 @@ SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
 CLIENT_SECRET_FILE = 'client_secret.json'
 APPLICATION_NAME = 'Yearbook Generator'
 
+
+IMAGE_SIZE = 512, 512 # 
+LIMIT_DESCRIPTION = 200
+
 """
 URL original: https://docs.google.com/spreadsheets/d/1NtocNeyy0B2nOnz-Sw84EMRzejJIXcPm1g8E5Wk36u4/edit
 Campos y datos (URL utilizada): https://docs.google.com/spreadsheets/d/1tX2SheuK8BFyp_bPEaFt_rs4gjRr_eXPEBnNadVdCaI/edit
@@ -140,8 +144,14 @@ class Creator():
 
                 if imgType == "webp":       #Si la imagen es de tipo webp lo convierte a jpg
                     im = Image.open("images/img" + str(id) + ".webp").convert("RGB")
-                    im.save("images/img" + str(id) + ".jpg","jpeg")
+                    im.thumbnail(IMAGE_SIZE, Image.ANTIALIAS)
+                    im.save("images/img" + str(id) + ".jpg", "jpeg")
                     os.remove("images/img" + str(id) + ".webp")
+                else:
+                    print("images/img" + str(id) + "." + imgType)
+                    im = Image.open("images/img" + str(id) + "." + imgType)
+                    im.thumbnail(IMAGE_SIZE, Image.ANTIALIAS)
+                    im.save("images/img" + str(id) + "." + imgType, imgType)
 
                 image = "images/img" + str(id) + "." + imgType
             else:
@@ -150,10 +160,12 @@ class Creator():
 
         except (urllib.error.HTTPError, urllib.error.URLError) as e:
             image = "images/img0.jpg"
+            print("-Error in image of " + row.name + " (pos. " + str(id) + ") -> URL not found.\n")
             self.err.write("-Error in image of " + row.name + " (pos. " + str(id) + ") -> URL not found.\n")
 
         except ValueError:
             image = "images/img0.jpg"
+            print("-Error in image of " + row.name + " (pos. " + str(id) + ") -> There aren't URL.\n")
             self.err.write("-Error in image of " + row.name + " (pos. " + str(id) + ") -> There aren't URL.\n")
 
         return image
@@ -170,7 +182,7 @@ class Creator():
         return flag_icon
 
     def CutDescription (self, desc):
-        limDesc = 150;
+        limDesc = LIMIT_DESCRIPTION;
         if len(desc) > limDesc:
             description = desc[0:limDesc-1]
             description = description.split(" ")[0:-1]
