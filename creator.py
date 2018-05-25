@@ -6,33 +6,28 @@ import os
 import csv
 from collections import namedtuple
 import urllib.request
+from PIL import Image
+import pycountry
 
 import httplib2
 from apiclient import discovery
-from oauth2client import client
-from oauth2client import tools
+from oauth2client import client, tools
 from oauth2client.file import Storage
-from PIL import Image
-import pycountry
 
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
 
+IMAGE_SIZE = 512, 512 # Maximum participant image size 
+LIMIT_DESCRIPTION = 350 # Maximum participant description size
+SPREADSHEET_ID = '1cWBAVb_pUqJlmlaxsXmajPK3601ZxToZWv6qP3wRj3g'  # id of Google Spreadsheet
+# SPREADSHEET_ID = '1tX2SheuK8BFyp_bPEaFt_rs4gjRr_eXPEBnNadVdCaI' # id of Google Spreadsheet
+HEADER = ['date', 'name', 'position', 'affiliation', 'nationality', 'graduation', 'skip1', 'picture', 'topics', 'skip2', 'homepage', 'twitter', 'presentation', 'programming', 'hobbies', 'tabs', 'looking', 'hiring']
+
 SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
 CLIENT_SECRET_FILE = 'client_secret.json'
 APPLICATION_NAME = 'Yearbook Generator'
-
-
-IMAGE_SIZE = 512, 512 # Maximum participant image size 
-LIMIT_DESCRIPTION = 250 # Maximum participant description size
-SPREADSHEET_ID = '1tX2SheuK8BFyp_bPEaFt_rs4gjRr_eXPEBnNadVdCaI' # id of Google Spreadsheet
-
-"""
-Original URL: https://docs.google.com/spreadsheets/d/1NtocNeyy0B2nOnz-Sw84EMRzejJIXcPm1g8E5Wk36u4/edit
-Fields and data (used URL): https://docs.google.com/spreadsheets/d/1tX2SheuK8BFyp_bPEaFt_rs4gjRr_eXPEBnNadVdCaI/edit
-"""
 
 
 class Creator():
@@ -42,10 +37,10 @@ class Creator():
     def __init__(self):
         """
         """
-        self.values = []       # NamedTuple with data
+#        self.values = []       # NamedTuple with data
         self.fields = []        # NamedTuple with fields and their info
-        self.data = []     # data
-        self.field_names = ""
+#        self.data = []     # data
+#        self.field_names = ""
         self.err = open("errors.txt", "w") # FIXME: should be a parameter; default STDERR
                                            # FIXME: should be the path, not the file descriptor!
 
@@ -79,10 +74,10 @@ class Creator():
             print('Storing credentials to ' + credential_path)
         return credentials
 
-    def get_datos(self):
+    def spreadsheet_to_namedtuple(self):
         """
         Obtains personal data from the Google spreadsheet
-        and returns a namedtuple
+        and returns a namedtuple in self.fields  
         """
         credentials = c.get_credentials()
         http = credentials.authorize(httplib2.Http())
@@ -91,33 +86,7 @@ class Creator():
         service = discovery.build('sheets', 'v4', http=http,
                                   discoveryServiceUrl=discoveryUrl)
 
-        #rangeName = 'Form Responses 1!A2:ZZZ'   # sheet, and rows and columns
-        rangeName = 'MSR!A2:ZZZ'                # sheet, and rows and columns - FIXME! Belongs to configuration
-        result = service.spreadsheets().values().get(
-            spreadsheetId=SPREADSHEET_ID, range=rangeName).execute()
-        self.data_form = result.get('values', [])
-
-        if not self.data_form:
-            print('No data found.')
-        else:
-            Data = namedtuple("Data", self.field_names)
-            for row in self.data_form:
-                data = Data(*row)
-                self.values.append(data)
-
-    #
-    def DataIn(self):
-        """
-        
-        """
-        credentials = c.get_credentials()
-        http = credentials.authorize(httplib2.Http())
-        discoveryUrl = ('https://sheets.googleapis.com/$discovery/rest?'
-                        'version=v4')
-        service = discovery.build('sheets', 'v4', http=http,
-                                  discoveryServiceUrl=discoveryUrl)
-
-        rangeName = 'form!A2:Z'         # sheet, and rows and columns - FIXME! belongs to configuration
+        rangeName = 'A2:R'         # sheet, and rows and columns - FIXME! belongs to configuration
         result = service.spreadsheets().values().get(
             spreadsheetId=SPREADSHEET_ID, range=rangeName).execute()
         values = result.get('values', [])
@@ -125,16 +94,13 @@ class Creator():
         if not values:
             print('No data found.')
         else:
-            Fields = namedtuple("Fields", "name text show statistics")
+            Fields = namedtuple("Fields", ' '.join(HEADER))
             for row in values:
                 fields = Fields(*row)
                 self.fields.append(fields)
-                self.field_names += row[0] + " "  # fields for Namedtuple with data
-
-        c.get_datos()
 
 
-    def CorrectCharacters(self, row):
+    def make_chars_latex_friendly(self, row):
         """
         Makes special characters in the data LaTeX-friendly
         """
@@ -147,7 +113,7 @@ class Creator():
         return row
 
 
-    def DownloadImage (self, row, id):
+    def download_image(self, row, id):
         """
         Given the row (of data) and the id of the participants
         Downloads its image to a file (converts it to jpeg if necessary),
@@ -193,7 +159,7 @@ class Creator():
         return image
 
 
-    def GetFlag (self, row, id):
+    def get_flag(self, row, id):
         """
         Given the data (row) and participant id
         
@@ -208,9 +174,9 @@ class Creator():
 
         return flag_icon
 
-    def CutDescription (self, desc):
+    def cut_presentation (self, desc):
         """
-        Given a participant's description (string) desc
+        Given a participant's presentation (string) desc
         
         Returns a version of it that is at most LIMIT_DESCRIPTION long
         """
@@ -228,7 +194,7 @@ class Creator():
         return description
 
 
-    def GenerateGraphics (self):
+    def generate_graphs(self):
         """
         FIXME: include docstring
         """
@@ -269,40 +235,36 @@ class Creator():
         
     def order_by_name(self):
         """
-        Orders participants (self.values) by family name
-        
-        TODO
+        Orders participants data (self.fields) by surname
         """
-        pass
-        
-    def looking_and_searching(self):
-        """
-        Looks in the participant list (self.values) for who is looking for a
-        new position or searching for applicants
-        
-        Returns two lists (looking, searching) 
-        (and removes that data from self.values)
-        
-        TODO
-        """
-        pass
+        surnames = [field.name.split()[-1] for field in self.fields]
+        surnames = list(set(surnames))
+        surnames.sort()
 
-    def DataOut (self):
+        newList = []
+        for surname in surnames:
+            for field in self.fields:
+                if field.name.split()[-1] == surname:
+                    newList.append(field)
+        
+        self.fields = newList
+
+    def namedtuple_to_latex(self):
         """
         Outputs the LaTeX data
         """
         id = 1
         msg = r"\section*{Participants}" + "\n"
         
-        order_by_name()
-        lookingList, searchingList = looking_and_searching()
+        self.order_by_name()
 
-        for row in self.values:
-            print (id)
-            row = c.CorrectCharacters(row)
-            image = c.DownloadImage(row, id)
-            flag = c.GetFlag(row, id)
-            description = c.CutDescription(row.description)
+        for row in self.fields:
+            print(id)
+            print(row)
+            row = c.make_chars_latex_friendly(row)
+            image = c.download_image(row, id)
+            flag = c.get_flag(row, id)
+            presentation = c.cut_presentation(row.presentation)
 
             im = Image.open(image)
             width, height = im.size
@@ -323,24 +285,30 @@ class Creator():
                    r"\color{color1}\uppercase{\textbf{" + row.name + r"}}" + "\n" +
                    r"\color{color2}")
 
-            if flag != "":
+            if flag:
                 msg += r"\hspace{0.2cm}\includegraphics{" + flag + "}" + "\n"
+
+            if row.graduation:
+                msg += (r"\hspace{0.1cm}{\scriptsize (PhD " + row.graduation + ")}\n")            
 
             # Checks if it is a Twitter handle
             if len(row.twitter.split()) == 1 and row.twitter[0] == "@":
-                msg += r"\hspace{0.2cm}\textit{" + row.twitter + r"}"
+                msg += r"\hspace{0.2cm}\textit{" + row.twitter + r"}" + "\n"
 
-            msg += (r"\\" + "\n" + row.position + " at " + row.affiliation + r"\\" + "\n" +
-                   description)
+            msg += (r"\\" + "\n" + row.position + " at " + row.affiliation + r"\\" + "\n")
+            if presentation:
+                msg += (r"{\small " + presentation + "}")
+            if row.homepage:
+                msg += (r"{\scriptsize More: " + row.homepage + "}\n")
 
             # Optional data
-            for fld in self.fields:
-                if fld.show == "yes":
-                    if fld.text != "":
-                        msg += fld.text + ": " + getattr(row, fld.name) + r" - "
-                    else:
-                        msg += getattr(row, fld.name) + r" - "
-            msg = msg[:len(msg)-3]
+#            for fld in self.fields:
+#                if fld.show == "yes":
+#                    if fld.text != "":
+#                        msg += fld.text + ": " + getattr(row, fld.name) + r" - "
+#                    else:
+#                        msg += getattr(row, fld.name) + r" - "
+#            msg = msg[:len(msg)-3]
 
             msg += "\n" + r"\end{minipage}" + "\n"
 
@@ -351,7 +319,7 @@ class Creator():
             id += 1
 
         # Stats
-        msg += c.GenerateGraphics()
+#        msg += c.generate_graphs()
 
         self.err.close()
         return msg
@@ -359,8 +327,8 @@ class Creator():
 
 if __name__ == "__main__":
     c = Creator()
-    c.DataIn()
-    generated = c.DataOut()
+    c.spreadsheet_to_namedtuple()
+    generated = c.namedtuple_to_latex()
     gener = open("generated.tex", "w", encoding="utf-8") # FIXME: change to with
 
     try:
