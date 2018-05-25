@@ -26,7 +26,7 @@ APPLICATION_NAME = 'Yearbook Generator'
 
 
 IMAGE_SIZE = 512, 512 # Maximum participant image size 
-LIMIT_DESCRIPTION = 200 # Maximum participant description size
+LIMIT_DESCRIPTION = 250 # Maximum participant description size
 SPREADSHEET_ID = '1tX2SheuK8BFyp_bPEaFt_rs4gjRr_eXPEBnNadVdCaI' # id of Google Spreadsheet
 
 """
@@ -42,11 +42,12 @@ class Creator():
     def __init__(self):
         """
         """
-        self.values = []        #NamedTuple of data
-        self.fields = []        #NamedTuple of fields and their info
-        self.data = []     #data
+        self.values = []       # NamedTuple with data
+        self.fields = []        # NamedTuple with fields and their info
+        self.data = []     # data
         self.field_names = ""
-        self.err = open("errors.txt", "w")
+        self.err = open("errors.txt", "w") # FIXME: should be a parameter; default STDERR
+                                           # FIXME: should be the path, not the file descriptor!
 
         try:
             import argparse
@@ -73,7 +74,7 @@ class Creator():
             flow.user_agent = APPLICATION_NAME
             if self.flags:
                 credentials = tools.run_flow(flow, store, self.flags)
-            else: # Needed only for compatibility with Python 2.6
+            else: # Needed only for compatibility with Python 2.6 - FIXME: then the rest of the script should work for Python2
                 credentials = tools.run(flow, store)
             print('Storing credentials to ' + credential_path)
         return credentials
@@ -91,7 +92,7 @@ class Creator():
                                   discoveryServiceUrl=discoveryUrl)
 
         #rangeName = 'Form Responses 1!A2:ZZZ'   # sheet, and rows and columns
-        rangeName = 'MSR!A2:ZZZ'                # sheet, and rows and columns
+        rangeName = 'MSR!A2:ZZZ'                # sheet, and rows and columns - FIXME! Belongs to configuration
         result = service.spreadsheets().values().get(
             spreadsheetId=SPREADSHEET_ID, range=rangeName).execute()
         self.data_form = result.get('values', [])
@@ -116,7 +117,7 @@ class Creator():
         service = discovery.build('sheets', 'v4', http=http,
                                   discoveryServiceUrl=discoveryUrl)
 
-        rangeName = 'form!A2:Z'         # sheet, and rows and columns
+        rangeName = 'form!A2:Z'         # sheet, and rows and columns - FIXME! belongs to configuration
         result = service.spreadsheets().values().get(
             spreadsheetId=SPREADSHEET_ID, range=rangeName).execute()
         values = result.get('values', [])
@@ -153,6 +154,8 @@ class Creator():
         and resizes it
         
         Returns the (relative) path to the image file
+        
+        FIXME: long try-excepts should be enhanced
         """
         url = row.picture
         try:
@@ -227,9 +230,10 @@ class Creator():
 
     def GenerateGraphics (self):
         """
+        FIXME: include docstring
         """
-        df = pd.DataFrame(self.fields,columns=["name","text","show","statistics"])
-        stats = pd.crosstab(index=df["statistics"],columns="frecuencia")
+        df = pd.DataFrame(self.fields,columns=["name", "text", "show", "statistics"])
+        stats = pd.crosstab(index=df["statistics"], columns="frecuencia")
         fila = stats.loc[stats.index == "yes"]
 
         msg = ""
@@ -262,6 +266,26 @@ class Creator():
             msg += r"\end{figure}" + "\n"
 
         return msg
+        
+    def order_by_name(self):
+        """
+        Orders participants (self.values) by family name
+        
+        TODO
+        """
+        pass
+        
+    def looking_and_searching(self):
+        """
+        Looks in the participant list (self.values) for who is looking for a
+        new position or searching for applicants
+        
+        Returns two lists (looking, searching) 
+        (and removes that data from self.values)
+        
+        TODO
+        """
+        pass
 
     def DataOut (self):
         """
@@ -269,6 +293,9 @@ class Creator():
         """
         id = 1
         msg = r"\section*{Participants}" + "\n"
+        
+        order_by_name()
+        lookingList, searchingList = looking_and_searching()
 
         for row in self.values:
             print (id)
@@ -280,8 +307,7 @@ class Creator():
             im = Image.open(image)
             width, height = im.size
 
-
-        # Required data
+            # Required data
             msg += (r"\noindent\begin{minipage}{0.3\textwidth}" + "\n" +
                    r"\centering" + "\n")
 
@@ -307,7 +333,7 @@ class Creator():
             msg += (r"\\" + "\n" + row.position + " at " + row.affiliation + r"\\" + "\n" +
                    description)
 
-        # Optional data
+            # Optional data
             for fld in self.fields:
                 if fld.show == "yes":
                     if fld.text != "":
@@ -335,7 +361,7 @@ if __name__ == "__main__":
     c = Creator()
     c.DataIn()
     generated = c.DataOut()
-    gener = open("generated.tex", "w", encoding="utf-8")
+    gener = open("generated.tex", "w", encoding="utf-8") # FIXME: change to with
 
     try:
         introd = open("intro.tex", "r", encoding="utf-8")
