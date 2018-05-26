@@ -18,6 +18,7 @@ import pycountry
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from operator import itemgetter
 
 
 SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
@@ -85,6 +86,7 @@ class Creator():
         if not self.data_form:
             print('No data found.')
         else:
+            self.data_form = sorted(self.data_form,key=lambda x: x[1].split(" ")[1])        #Ordena por apellidos alfabéticamente
             Data = namedtuple("Data", self.field_names)
             for row in self.data_form:
                 data = Data(*row)
@@ -108,7 +110,7 @@ class Creator():
         if not values:
             print('No data found.')
         else:
-            Fields = namedtuple("Fields", "name text show statistics")
+            Fields = namedtuple("Fields", "name text show statistics list")
             for row in values:
                 fields = Fields(*row)
                 self.fields.append(fields)
@@ -185,7 +187,7 @@ class Creator():
 
 
     def GenerateGraphics (self):
-        df = pd.DataFrame(self.fields,columns=["name","text","show","statistics"])
+        df = pd.DataFrame(self.fields,columns=["name","text","show","statistics","list"])
         stats = pd.crosstab(index=df["statistics"],columns="frecuencia")
         fila = stats.loc[stats.index == "yes"]
 
@@ -219,6 +221,23 @@ class Creator():
             msg += r"\end{figure}" + "\n"
 
         return msg
+
+
+    def GenerateLists (self):
+        msg = ""
+        for fld in self.fields:
+            if fld.list == "yes":
+                msg += (r"\newpage" + "\n" +
+                        r"\color{color1}\uppercase{\textbf{" + fld.text + r"}}" + "\n" +
+                        r"\color{color2}" + "\n" +
+                        r"\begin{multicols}{2}" + "\n" +
+                        r"\begin{itemize}" + "\n")
+                for row in self.values:
+                    if getattr(row, fld.name) == "Yes":
+                        msg += r"\item " + row.name + "\n"
+                msg += r"\end{itemize}" + "\n" + r"\end{multicols}"
+        return msg
+
 
     def DataOut (self):
         id = 1
@@ -259,7 +278,7 @@ class Creator():
                 msg += r"\hspace{0.2cm}\textit{" + row.twitter + r"}"
 
             msg += (r"\\" + "\n" + row.position + " at " + row.affiliation + r"\\" + "\n" +
-                   description)
+                   row.description)
 
         #DATOS OPCIONALES
             for fld in self.fields:
@@ -271,15 +290,20 @@ class Creator():
             msg = msg[:len(msg)-3]
 
             msg += "\n" + r"\end{minipage}" + "\n"
-
+            """
             if id%4 == 0:           #4 participantes por página. Si llega al 4º salta de página
                 msg += r"\newpage" + "\n"
             else:
                 msg += r"\newline\newline\newline\newline" + "\n"
+            """
+            msg += r"\newline\newline\newline\newline" + "\n"
             id += 1
 
         # GRÁFICAS DE ESTADÍSTICAS
         msg += c.GenerateGraphics()
+
+        #LISTADOS
+        msg += c.GenerateLists()
 
         self.err.close()
         return msg
@@ -288,14 +312,15 @@ class Creator():
 if __name__ == "__main__":
     c = Creator()
     c.DataIn()
-    generated = c.DataOut()
-    gener = open("generated.tex", "w", encoding="utf-8")
-
+    participants = c.DataOut()
+    partic = open("participants.tex", "w", encoding="utf-8")
+    partic.write(participants)
 
     try:
         introd = open("intro.tex", "r", encoding="utf-8")
-        text = introd.read().replace("\input{participants}", generated)
+        text = introd.read().replace("\input{participants}", participants)
         introd.close()
+        gener = open("generated.tex", "w", encoding="utf-8")
         gener.write(text)
         try:
             os.system("xelatex generated.tex")
@@ -304,7 +329,6 @@ if __name__ == "__main__":
             print("Impossible to generate PDF automatically. You must compile in Latex manually")
 
     except FileNotFoundError:
-        gener.write(generated)
         print("Participants section created. Include it in your .tex")
 
     gener.close()
