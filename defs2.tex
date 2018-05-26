@@ -1,6 +1,7 @@
 \usepackage{tikz}
 \usepackage{calc}
 \usepackage{booktabs}
+\usepackage{multicol}
 %\usepackage{hyperref}
 
 % colors
@@ -64,8 +65,17 @@ head=0ex,foot=3ex}
 \parbox[b][\paperheight]{\paperwidth}{%
 \vfill
 \centering
-\includegraphics[width=\paperwidth,height=\paperheight,%
-keepaspectratio]{cover}%
+\begin{Huge}
+{\bf CONFERENCE BOOK} \\
+\end{Huge}
+\vspace{1cm}
+\includegraphics{cover}% 
+\vspace{1cm}
+\begin{Large}
+\\
+15\textsuperscript{th} International Conference on Mining Software Repositories \\
+Gothenburg, Sweden, May 28\textsuperscript{th}-29\textsuperscript   {th} 2018 \\
+\end{Large}
 \vfill
 }}}
 %%%

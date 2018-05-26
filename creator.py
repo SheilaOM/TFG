@@ -249,10 +249,26 @@ class Creator():
         
         self.fields = newList
 
+    def generate_list(self, field_name, names):
+        msg = ""
+
+        msg += (r"\newpage" + "\n" +
+                r"\color{color1}\uppercase{\textbf{" + field_name + r"}}" + "\n" +
+                r"\color{color2}" + "\n" +
+                r"\begin{multicols}{2}" + "\n" +
+                r"\begin{itemize}" + "\n")
+        for name in names:
+            msg += r"  \item " + name + "\n"
+
+        msg += r"\end{itemize}" + "\n" + r"\end{multicols}"
+        return msg
+
     def namedtuple_to_latex(self):
         """
         Outputs the LaTeX data
         """
+        lookingList = []
+        hiringList = []
         id = 1
         msg = r"\section*{Participants}" + "\n"
         
@@ -300,7 +316,13 @@ class Creator():
                 msg += (r"{\small " + presentation + "}")
             if row.homepage:
                 msg += (r"{\scriptsize More: " + row.homepage + "}\n")
-
+            
+            if row.looking == "Yes":
+                lookingList.append(row.name)
+                
+            if row.hiring ==  "Yes":
+                hiringList.append(row.name)
+                
             # Optional data
 #            for fld in self.fields:
 #                if fld.show == "yes":
@@ -318,6 +340,8 @@ class Creator():
                 msg += r"\newline\newline\newline\newline" + "\n"
             id += 1
 
+        msg += self.generate_list('Looking for a position', lookingList)
+        msg += self.generate_list('My lab is hiring', hiringList)
         # Stats
 #        msg += c.generate_graphs()
 
