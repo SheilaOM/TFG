@@ -313,6 +313,13 @@ class Creator():
             if len(row.twitter.split()) == 1 and row.twitter[0] == "@":
                 msg += r"\hspace{0.2cm}\textit{" + row.twitter + r"}" + "\n"
 
+            if row.hiring == "Yes":
+                msg += r"\hspace{0.1cm}\includegraphics[height=0.5cm]{figs/hiring.png}" + "\n"
+
+            if row.looking == "Yes":
+                msg += r"\hspace{0.1cm}\includegraphics[height=0.4cm]{figs/jobs.png}" + "\n"
+
+
             msg += (r"\\" + "\n" + row.position + " at " + row.affiliation + r"\\" + "\n")
             if presentation:
                 msg += (r"{\footnotesize " + presentation + "}")
@@ -342,8 +349,10 @@ class Creator():
                 msg += r"\newline\newline\newline\newline" + "\n"
             id += 1
 
-        msg += self.generate_list('Looking for a position', lookingList)
-        msg += self.generate_list('My lab is hiring', hiringList)
+       # If you want to have the "Looking for a position" and "My lab is hiring" listed explicitly
+#        msg += self.generate_list('Looking for a position', lookingList)
+#        msg += self.generate_list('My lab is hiring', hiringList)
+
         # Stats
 #        msg += c.generate_graphs()
 
