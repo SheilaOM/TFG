@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 
 
 IMAGE_SIZE = 512, 512 # Maximum participant image size 
-LIMIT_DESCRIPTION = 350 # Maximum participant description size
+LIMIT_DESCRIPTION = 500 # Maximum participant description size
 SPREADSHEET_ID = '1cWBAVb_pUqJlmlaxsXmajPK3601ZxToZWv6qP3wRj3g'  # id of Google Spreadsheet
 # SPREADSHEET_ID = '1tX2SheuK8BFyp_bPEaFt_rs4gjRr_eXPEBnNadVdCaI' # id of Google Spreadsheet
 HEADER = ['date', 'name', 'position', 'affiliation', 'nationality', 'graduation', 'skip1', 'picture', 'topics', 'skip2', 'homepage', 'twitter', 'presentation', 'programming', 'hobbies', 'tabs', 'looking', 'hiring']
@@ -150,11 +150,11 @@ class Creator():
 
         except (urllib.error.HTTPError, urllib.error.URLError) as e:
             image = "images/img0.jpg"
-            self.err.write("-Error in image of " + row.name + " (pos. " + str(id) + ") -> URL not found.\n")
+            self.err.write("-Error in image of " + row.name + " (pos. " + str(id) + ") -> URL not found or not provided.\n")
 
         except ValueError:
             image = "images/img0.jpg"
-            self.err.write("-Error in image of " + row.name + " (pos. " + str(id) + ") -> There aren't URL.\n")
+            self.err.write("-Error in image of " + row.name + " (pos. " + str(id) + ") -> URL is not valid or not provided.\n")
 
         return image
 
@@ -169,20 +169,22 @@ class Creator():
             nac = pycountry.countries.get(name=row.nationality)
             flag_icon = "flags/" + nac.alpha_2.lower() + ".png"
         except KeyError:
-            self.err.write("-Error in nationality of " + row.name + " (pos. " + str(id) + ") -> It's not a country.\n")
+            self.err.write("-Error in nationality of " + row.name + " (pos. " + str(id) + ") -> Country not found or not provided.\n")
             flag_icon = ""
 
         return flag_icon
 
-    def cut_presentation (self, desc):
+    def cut_presentation(self, desc):
         """
         Given a participant's presentation (string) desc
         
         Returns a version of it that is at most LIMIT_DESCRIPTION long
         """
-        limDesc = LIMIT_DESCRIPTION;
-        if len(desc) > limDesc:
-            description = desc[0:limDesc-1]
+        if '"' in desc:
+            desc = desc.replace('"', "''")
+
+        if len(desc) > LIMIT_DESCRIPTION:
+            description = desc[0:LIMIT_DESCRIPTION-1]
             description = description.split(" ")[0:-1]
             description = " ".join(description) + r" \ldots"
         else:
@@ -313,9 +315,9 @@ class Creator():
 
             msg += (r"\\" + "\n" + row.position + " at " + row.affiliation + r"\\" + "\n")
             if presentation:
-                msg += (r"{\small " + presentation + "}")
+                msg += (r"{\footnotesize " + presentation + "}")
             if row.homepage:
-                msg += (r"{\scriptsize More: " + row.homepage + "}\n")
+                msg += (r"{\scriptsize Web: " + row.homepage + "}\n")
             
             if row.looking == "Yes":
                 lookingList.append(row.name)
