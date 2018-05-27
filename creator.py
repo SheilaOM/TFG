@@ -1,4 +1,14 @@
 #!/usr/bin/python3
+"""
+Conference Book Creator Software
+
+by Gregorio Robles <grex@gsyc.urjc.es>
+
+With ideas/help from:
+
+Seila Oliva Muñoz
+Jesús Moreno-León
+"""
 
 from __future__ import print_function
 
@@ -19,15 +29,15 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-IMAGE_SIZE = 512, 512 # Maximum participant image size 
-LIMIT_DESCRIPTION = 500 # Maximum participant description size
 SPREADSHEET_ID = '1cWBAVb_pUqJlmlaxsXmajPK3601ZxToZWv6qP3wRj3g'  # id of Google Spreadsheet
-# SPREADSHEET_ID = '1tX2SheuK8BFyp_bPEaFt_rs4gjRr_eXPEBnNadVdCaI' # id of Google Spreadsheet
+
 HEADER = ['date', 'name', 'position', 'affiliation', 'nationality', 'graduation', 'skip1', 'picture', 'topics', 'skip2', 'homepage', 'twitter', 'presentation', 'programming', 'hobbies', 'tabs', 'looking', 'hiring']
 
 SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
 CLIENT_SECRET_FILE = 'client_secret.json'
 APPLICATION_NAME = 'Yearbook Generator'
+IMAGE_SIZE = 512, 512 # Maximum participant image size 
+LIMIT_DESCRIPTION = 500 # Maximum participant description size
 
 
 class Creator():
@@ -37,10 +47,7 @@ class Creator():
     def __init__(self):
         """
         """
-#        self.values = []       # NamedTuple with data
         self.fields = []        # NamedTuple with fields and their info
-#        self.data = []     # data
-#        self.field_names = ""
         self.err = open("errors.txt", "w") # FIXME: should be a parameter; default STDERR
                                            # FIXME: should be the path, not the file descriptor!
 
@@ -106,9 +113,14 @@ class Creator():
         """
         for data, name in zip(row, row._fields):
             if (name != "picture") & (name != "HomePage"):
-                for c in ["_", "&", "#", "$", "%", "{", "}"]:
+                for c in ["_", "&", "#", "$", "%", "{", "}", "~", "\n"]:
                     if data.find(c) != -1:
-                        data = data.replace(c, "\\" + c)
+                        if c == '~':
+                            data = data.replace(c, "\\textasciitilde ")
+                        elif c == '\n':
+                            data = data.replace(c, "")
+                        else:
+                            data = data.replace(c, "\\" + c)
                         row = row._replace(**{name:data})
         return row
 
@@ -241,7 +253,7 @@ class Creator():
         """
         surnames = [field.name.split()[-1] for field in self.fields]
         surnames = list(set(surnames))
-        surnames.sort()
+        surnames.sort() 
 
         newList = []
         for surname in surnames:
@@ -324,7 +336,7 @@ class Creator():
             if presentation:
                 msg += (r"{\footnotesize " + presentation + "}")
             if row.homepage:
-                msg += (r"{\scriptsize Web: " + row.homepage + "}\n")
+                msg += (r"{\scriptsize " + row.homepage + "}\n")
             
             if row.looking == "Yes":
                 lookingList.append(row.name)
@@ -332,15 +344,6 @@ class Creator():
             if row.hiring ==  "Yes":
                 hiringList.append(row.name)
                 
-            # Optional data
-#            for fld in self.fields:
-#                if fld.show == "yes":
-#                    if fld.text != "":
-#                        msg += fld.text + ": " + getattr(row, fld.name) + r" - "
-#                    else:
-#                        msg += getattr(row, fld.name) + r" - "
-#            msg = msg[:len(msg)-3]
-
             msg += "\n" + r"\end{minipage}" + "\n"
 
             if id%4 == 0:   # 4 participants per page. After fourth, new page
