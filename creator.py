@@ -14,6 +14,7 @@ from __future__ import print_function
 
 import os
 import csv
+import string
 from collections import namedtuple
 import urllib.request
 from PIL import Image
@@ -29,9 +30,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-SPREADSHEET_ID = '1cWBAVb_pUqJlmlaxsXmajPK3601ZxToZWv6qP3wRj3g'  # id of Google Spreadsheet
-
-HEADER = ['date', 'name', 'position', 'affiliation', 'nationality', 'graduation', 'skip1', 'picture', 'topics', 'skip2', 'homepage', 'twitter', 'presentation', 'programming', 'hobbies', 'tabs', 'looking', 'hiring']
+SPREADSHEET_ID = '1-FMbSRGHMeYn9T0k5jLOsyh9CyAslc2OUrCj9ewaqT0'  # id of Google Spreadsheet
+HEADER = ['date', 'name', 'affiliation', 'position', 'presentation', 'nationality', 'graduation', 'picture', 'homepage', 'twitter', 'looking', 'hiring']
 
 SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
 CLIENT_SECRET_FILE = 'client_secret.json'
@@ -93,7 +93,7 @@ class Creator():
         service = discovery.build('sheets', 'v4', http=http,
                                   discoveryServiceUrl=discoveryUrl)
 
-        rangeName = 'A2:R'         # sheet, and rows and columns - FIXME! belongs to configuration
+        rangeName = 'A2:'+ string.ascii_uppercase[len(HEADER)-1]  # sheet, and rows and columns
         result = service.spreadsheets().values().get(
             spreadsheetId=SPREADSHEET_ID, range=rangeName).execute()
         values = result.get('values', [])
@@ -375,14 +375,14 @@ if __name__ == "__main__":
         text = introd.read().replace("\input{participants}", generated)
         introd.close()
         gener.write(text)
-        try:
-            os.system("xelatex generated.tex")
-            print("PDF has been generated --> generated.pdf")
-        except:
-            print("Impossible to generate PDF automatically. You must compile in Latex manually")
-
     except FileNotFoundError:
         gener.write(generated)
         print("Participants section created. Include it in your .tex")
-
     gener.close()
+
+    try:
+        os.system("xelatex generated.tex")
+        print("PDF has been generated --> generated.pdf")
+    except:
+        print("Impossible to generate PDF automatically. You must compile in Latex manually")
+
