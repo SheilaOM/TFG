@@ -103,8 +103,9 @@ class Creator():
         else:
             Fields = namedtuple("Fields", ' '.join(HEADER))
             for row in values:
-                fields = Fields(*row)
-                self.fields.append(fields)
+                if row:  # in case of an empty row (deleted by hand from the spreadsheet)
+                    fields = Fields(*row)
+                    self.fields.append(fields)
 
 
     def make_chars_latex_friendly(self, row):
