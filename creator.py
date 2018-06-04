@@ -127,7 +127,7 @@ class Creator():
         c.get_datos()
 
 
-    def CorrectCharacters(self, row):
+    def make_chars_latex_friendly(self, row):
         """
         Makes special characters in the data LaTeX-friendly
         """
@@ -135,12 +135,17 @@ class Creator():
             if (name != "picture"):
                 for c in ["_", "&", "#", "$", "%", "{", "}"]:
                     if data.find(c) != -1:
-                        data = data.replace(c, "\\" + c)
+                        if c == '~':
+                            data = data.replace(c, "\\textasciitilde ")
+                        elif c == '\n':
+                            data = data.replace(c, "")
+                        else:
+                            data = data.replace(c, "\\" + c)
                         row = row._replace(**{name:data})
         return row
 
 
-    def DownloadImage (self, row, id):
+    def download_image (self, row, id):
         """
         Given the row (of data) and the id of the participants
         Downloads its image to a file (converts it to jpeg if necessary),
@@ -185,7 +190,7 @@ class Creator():
         return image
 
 
-    def GetFlag (self, row, id):
+    def get_flag (self, row, id):
         """
         Given the data (row) and participant id
 
@@ -195,20 +200,22 @@ class Creator():
             nac = pycountry.countries.get(name=row.nationality)
             flag_icon = "flags/" + nac.alpha_2.lower() + ".png"
         except KeyError:
-            self.err.write("-Error in nationality of " + row.name + " (pos. " + str(id) + ") -> It's not a country.\n")
+            self.err.write("-Error in nationality of " + row.name + " (pos. " + str(id) + ") -> Country not found or not provided.\n")
             flag_icon = ""
 
         return flag_icon
 
-    def CutDescription (self, desc):
+    def cut_presentation (self, desc):
         """
         Given a participant's description (string) desc
 
         Returns a version of it that is at most LIMIT_DESCRIPTION long
         """
-        limDesc = LIMIT_DESCRIPTION;
-        if len(desc) > limDesc:
-            description = desc[0:limDesc-1]
+        if '"' in desc:
+            desc = desc.replace('"', "''")
+
+        if len(desc) > LIMIT_DESCRIPTION:
+            description = desc[0:LIMIT_DESCRIPTION-1]
             description = description.split(" ")[0:-1]
             description = " ".join(description) + r" \ldots"
         else:
@@ -220,7 +227,7 @@ class Creator():
         return description
 
 
-    def GenerateGraphics (self):
+    def generate_graphs (self):
         """
         FIXME: include docstring
         """
@@ -260,7 +267,7 @@ class Creator():
         return msg
 
 
-    def GenerateLists (self):
+    def generate_list (self):
         """
         Looks in the participant list (self.values) for who is looking for a
         new position or searching for applicants
@@ -282,7 +289,7 @@ class Creator():
         return msg
 
 
-    def DataOut (self):
+    def namedtuple_to_latex (self):
         """
         Outputs the LaTeX data
         """
@@ -291,10 +298,10 @@ class Creator():
 
         for row in self.values:
             print (id)
-            row = c.CorrectCharacters(row)
-            image = c.DownloadImage(row, id)
-            flag = c.GetFlag(row, id)
-            description = c.CutDescription(row.description)
+            row = c.make_chars_latex_friendly(row)
+            image = c.download_image(row, id)
+            flag = c.get_flag(row, id)
+            description = c.cut_presentation(row.description)
 
             im = Image.open(image)
             width, height = im.size
@@ -316,12 +323,21 @@ class Creator():
                    r"\color{color1}\uppercase{\textbf{" + row.name + r"}}" + "\n" +
                    r"\color{color2}")
 
-            if flag != "":
+            if flag:
                 msg += r"\hspace{0.2cm}\includegraphics{" + flag + "}" + "\n"
+
+            if row.YearPhD:
+                msg += (r"\hspace{0.1cm}{\scriptsize (PhD " + row.YearPhD + ")}\n")
 
             # Checks if it is a Twitter handle
             if len(row.twitter.split()) == 1 and row.twitter[0] == "@":
                 msg += r"\hspace{0.2cm}\textit{" + row.twitter + r"}"
+
+            if row.hiring == "Yes":
+                msg += r"\hspace{0.1cm}\includegraphics[height=0.5cm]{figs/hiring.png}" + "\n"
+
+            if row.looking == "Yes":
+                msg += r"\hspace{0.1cm}\includegraphics[height=0.4cm]{figs/jobs.png}" + "\n"
 
             msg += r"\\" + "\n" + row.position + " at " + row.affiliation + r"\\" + "\n"
 
@@ -355,10 +371,10 @@ class Creator():
             id += 1
 
         # Stats
-        msg += c.GenerateGraphics()
+        msg += c.generate_graphs()
 
         # List of people
-        msg += c.GenerateLists()
+        msg += c.generate_list()
 
         self.err.close()
         return msg
@@ -367,7 +383,7 @@ class Creator():
 if __name__ == "__main__":
     c = Creator()
     c.DataIn()
-    participants = c.DataOut()
+    participants = c.namedtuple_to_latex()
     partic = open("participants.tex", "w", encoding="utf-8")
     partic.write(participants)
 
