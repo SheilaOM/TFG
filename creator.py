@@ -25,6 +25,10 @@ SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
 CLIENT_SECRET_FILE = 'client_secret.json'
 APPLICATION_NAME = 'Yearbook Generator'
 
+IMAGE_SIZE = 512, 512 # Maximum participant image size
+LIMIT_DESCRIPTION = 200 # Maximum participant description size
+SPREADSHEET_ID = '1tX2SheuK8BFyp_bPEaFt_rs4gjRr_eXPEBnNadVdCaI' # id of Google Spreadsheet
+
 """
 URL original: https://docs.google.com/spreadsheets/d/1NtocNeyy0B2nOnz-Sw84EMRzejJIXcPm1g8E5Wk36u4/edit
 Campos y datos (URL utilizada): https://docs.google.com/spreadsheets/d/1tX2SheuK8BFyp_bPEaFt_rs4gjRr_eXPEBnNadVdCaI/edit
@@ -32,12 +36,12 @@ Campos y datos (URL utilizada): https://docs.google.com/spreadsheets/d/1tX2SheuK
 class Creator():
 
     def __init__(self):
-        self.values = []        #NamedTuple of data
-        self.fields = []        #NamedTuple of fields and their info
-        self.data = []     #data
+        self.values = []        # NamedTuple with data
+        self.fields = []        # NamedTuple with fields and their info
+        self.data = []          # data
         self.field_names = ""
-        self.err = open("errores.txt", "w")
-
+        self.err = open("errors.txt", "w")  # FIXME: should be a parameter; default STDERR
+                                            # FIXME: should be the path, not the file descriptor!
 
         try:
             import argparse
@@ -47,6 +51,9 @@ class Creator():
 
 
     def get_credentials(self):
+        """
+        Returns the Google spreadsheet credentials
+        """
         home_dir = os.path.expanduser('~')
         credential_dir = os.path.join(home_dir, '.credentials')
         if not os.path.exists(credential_dir):
@@ -61,13 +68,17 @@ class Creator():
             flow.user_agent = APPLICATION_NAME
             if self.flags:
                 credentials = tools.run_flow(flow, store, self.flags)
-            else: # Needed only for compatibility with Python 2.6
+            else: # Needed only for compatibility with Python 2.6   - FIXME: then the rest of the script should work for Python2
                 credentials = tools.run(flow, store)
             print('Storing credentials to ' + credential_path)
         return credentials
 
-    #Obtiene datos personales de la hoja de cálculo y crea el NamedTuple con todos esos datos
+
     def get_datos(self):
+        """
+        Obtains personal data from the Google spreadsheet
+        and returns a namedtuple
+        """
         credentials = c.get_credentials()
         http = credentials.authorize(httplib2.Http())
         discoveryUrl = ('https://sheets.googleapis.com/$discovery/rest?'
@@ -75,18 +86,16 @@ class Creator():
         service = discovery.build('sheets', 'v4', http=http,
                                   discoveryServiceUrl=discoveryUrl)
 
-        #spreadsheetId = '1NtocNeyy0B2nOnz-Sw84EMRzejJIXcPm1g8E5Wk36u4'      #id de la hoja de cálculo
-        spreadsheetId = '1tX2SheuK8BFyp_bPEaFt_rs4gjRr_eXPEBnNadVdCaI'      #id de la hoja de cálculo (campos)
-        #rangeName = 'Form Responses 1!A2:ZZZ'                               #hoja y filas y columnas
-        rangeName = 'MSR!A2:ZZZ'                               #hoja y filas y columnas
+        #rangeName = 'Form Responses 1!A2:ZZZ'          # sheet, and rows and columns
+        rangeName = 'MSR!A2:ZZZ'                     # sheet, and rows and columns   - FIXME! Belongs to configuration
         result = service.spreadsheets().values().get(
-            spreadsheetId=spreadsheetId, range=rangeName).execute()
+            spreadsheetId=SPREADSHEET_ID, range=rangeName).execute()
         self.data_form = result.get('values', [])
 
         if not self.data_form:
             print('No data found.')
         else:
-            self.data_form = sorted(self.data_form,key=lambda x: x[1].split(" ")[1])        #Ordena por apellidos alfabéticamente
+            self.data_form = sorted(self.data_form,key=lambda x: x[1].split(" ")[1])        #Orders participants by family name
             Data = namedtuple("Data", self.field_names)
             for row in self.data_form:
                 data = Data(*row)
@@ -101,10 +110,9 @@ class Creator():
         service = discovery.build('sheets', 'v4', http=http,
                                   discoveryServiceUrl=discoveryUrl)
 
-        spreadsheetId = '1tX2SheuK8BFyp_bPEaFt_rs4gjRr_eXPEBnNadVdCaI'      #id de la hoja de cálculo
-        rangeName = 'form!A2:Z'                                             #hoja y filas y columnas
+        rangeName = 'form!A2:Z'                                             # sheet, and rows and columns  - FIXME! Belongs to configuration
         result = service.spreadsheets().values().get(
-            spreadsheetId=spreadsheetId, range=rangeName).execute()
+            spreadsheetId=SPREADSHEET_ID, range=rangeName).execute()
         values = result.get('values', [])
 
         if not values:
@@ -114,14 +122,17 @@ class Creator():
             for row in values:
                 fields = Fields(*row)
                 self.fields.append(fields)
-                self.field_names += row[0] + " "                    #fields para Namedtuple de datos
+                self.field_names += row[0] + " "        # fields for Namedtuple with data
 
         c.get_datos()
 
 
-    def CorrectCharacters(self, row):               #Corrige los caracteres especiales
+    def CorrectCharacters(self, row):
+        """
+        Makes special characters in the data LaTeX-friendly
+        """
         for data, name in zip(row, row._fields):
-            if (name != "picture") & (name != "HomePage"):
+            if (name != "picture"):
                 for c in ["_", "&", "#", "$", "%", "{", "}"]:
                     if data.find(c) != -1:
                         data = data.replace(c, "\\" + c)
@@ -130,20 +141,33 @@ class Creator():
 
 
     def DownloadImage (self, row, id):
+        """
+        Given the row (of data) and the id of the participants
+        Downloads its image to a file (converts it to jpeg if necessary),
+        and resizes it
+
+        Returns the (relative) path to the image file
+        """
+        # FIXME: long try-excepts should be enhanced
+
         url = row.picture
         try:
-            resp = urllib.request.urlopen(url)          #Lee la url (no descarga nada)
+            resp = urllib.request.urlopen(url)          # Reads URL (does not download)
             contentType = resp.info().get("Content-Type")
             if contentType.startswith("image/"):
                 imgType = contentType.split('/')[-1]
                 imgType = imgType.split(';')[0]
-                urllib.request.urlretrieve(url, "images/img" + str(id) + "." + imgType)     #Si la url es de una imagen, la descarga
-                #urllib.request.urlretrieve(url, "images/img" + str(id))     #Si la url es de una imagen, la descarga
+                urllib.request.urlretrieve(url, "images/img" + str(id) + "." + imgType)  # If URL is an image, then download
 
-                if imgType == "webp":       #Si la imagen es de tipo webp lo convierte a jpg
+                if imgType == "webp":  # If webp image, convert to jpeg
                     im = Image.open("images/img" + str(id) + ".webp").convert("RGB")
-                    im.save("images/img" + str(id) + ".jpg","jpeg")
+                    im.thumbnail(IMAGE_SIZE, Image.ANTIALIAS)
+                    im.save("images/img" + str(id) + ".jpg", "jpeg")
                     os.remove("images/img" + str(id) + ".webp")
+                else:
+                    im = Image.open("images/img" + str(id) + "." + imgType)
+                    im.thumbnail(IMAGE_SIZE, Image.ANTIALIAS)
+                    im.save("images/img" + str(id) + "." + imgType, imgType)
 
                 image = "images/img" + str(id) + "." + imgType
             else:
@@ -162,6 +186,11 @@ class Creator():
 
 
     def GetFlag (self, row, id):
+        """
+        Given the data (row) and participant id
+
+        Retunrs the (relative) path to its flag image
+        """
         try:
             nac = pycountry.countries.get(name=row.nationality)
             flag_icon = "flags/" + nac.alpha_2.lower() + ".png"
@@ -172,7 +201,12 @@ class Creator():
         return flag_icon
 
     def CutDescription (self, desc):
-        limDesc = 150;
+        """
+        Given a participant's description (string) desc
+
+        Returns a version of it that is at most LIMIT_DESCRIPTION long
+        """
+        limDesc = LIMIT_DESCRIPTION;
         if len(desc) > limDesc:
             description = desc[0:limDesc-1]
             description = description.split(" ")[0:-1]
@@ -180,15 +214,18 @@ class Creator():
         else:
             description = desc
 
-        if len(description) != 0:
-            description += r"\\" + "\n"
+        #if len(description) != 0:
+        #    description += r"\\" + "\n"
 
         return description
 
 
     def GenerateGraphics (self):
-        df = pd.DataFrame(self.fields,columns=["name","text","show","statistics","list"])
-        stats = pd.crosstab(index=df["statistics"],columns="frecuencia")
+        """
+        FIXME: include docstring
+        """
+        df = pd.DataFrame(self.fields,columns=["name", "text", "show", "statistics", "list"])
+        stats = pd.crosstab(index=df["statistics"], columns="frecuencia")
         fila = stats.loc[stats.index == "yes"]
 
         msg = ""
@@ -224,22 +261,31 @@ class Creator():
 
 
     def GenerateLists (self):
+        """
+        Looks in the participant list (self.values) for who is looking for a
+        new position or searching for applicants
+
+        Returns two lists (looking, searching)
+        """
         msg = ""
         for fld in self.fields:
-            if fld.list == "yes":
+            if fld.list == "yes":       #Find the fields with "Yes" in the list column
                 msg += (r"\newpage" + "\n" +
                         r"\color{color1}\uppercase{\textbf{" + fld.text + r"}}" + "\n" +
                         r"\color{color2}" + "\n" +
                         r"\begin{multicols}{2}" + "\n" +
                         r"\begin{itemize}" + "\n")
-                for row in self.values:
-                    if getattr(row, fld.name) == "Yes":
+                for row in self.values:                  #through all the participants
+                    if getattr(row, fld.name) == "Yes":     #Participants with "Yes" in the chosen field
                         msg += r"\item " + row.name + "\n"
                 msg += r"\end{itemize}" + "\n" + r"\end{multicols}"
         return msg
 
 
     def DataOut (self):
+        """
+        Outputs the LaTeX data
+        """
         id = 1
         msg = r"\section*{Participants}" + "\n"
 
@@ -254,7 +300,7 @@ class Creator():
             width, height = im.size
 
 
-        #DATOS OBLIGATORIOS
+            # Required data
             msg += (r"\noindent\begin{minipage}{0.3\textwidth}" + "\n" +
                    r"\centering" + "\n")
 
@@ -273,36 +319,45 @@ class Creator():
             if flag != "":
                 msg += r"\hspace{0.2cm}\includegraphics{" + flag + "}" + "\n"
 
-            #Comprueba si es un login de twitter
+            # Checks if it is a Twitter handle
             if len(row.twitter.split()) == 1 and row.twitter[0] == "@":
                 msg += r"\hspace{0.2cm}\textit{" + row.twitter + r"}"
 
-            msg += (r"\\" + "\n" + row.position + " at " + row.affiliation + r"\\" + "\n" +
-                   row.description)
+            msg += r"\\" + "\n" + row.position + " at " + row.affiliation + r"\\" + "\n"
 
-        #DATOS OPCIONALES
+            if description:
+                msg += (r"{\footnotesize " + description + r"}\\" + "\n")
+
+            if row.HomePage:
+                msg += (r"{\scriptsize " + row.HomePage + r"}" + "\n")
+
+            # Optional data
+            opcional = False
             for fld in self.fields:
                 if fld.show == "yes":
+                    opcional = True
                     if fld.text != "":
                         msg += fld.text + ": " + getattr(row, fld.name) + r" - "
                     else:
                         msg += getattr(row, fld.name) + r" - "
-            msg = msg[:len(msg)-3]
+            if opcional:
+                msg = msg[:len(msg)-3]
 
-            msg += "\n" + r"\end{minipage}" + "\n"
+            msg += r"\end{minipage}" + "\n"
+
             """
-            if id%4 == 0:           #4 participantes por página. Si llega al 4º salta de página
+            if id%4 == 0:          # 4 participants per page. After fourth, new page
                 msg += r"\newpage" + "\n"
             else:
                 msg += r"\newline\newline\newline\newline" + "\n"
             """
-            msg += r"\newline\newline\newline\newline" + "\n"
+            msg += r"\newline\newline\newline" + "\n"
             id += 1
 
-        # GRÁFICAS DE ESTADÍSTICAS
+        # Stats
         msg += c.GenerateGraphics()
 
-        #LISTADOS
+        # List of people
         msg += c.GenerateLists()
 
         self.err.close()
@@ -320,7 +375,7 @@ if __name__ == "__main__":
         introd = open("intro.tex", "r", encoding="utf-8")
         text = introd.read().replace("\input{participants}", participants)
         introd.close()
-        gener = open("generated.tex", "w", encoding="utf-8")
+        gener = open("generated.tex", "w", encoding="utf-8")     # FIXME: change to with
         gener.write(text)
         try:
             os.system("xelatex generated.tex")
