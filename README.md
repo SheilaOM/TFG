@@ -16,11 +16,11 @@ usage: python3 creator.py
 * Python >= 3
 * google-api-python-client >= 1.6.5
 * pycountry >= 18.2.23
-
+* xetex >= 3
 
 ## Examples
 
-You can see at some examples of conferences where we have used ConfBookGenerator:
+You can see at some examples of conferences thave have created their own Conference Yearbook using ConfBookGenerator:
 
 * [MSR 2018 - Intl Working Conference on Mining Conferences](https://gsyc.urjc.es/~grex/2018-MSR-Confbook.pdf)
 * [OSS 2018 - Intl Conference on Open Source Systems](https://gsyc.urjc.es/~grex/2018-OSS-Confbook.pdf)
