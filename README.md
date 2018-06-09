@@ -16,7 +16,9 @@ usage: python3 creator.py
 * Python >= 3
 * google-api-python-client >= 1.6.5
 * pycountry >= 18.2.23
-* xetex >= 3
+* Pillow>=5.1.0
+* oauth2client>=4.1.2
+* latex-xetex >= 3
 
 ## Examples
 
