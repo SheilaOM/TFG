@@ -76,6 +76,7 @@ head=0ex,foot=3ex}
 $conference_long \\
 $conference_short \\
 $conference_place, $conference_dates \\
+$conference_hashtag \\
 \end{Large}
 \vfill
 }}}

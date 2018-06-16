@@ -368,7 +368,7 @@ class Creator():
 if __name__ == "__main__":
     s = Template(open('defs2.tpl').read())
     with open('defs2.tex', 'w') as texfile:
-        texfile.write(s.safe_substitute(conference_long = CONFERENCE_LONG, conference_short = CONFERENCE_SHORT, conference_place = CONFERENCE_PLACE, conference_dates = CONFERENCE_DATES, conference_frontimage = FRONT_IMAGE, conference_logo = LOGO))
+        texfile.write(s.safe_substitute(conference_long = LONG_NAME, conference_short = SHORT_NAME, conference_place = PLACE, conference_dates = DATES, conference_hashtag = HASHTAG, conference_frontimage = FRONT_IMAGE, conference_logo = LOGO))
 
     c = Creator()
     c.spreadsheet_to_namedtuple()

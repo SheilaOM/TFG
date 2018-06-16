@@ -6,12 +6,15 @@ https://github.com/gregoriorobles/ConfBookGenerator
 """
 
 # Conference long name and short name (LaTeX special chars have to be escaped)
-CONFERENCE_LONG = "11\\textsuperscript{th} Seminar on Advanced Techniques \& Tools for Software Evolution"
-CONFERENCE_SHORT = "SATToSE 2018"
+LONG_NAME = "11\\textsuperscript{th} Seminar on Advanced Techniques \& Tools for Software Evolution"
+SHORT_NAME = "SATToSE 2018"
 
 # Conference place and dates (LaTeX special chars have to be escaped)
-CONFERENCE_PLACE = "Athens, Greece"
-CONFERENCE_DATES = "July 4\\textsuperscript{th}--6\\textsuperscript{th} 2018"
+PLACE = "Athens, Greece"
+DATES = "July 4\\textsuperscript{th}--6\\textsuperscript{th} 2018"
+
+# Conference Twitter hashtag (LaTeX special chars have to be escaped, e.g. # -> \#)
+HASHTAG = "\#sattose18"
 
 # Front Image of the ConfBook and logo of the conference
 FRONT_IMAGE = "Panepistimiou.jpg"
@@ -36,5 +39,4 @@ HEADER = ['date', 'name', 'affiliation', 'position', 'presentation', 'nationalit
 SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
 CLIENT_SECRET_FILE = 'client_secret.json'
 APPLICATION_NAME = 'Yearbook Generator'
-
 
