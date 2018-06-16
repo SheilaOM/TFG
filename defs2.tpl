@@ -51,9 +51,9 @@ head=0ex,foot=3ex}
 \newlength{\myheight}
 \lfoot{
 \settoheight{\myheight}{\thepage}
-\raisebox{-2ex-0.5\myheight}{\includegraphics[height=3ex]{sattose.png}}
+\raisebox{-2ex-0.5\myheight}{\includegraphics[height=3ex]{$conference_logo}}
 }
-\cfoot{\color{color1}SATToSE 2018 - Athens, Greece}
+\cfoot{\color{color1}$conference_short - $conference_place}
 \rfoot{\color{color1}\thepage}
 \renewcommand\headrulewidth{0pt}
 \renewcommand\footrulewidth{0pt}
@@ -69,13 +69,13 @@ head=0ex,foot=3ex}
 {\bf CONFERENCE YEARBOOK} \\
 \end{Huge}
 \vspace{1cm}
-\includegraphics[width=16cm]{Panepistimiou.jpg}% 
+\includegraphics[width=16cm]{$conference_frontimage}% 
 \vspace{1cm}
 \begin{Large}
 \\
-11\textsuperscript{th} Seminar on Advanced Techniques \& Tools for Software Evolution \\
-SATToSE 2018 \\
-Athens, Greece, July 4\textsuperscript{th}--6\textsuperscript{th} 2018 \\
+$conference_long \\
+$conference_short \\
+$conference_place, $conference_dates \\
 \end{Large}
 \vfill
 }}}
