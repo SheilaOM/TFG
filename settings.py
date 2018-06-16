@@ -1,12 +1,15 @@
 """
 ConfBookGenerator settings.
+
+For more information, see:
+https://github.com/gregoriorobles/ConfBookGenerator
 """
 
-# Conference long name and short name
+# Conference long name and short name (LaTeX special chars have to be escaped)
 CONFERENCE_LONG = "11\\textsuperscript{th} Seminar on Advanced Techniques \& Tools for Software Evolution"
 CONFERENCE_SHORT = "SATToSE 2018"
 
-# Conference place and dates
+# Conference place and dates (LaTeX special chars have to be escaped)
 CONFERENCE_PLACE = "Athens, Greece"
 CONFERENCE_DATES = "July 4\\textsuperscript{th}--6\\textsuperscript{th} 2018"
 
@@ -20,13 +23,13 @@ SPREADSHEET_ID = "1ythM16SC_OqYfwzg96NN6DzQrZLBU_gGMmS5AvfkWtI"
 ################################################################################
 # For vanilla ConfBook, don't touch from this point!
 
-# Maximum participant image size 
+# Maximum participant image size (in pixels)
 IMAGE_SIZE = 512, 512 
 
-# Maximum participant description size
+# Maximum participant description size (in number of characters)
 LIMIT_DESCRIPTION = 500 
 
-# Google Spreadsheet columns
+# Google Spreadsheet column names
 HEADER = ['date', 'name', 'affiliation', 'position', 'presentation', 'nationality', 'graduation', 'picture', 'homepage', 'twitter', 'looking', 'hiring', 'times']
 
 # Other
