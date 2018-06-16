@@ -39,4 +39,5 @@ HEADER = ['date', 'name', 'affiliation', 'position', 'presentation', 'nationalit
 SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
 CLIENT_SECRET_FILE = 'client_secret.json'
 APPLICATION_NAME = 'Yearbook Generator'
-
+GENERATED_FILE = "generated" # name of the LaTeX and PDF file created
+ERRORS_FILE = "errors.txt"

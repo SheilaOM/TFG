@@ -42,8 +42,6 @@ class Creator():
         """
         """
         self.fields = []        # NamedTuple with fields and their info
-        self.err = open("errors.txt", "w") # FIXME: should be a parameter; default STDERR
-                                           # FIXME: should be the path, not the file descriptor!
 
         try:
             import argparse
@@ -51,6 +49,14 @@ class Creator():
         except ImportError:
             self.flags = None
 
+        open(ERRORS_FILE, 'w').close() # empty error files
+        
+    def write_error(self, text):
+        """
+        Writes error messages to file
+        """
+        with open(ERRORS_FILE, "a") as error_output:
+            error_output.write(text)
 
     def get_credentials(self):
         """
@@ -101,7 +107,7 @@ class Creator():
                     fields = Fields(*row)
                     self.fields.append(fields)
                 else:
-                    self.err.write("- Error. Not enough values in row: " + str(row) + "\n")
+                    self.write_error("- Error. Not enough values in row: " + str(row) + "\n")
 
 
     def make_chars_latex_friendly(self, row):
@@ -135,7 +141,7 @@ class Creator():
         url = row.picture
         image = "images/img0.jpg" # default image
         if not url:
-            self.err.write("- Warning: No image for " + row.name + " (pos. " + str(id) + ") -> Image URL not provided.\n")
+            self.write_error("- Warning: No image for " + row.name + " (pos. " + str(id) + ") -> Image URL not provided.\n")
             return image
             
         try:
@@ -159,13 +165,13 @@ class Creator():
 
                 image = "images/img" + str(id) + "." + imgType
             else:
-                self.err.write("- Error in image of " + row.name + " (pos. " + str(id) + ") -> Please download image manually (and change the name of the image in generated.tex).\n")
+                self.write_error("- Error in image of " + row.name + " (pos. " + str(id) + ") -> Please download image manually (and change the name of the image in generated.tex).\n")
 
         except (urllib.error.HTTPError, urllib.error.URLError) as e:
-            self.err.write("- Error in image of " + row.name + " (pos. " + str(id) + ") -> Error in URL.\n")
+            self.write_error("- Error in image of " + row.name + " (pos. " + str(id) + ") -> Error in URL.\n")
 
         except ValueError:
-            self.err.write("- Error in image of " + row.name + " (pos. " + str(id) + ") -> Image URL is not valid.\n")
+            self.write_error("- Error in image of " + row.name + " (pos. " + str(id) + ") -> Image URL is not valid.\n")
 
         return image
 
@@ -178,13 +184,13 @@ class Creator():
         """
         flag_icon = ""
         if not row.nationality:
-            self.err.write("- Warning in nationality of " + row.name + " (pos. " + str(id) + ") -> Country not provided.\n")
+            self.write_error("- Warning in nationality of " + row.name + " (pos. " + str(id) + ") -> Country not provided.\n")
 
         try:
             nac = pycountry.countries.get(name=row.nationality)
             flag_icon = "flags/" + nac.alpha_2.lower() + ".png"
         except KeyError:
-            self.err.write("- Error in nationality of " + row.name + " (pos. " + str(id) + ") -> Country not found.\n")
+            self.write_error("- Error in nationality of " + row.name + " (pos. " + str(id) + ") -> Country not found.\n")
 
         return flag_icon
 
@@ -361,7 +367,6 @@ class Creator():
         # Stats
 #        msg += c.generate_graphs()
 
-        self.err.close()
         return msg
 
 
