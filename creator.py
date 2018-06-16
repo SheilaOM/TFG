@@ -101,7 +101,7 @@ class Creator():
                     fields = Fields(*row)
                     self.fields.append(fields)
                 else:
-                    self.err.write("- Error. Not enough vaalues in row: " + str(row) + "\n")
+                    self.err.write("- Error. Not enough values in row: " + str(row) + "\n")
 
 
     def make_chars_latex_friendly(self, row):
@@ -366,28 +366,29 @@ class Creator():
 
 
 if __name__ == "__main__":
-    s = Template(open('defs2.tpl').read())
-    with open('defs2.tex', 'w') as texfile:
+    # Creating front page
+    s = Template(open('tex/defs2.tpl').read())
+    with open('tex/defs2.tex', 'w') as texfile:
         texfile.write(s.safe_substitute(conference_long = LONG_NAME, conference_short = SHORT_NAME, conference_place = PLACE, conference_dates = DATES, conference_hashtag = HASHTAG, conference_frontimage = FRONT_IMAGE, conference_logo = LOGO))
 
+    # Inserting participants
     c = Creator()
     c.spreadsheet_to_namedtuple()
-    generated = c.namedtuple_to_latex()
-    gener = open("generated.tex", "w", encoding="utf-8") # FIXME: change to with
+    participants_tex = c.namedtuple_to_latex()
+    with open(GENERATED_FILE + ".tex", "w", encoding="utf-8") as generated_file:
+        try:
+            introd = open("tex/intro.tex", "r", encoding="utf-8")
+            text = introd.read().replace("\input{participants}", participants_tex)
+            introd.close()
+            generated_file.write(text)
+        except FileNotFoundError:
+            generated_file.write(participants_tex)
+            print("Participants section created. Include it in your .tex")
 
+    # Compiling to get PDF
     try:
-        introd = open("intro.tex", "r", encoding="utf-8")
-        text = introd.read().replace("\input{participants}", generated)
-        introd.close()
-        gener.write(text)
-    except FileNotFoundError:
-        gener.write(generated)
-        print("Participants section created. Include it in your .tex")
-    gener.close()
-
-    try:
-        os.system("xelatex generated.tex")
-        print("PDF has been generated --> generated.pdf")
+        os.system("xelatex " + GENERATED_FILE + ".tex")
+        print("PDF has been generated --> " + GENERATED_FILE + ".pdf")
     except:
-        print("Impossible to generate PDF automatically. You must compile in Latex manually")
+        print("Impossible to generate PDF automatically. You must compile in LaTeX manually")
 
