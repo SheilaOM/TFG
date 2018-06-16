@@ -11,11 +11,11 @@ CONFERENCE_PLACE = "Athens, Greece"
 CONFERENCE_DATES = "July 4\\textsuperscript{th}--6\\textsuperscript{th} 2018"
 
 # Front Image of the ConfBook and logo of the conference
-FRONT_IMAGE = 'Panepistimiou.jpg"
-LOGO = 'sattose.png'
+FRONT_IMAGE = "Panepistimiou.jpg"
+LOGO = "sattose.png"
 
 # Google Spreadsheet id
-SPREADSHEET_ID = '1ythM16SC_OqYfwzg96NN6DzQrZLBU_gGMmS5AvfkWtI'
+SPREADSHEET_ID = "1ythM16SC_OqYfwzg96NN6DzQrZLBU_gGMmS5AvfkWtI"
 
 ################################################################################
 # For vanilla ConfBook, don't touch from this point!
