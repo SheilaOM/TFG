@@ -368,8 +368,7 @@ class Creator():
 if __name__ == "__main__":
     # Creating front page
     s = Template(open('tex/defs2.tpl').read())
-    with open('tex/defs2.tex', 'w') as texfile:
-        texfile.write(s.safe_substitute(conference_long = LONG_NAME, conference_short = SHORT_NAME, conference_place = PLACE, conference_dates = DATES, conference_hashtag = HASHTAG, conference_frontimage = FRONT_IMAGE, conference_logo = LOGO))
+    tex_header = s.safe_substitute(conference_long = LONG_NAME, conference_short = SHORT_NAME, conference_place = PLACE, conference_dates = DATES, conference_hashtag = HASHTAG, conference_frontimage = FRONT_IMAGE, conference_logo = LOGO)
 
     # Inserting participants
     c = Creator()
@@ -378,7 +377,7 @@ if __name__ == "__main__":
     with open(GENERATED_FILE + ".tex", "w", encoding="utf-8") as generated_file:
         try:
             introd = open("tex/intro.tex", "r", encoding="utf-8")
-            text = introd.read().replace("\input{participants}", participants_tex)
+            text = introd.read().replace("\input{defs2}", tex_header).replace("\input{participants}", participants_tex)
             introd.close()
             generated_file.write(text)
         except FileNotFoundError:

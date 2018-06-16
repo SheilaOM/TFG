@@ -14,11 +14,11 @@
 \usepackage{fontspec}
 \defaultfontfeatures{Mapping=tex-text}
 \setmainfont
-[BoldFont=Lato-Bold.ttf,
-ItalicFont=Lato-Italic.ttf,
-BoldItalicFont=Lato-BoldItalic.ttf]
-{Lato-Regular.ttf}
-\newfontfamily\headingfont[ItalicFont=Lato-BlackItalic.ttf]{Lato-Black.ttf}
+[BoldFont=fonts/Lato-Bold.ttf,
+ItalicFont=fonts/Lato-Italic.ttf,
+BoldItalicFont=fonts/Lato-BoldItalic.ttf]
+{fonts/Lato-Regular.ttf}
+\newfontfamily\headingfont[ItalicFont=fonts/Lato-BlackItalic.ttf]{fonts/Lato-Black.ttf}
 %%%
 
 \usepackage{geometry}
