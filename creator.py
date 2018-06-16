@@ -25,18 +25,13 @@ from apiclient import discovery
 from oauth2client import client, tools
 from oauth2client.file import Storage
 
+from string import Template
+
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-SPREADSHEET_ID = '1-FMbSRGHMeYn9T0k5jLOsyh9CyAslc2OUrCj9ewaqT0'  # id of Google Spreadsheet
-HEADER = ['date', 'name', 'affiliation', 'position', 'presentation', 'nationality', 'graduation', 'picture', 'homepage', 'twitter', 'looking', 'hiring']
-
-SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
-CLIENT_SECRET_FILE = 'client_secret.json'
-APPLICATION_NAME = 'Yearbook Generator'
-IMAGE_SIZE = 512, 512 # Maximum participant image size 
-LIMIT_DESCRIPTION = 500 # Maximum participant description size
+from settings import *
 
 
 class Creator():
@@ -371,6 +366,10 @@ class Creator():
 
 
 if __name__ == "__main__":
+    s = Template(open('defs2.tpl').read())
+    with open('defs2.tex', 'w') as texfile:
+        texfile.write(s.safe_substitute(conference_long = CONFERENCE_LONG, conference_short = CONFERENCE_SHORT, conference_place = CONFERENCE_PLACE, conference_dates = CONFERENCE_DATES, conference_frontimage = FRONT_IMAGE, conference_logo = LOGO))
+
     c = Creator()
     c.spreadsheet_to_namedtuple()
     generated = c.namedtuple_to_latex()
