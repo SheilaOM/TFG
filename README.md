@@ -26,6 +26,7 @@ You can see at some examples of conferences thave have created their own Confere
 
 * [MSR 2018 - Intl Working Conference on Mining Conferences](https://gsyc.urjc.es/~grex/2018-MSR-Confbook.pdf)
 * [OSS 2018 - Intl Conference on Open Source Systems](https://gsyc.urjc.es/~grex/2018-OSS-Confbook.pdf)
+* [SATToSE 2018](https://gsyc.urjc.es/~grex/2018-SATToSE-Confbook.pdf)
 
 ## License
 
