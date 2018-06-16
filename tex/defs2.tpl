@@ -17,8 +17,8 @@
 [BoldFont=fonts/Lato-Bold.ttf,
 ItalicFont=fonts/Lato-Italic.ttf,
 BoldItalicFont=fonts/Lato-BoldItalic.ttf]
-{fonts/Lato-Regular.ttf}
-\newfontfamily\headingfont[ItalicFont=fonts/Lato-BlackItalic.ttf]{fonts/Lato-Black.ttf}
+{Lato-Regular.ttf}
+\newfontfamily\headingfont[ItalicFont=fonts/Lato-BlackItalic.ttf]{Lato-Black.ttf}
 %%%
 
 \usepackage{geometry}
