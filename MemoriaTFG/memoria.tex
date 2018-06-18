@@ -3,43 +3,44 @@
 %%
 %% Por Gregorio Robles <grex arroba gsyc.urjc.es>
 %%     Grupo de Sistemas y Comunicaciones
-%%     Escuela TÈcnica Superior de Ingenieros de TelecomunicaciÛn
+%%     Escuela T√©cnica Superior de Ingenieros de Telecomunicaci√≥n
 %%     Universidad Rey Juan Carlos
 %% (muchas ideas tomadas de Internet, colegas del GSyC, antiguos alumnos...
 %%  etc. Muchas gracias a todos)
 %%
-%% La ˙ltima versiÛn de esta plantilla est· siempre disponible en:
+%% La √∫ltima versi√≥n de esta plantilla est√° siempre disponible en:
 %%     https://github.com/gregoriorobles/plantilla-memoria
 %%
 %% Para obtener PDF, ejecuta en la shell:
 %%   make
-%% (las im·genes deben ir en PNG o JPG)
+%% (las im√°genes deben ir en PNG o JPG)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[a4paper, 12pt]{book}
-%\usepackage[T1]{fontenc}
+\usepackage[T1]{fontenc}
 
 \usepackage[a4paper, left=2.5cm, right=2.5cm, top=3cm, bottom=3cm]{geometry}
 \usepackage{times}
-\usepackage[latin1]{inputenc}
-\usepackage[spanish]{babel} % Comenta esta lÌnea si tu memoria es en inglÈs
+\usepackage[utf8]{inputenc}
+%\usepackage[latin-1]{inputenc}
+\usepackage[spanish]{babel} % Comenta esta l√≠nea si tu memoria es en ingl√©s
 \usepackage{url}
 %\usepackage[dvipdfm]{graphicx}
 \usepackage{graphicx}
 \usepackage{float}  %% H para posicionar figuras
-\usepackage[nottoc, notlot, notlof, notindex]{tocbibind} %% Opciones de Ìndice
+\usepackage[nottoc, notlot, notlof, notindex]{tocbibind} %% Opciones de √≠ndice
 \usepackage{latexsym}  %% Logo LaTeX
 
-\title{Memoria del Proyecto}
-\author{Nombre del autor}
+\title{Memoria del Proyecto Fin de Carrera "Conference Book Generator"}
+\author{Seila Oliva Mu√±oz}
 
 \renewcommand{\baselinestretch}{1.5}  %% Interlineado
 
 \begin{document}
 
-\renewcommand{\refname}{BibliografÌa}  %% Renombrando
-\renewcommand{\appendixname}{ApÈndice}
+\renewcommand{\refname}{Bibliograf√≠a}  %% Renombrando
+\renewcommand{\appendixname}{Ap√©ndice}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PORTADA
@@ -61,26 +62,26 @@
 \vspace{3cm}
 
 \Large
-TITULACI”N EN MAY⁄SCULAS
+GRADO DE INGENIER√çA EN TECNOLOG√çAS DE LA TELECOMUNICACI√ìN
 
 \vspace{0.4cm}
 
 \large
-Curso AcadÈmico 20XX/20XX
+Curso Acad√©mico 2017/2018
 
 \vspace{0.8cm}
 
-Trabajo Fin de Grado/M·ster
+Trabajo Fin de Grado
 
 \vspace{2.5cm}
 
 \LARGE
-TÕTULO DEL TRABAJO EN MAY⁄SCULAS
+CONFERENCE BOOK GENERATOR
 
 \vspace{4cm}
 
 \large
-Autor : Nombre del Alumno/a \\
+Autor : Seila Oliva Mu√±oz \\
 Tutor : Dr. Gregorio Robles
 \end{center}
 \end{titlepage}
@@ -99,21 +100,21 @@ Tutor : Dr. Gregorio Robles
 \vspace{-4cm}
 \begin{center}
 \LARGE
-\textbf{Trabajo Fin de Grado/M·ster}
+\textbf{Trabajo Fin de Grado}
 
 \vspace{1cm}
 \large
-TÌtulo del Trabajo con Letras Capitales para Sustantivos y Adjetivos
+Conference Book Generator
 
 \vspace{1cm}
 \large
-\textbf{Autor :} Nombre del Alumno/a \\
-\textbf{Tutor :} Dr. Gregorio Robles MartÌnez
+\textbf{Autor :} Seila Oliva Mu√±oz \\
+\textbf{Tutor :} Dr. Gregorio Robles Mart√≠nez
 
 \end{center}
 
 \vspace{1cm}
-La defensa del presente Proyecto Fin de Carrera se realizÛ el dÌa \qquad$\;\,$ de \qquad\qquad\qquad\qquad \newline de 20XX, siendo calificada por el siguiente tribunal:
+La defensa del presente Proyecto Fin de Carrera se realiz√≥ el d√≠a \qquad$\;\,$ de \qquad\qquad\qquad\qquad \newline de 2018, siendo calificada por el siguiente tribunal:
 
 
 \vspace{0.5cm}
@@ -127,15 +128,15 @@ La defensa del presente Proyecto Fin de Carrera se realizÛ el dÌa \qquad$\;\,$ d
 
 
 \vspace{1.2cm}
-y habiendo obtenido la siguiente calificaciÛn:
+y habiendo obtenido la siguiente calificaci√≥n:
 
 \vspace{1cm}
-\textbf{CalificaciÛn:}
+\textbf{Calificaci√≥n:}
 
 
 \vspace{1cm}
 \begin{flushright}
-Fuenlabrada, a \qquad$\;\,$ de \qquad\qquad\qquad\qquad de 20XX
+Fuenlabrada, a \qquad$\;\,$ de \qquad\qquad\qquad\qquad de 2018
 \end{flushright}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -152,36 +153,36 @@ mi familia / mi abuelo / mi abuela}
 %%%% Agradecimientos
 
 \chapter*{Agradecimientos}
-%\addcontentsline{toc}{chapter}{Agradecimientos} % si queremos que aparezca en el Ìndice
-\markboth{AGRADECIMIENTOS}{AGRADECIMIENTOS} % encabezado 
+%\addcontentsline{toc}{chapter}{Agradecimientos} % si queremos que aparezca en el √≠ndice
+\markboth{AGRADECIMIENTOS}{AGRADECIMIENTOS} % encabezado
 
-AquÌ vienen los agradecimientos\ldots Aunque est· bien acordarse de la pareja, no hay que olvidarse de dar las gracias a tu madre, que aunque a veces no lo parezca disfrutar· tanto de tus logros como t˙\ldots 
-Adem·s, la pareja quiz·s no sea para siempre, pero tu madre sÌ.
+Aqu√≠ vienen los agradecimientos\ldots Aunque est√° bien acordarse de la pareja, no hay que olvidarse de dar las gracias a tu madre, que aunque a veces no lo parezca disfrutar√° tanto de tus logros como t√∫\ldots
+Adem√°s, la pareja quiz√°s no sea para siempre, pero tu madre s√≠.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Resumen
 
 \chapter*{Resumen}
-%\addcontentsline{toc}{chapter}{Resumen} % si queremos que aparezca en el Ìndice
+%\addcontentsline{toc}{chapter}{Resumen} % si queremos que aparezca en el √≠ndice
 \markboth{RESUMEN}{RESUMEN} % encabezado
 
-AquÌ viene un resumen del proyecto. Ha de constar de tres o cuatro p·rrafos, donde se presente de manera clara y concisa de quÈ va el proyecto. 
+Aqu√≠ viene un resumen del proyecto. Ha de constar de tres o cuatro p√°rrafos, donde se presente de manera clara y concisa de qu√© va el proyecto.
 Han de quedar respondidas las siguientes preguntas:
 
 \begin{itemize}
-  \item øDe quÈ va este proyecto? øCu·l es su objetivo principal?
-  \item øCÛmo se ha realizado? øQuÈ tecnologÌas est·n involucradas?
-  \item øEn quÈ contexto se ha realizado el proyecto? øEs un proyecto
+  \item ¬øDe qu√© va este proyecto? ¬øCu√°l es su objetivo principal?
+  \item ¬øC√≥mo se ha realizado? ¬øQu√© tecnolog√≠as est√°n involucradas?
+  \item ¬øEn qu√© contexto se ha realizado el proyecto? ¬øEs un proyecto
 dentro de un marco general?
 \end{itemize}
 
 Lo mejor es escribir el resumen al final.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% Resumen en inglÈs
+%%%% Resumen en ingl√©s
 
 \chapter*{Summary}
-%\addcontentsline{toc}{chapter}{Summary} % si queremos que aparezca en el Ìndice
+%\addcontentsline{toc}{chapter}{Summary} % si queremos que aparezca en el √≠ndice
 \markboth{SUMMARY}{SUMMARY} % encabezado
 
 Here comes a translation of the ``Resumen'' into English. Please, double check it for correct grammar and spelling.
@@ -191,20 +192,20 @@ just before submitting.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ÕNDICES %
+% √çNDICES %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Las buenas noticias es que los Ìndices se generan autom·ticamente.
-% Lo ˙nico que tienes que hacer es elegir cu·les quieren que se generen,
-% y comentar/descomentar esa instrucciÛn de LaTeX.
+% Las buenas noticias es que los √≠ndices se generan autom√°ticamente.
+% Lo √∫nico que tienes que hacer es elegir cu√°les quieren que se generen,
+% y comentar/descomentar esa instrucci√≥n de LaTeX.
 
-%%%% Õndice de contenidos
-\tableofcontents 
-%%%% Õndice de figuras
+%%%% √≠ndice de contenidos
+\tableofcontents
+%%%% √≠ndice de figuras
 \cleardoublepage
 %\addcontentsline{toc}{chapter}{Lista de figuras} % para que aparezca en el indice de contenidos
 \listoffigures % indice de figuras
-%%%% Õndice de tablas
+%%%% √≠ndice de tablas
 %\cleardoublepage
 %\addcontentsline{toc}{chapter}{Lista de tablas} % para que aparezca en el indice de contenidos
 %\listoftables % indice de tablas
@@ -212,94 +213,36 @@ just before submitting.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% INTRODUCCI”N %
+% INTRODUCCI√ìN %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \cleardoublepage
-\chapter{IntroducciÛn}
-\label{sec:intro} % etiqueta para poder referenciar luego en el texto con ~\ref{sec:intro}
-\pagenumbering{arabic} % para empezar la numeraciÛn de p·gina con n˙meros
+\chapter{Introducci√≥n}
+\label{chap:intro} % etiqueta para poder referenciar luego en el texto con ~\ref{sec:intro}
+\pagenumbering{arabic} % para empezar la numeraci√≥n de p√°gina con n√∫meros
 
-En este capÌtulo se introduce el proyeto. DeberÌa tener informaciÛn general sobre el mismo, dando la informaciÛn sobre el contexto en el que se ha desarrollado.
+\section{Motivaci√≥n}
+\label{sec:motivacion}
+Hoy en d√≠a es muy frecuente la realizaci√≥n de seminarios o conferencias de muy diversos temas. A ellos acude gente de diferentes partes del mundo, con perfiles similares o diferentes, dispuestos a aumentar su lista de contactos. \\
 
-No te olvides de echarle un ojo a la p·gina con los cinco errores de escritura m·s frecuentes\footnote{\url{http://www.tallerdeescritores.com/errores-de-escritura-frecuentes}}.
+Normalmente, la √∫nica manera de conocer gente en estos lugares es present√°ndose personalmente a cada persona, y en una conferencia con un n√∫mero grande de personas esta labor puede resultar tediosa, por no decir pr√°cticamente imposible.\\
 
-Aconsejo a todo el mundo que mire y se inspire en memorias pasadas. Las mÌas est·n todas almacenadas en mi web del GSyC\footnote{\url{https://gsyc.urjc.es/~grex/pfcs/}}.
+Por esto, mi tutor, Gregorio, me cont√≥ la idea de crear un ``Book'' o revista en el que apareciesen los datos de todos los asistentes a la conferencia, para repartirlo en el lugar, y as√≠ tener el contacto de todos. En este libro cada asistente podr√° incluir sus datos de contacto, su centro de trabajo, sus intereses, etc.\\
 
-\section{SecciÛn}
-\label{sec:seccion}
+Este proyecto pretende automatizar la labor de hacer este Book, de manera que cada asistente rellene un formulario previamente con sus datos, y que el documento se genere autom√°ticamente.
 
-Esto es una secciÛn, que es una estructura menor que un capÌtulo. 
-
-Por cierto, a veces me coment·is que no os compila por las tildes.
-Eso es un problema de codificaciÛn.
-Cambiad de ``UTF-8'' a ``ISO-Latin-1'' (o vicecersa) y funcionar·.
-
-\subsection{Estilo}
-\label{subsec:estilo}
-
-Recomiendo leer los consejos pr·cticos sobre LaTeX de Diomidos 
-Spinellis\footnote{\url{https://github.com/dspinellis/latex-advice}}.
-
-Sobre el uso de las comas\footnote{\url{http://narrativabreve.com/2015/02/opiniones-de-un-corrector-de-estilo-11-recetas-para-escribir-correctamente-la-coma.html}}
-
-A continuaciÛn, viene una figura, la Figura~\ref{figura:foro_hilos}. 
-Observar·s que el texto dentro del a referencia es el identificador de la figura (que se corresponden con el ``label'' dentro de la misma). 
-TambiÈn habr·s tomado nota de cÛmo se ponen las ``comillas dobles'' para que se muestren correctamente. 
-Volviendo a las referencias, nota que al compilar, la primera vez se crea un diccionario con las referencias, y en la segunda compilaciÛn se ``rellenan'' estas referencias. 
-Por eso hay que compilar dos veces.
-
- \begin{figure}
-    \centering
-    \includegraphics[bb=0 0 800 600, width=12cm, keepaspectratio]{img/foro1}
-    \caption{P·gina con enlaces a hilos}
-    \label{figura:foro_hilos}
- \end{figure}
-
-{\footnotesize
-\begin{verbatim}
-    From gaurav at gold-solutions.co.uk  Fri Jan 14 14:51:11 2005
-    From: gaurav at gold-solutions.co.uk (gaurav_gold)
-    Date: Fri Jan 14 19:25:51 2005
-    Subject: [Mailman-Users] mailman issues
-    Message-ID: <003c01c4fa40$1d99b4c0$94592252@gaurav7klgnyif>
-
-    Dear Sir/Madam,
-    How can people reply to the mailing list?  How do i turn off
-    this feature? How can i also enable a feature where if someone
-    replies the newsletter the email gets deleted?
-    Thanks
-
-    From msapiro at value.net  Fri Jan 14 19:48:51 2005
-    From: msapiro at value.net (Mark Sapiro)
-    Date: Fri Jan 14 19:49:04 2005
-    Subject: [Mailman-Users] mailman issues
-    In-Reply-To: <003c01c4fa40$1d99b4c0$94592252@gaurav7klgnyif>
-    Message-ID: <PC173020050114104851057801b04d55@msapiro>
-
-    gaurav_gold wrote:
-    >How can people reply to the mailing list?  How do i turn off
-    this feature? How can i also enable a feature where if someone
-    replies the newsletter the email gets deleted?
-
-    See the FAQ
-    >Mailman FAQ: http://www.python.org/cgi-bin/faqw-mm.py
-    article 3.11
-\end{verbatim}
-}
 
 \section{Estructura de la memoria}
 \label{sec:estructura}
 
-En esta secciÛn se deberÌa introducir la esctura de la memoria. AsÌ:
-
+Con el fin de facilitar la lectura de la memoria, en esta secci√≥n se detalla la estructura de la misma y el contenido que se trata en cada una de las secciones:
 \begin{itemize}
-  \item En el primer capÌtulo se hace una intro al proyecto.
-  
-  \item En el capÌtulo~\ref{chap:objetivos} (ojo, otra referencia autom·tica) se muestran los objetivos del proyecto.
-  
-  \item A continuaciÛn se presenta el estado del arte.
-  
+  \item \textbf{Cap√≠tulo \ref{chap:intro} Introducci√≥n.} Contexto en el que surge la idea del proyecto y breve explicaci√≥n de la estructura de la memoria.
+
+  \item \textbf{Cap√≠tulo \ref{chap:objetivos}: Objetivos.} En esta secci√≥n se explican los objetivos marcados durante la realizaci√≥n del proyecto.
+
+  \item \textbf{Cap√≠tulo \ref{chap:estadoarte}: Estado del arte.} Presentaci√≥n de las tecnolog√≠as con las que se ha desarrollado el proyecto.
+
   \item \ldots
 \end{itemize}
 
@@ -310,32 +253,40 @@ En esta secciÛn se deberÌa introducir la esctura de la memoria. AsÌ:
 % OBJETIVOS %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\cleardoublepage % empezamos en p·gina impar
-\chapter{Objetivos} % tÌtulo del capÌtulo (se muestra)
-\label{chap:objetivos} % identificador del capÌtulo (no se muestra, es para poder referenciarlo)
+\cleardoublepage % empezamos en p√°gina impar
+\chapter{Objetivos} % t√≠tulo del cap√≠tulo (se muestra)
+\label{chap:objetivos} % identificador del cap√≠tulo (no se muestra, es para poder referenciarlo)
 
-\section{Objetivo general} % tÌtulo de secciÛn (se muestra)
-\label{sec:objetivo-general} % identificador de secciÛn (no se muestra, es para poder referenciarla)
+\section{Objetivo general} % t√≠tulo de secci√≥n (se muestra)
+\label{sec:objetivo-general} % identificador de secci√≥n (no se muestra, es para poder referenciarla)
 
-AquÌ vendrÌa el objetivo general en una frase:
-Mi trabajo fin de grado consiste en crear de una herramienta de an·lisis de los comentarios jocosos en repositorios de software libre alojados en la plataforma GitHub.
+El objetivo de este proyecto es crear un recurso para que todas las personas que asistan a una conferencia/seminario puedan conocer al resto de asistentes, as√≠ como darse a conocer ellos mismos, y de esta forma poder obtener informaci√≥n sobre cada uno (datos de contacto, situaci√≥n laboral \ldots).\\
 
-Recuerda que los objetivos siempre vienen en infinitivo.
+Para ello, se persigue otro objetivo que es automatizar esta labor: crear un programa que sea capaz de tomar como entrada los datos de cada asistente y generar un documento con toda la informaci√≥n.
 
 
-\section{Objetivos especÌficos}
+\section{Objetivos espec√≠ficos}
 \label{sec:objetivos-especificos}
 
-Los objetivos especÌficos se pueden entender como las tareas en las que se ha desglosado el objetivo general.
-Y, sÌ, tambiÈn vienen en infinitivo.
+Los objetivos espec√≠ficos que llev√© a cabo a lo largo del proyecto fueron los siguientes:
+\begin{itemize}
+  \item \textbf{Trabajar con Google Forms.} Los datos de los asistentes se obtendr√°n de un Google Form, del que previamente se habr√° recibido un enlace. Una vez recopilada toda la informaci√≥n, se generar√° una Google Sheet con ella.
+  \item \textbf{Trabajar con Google Sheet API.} Para tratar la Google Sheet mencionada anteriormente, necesitar√© conocer el funcionamiento de \textit{Google Sheet API}\footnote{\url{https://developers.google.com/sheets/guides/concepts?hl=es-419}} para poder extraer los datos de la \textit{Sheet} y trabajar con ellos.
+  \item \textbf{Obtener todos los datos en orden y tratarlos.} Tendr√© que examinar todos los datos por si hay alguno que tenga que tener un trato especial (url de im√°genes que habr√° que descargar, textos demasiado largos que habr√° que limitar, etc).
+  \item \textbf{Trabajar con \LaTeX.} Una vez obtenidos todos los datos, se generar√° con ellos un documento \LaTeX, a partir del cual se producir√° un PDF con el resultado final.
+  \item \textbf{Dise√±ar una estructura.} Dise√±ar como quedar√° el resultado final, para generar el \LaTeX\  con esta forma.
+\end{itemize}
 
-
-\section{PlanificaciÛn temporal}
+\section{Planificaci√≥n temporal}
 \label{sec:planificacion-temporal}
 
-A mÌ me gusta que aquÌ pong·is una descripciÛn de lo que os ha llevado realizar el trabajo.
-Hay gente que aÒade un diagrama de GANTT.
-Lo importante es que quede claro cu·nto tiempo llevas (tiempo natural, p.ej., 6 meses) y a quÈ nivel de esfuerzo (p.ej., principalmente los fines de semana).
+La realizaci√≥n de este proyecto me ha ocupado todo un curso acad√°mico (9 meses), y las fases que he seguido han sido las siguientes:
+\begin{itemize}
+	\item \textbf{Idea de proyecto.} En primer lugar, me reun√≠ con mi tutor del proyecto, Gregorio, para que me ayudase a elegir un proyecto que se adaptase a lo que estaba buscando. Una vez decidido el proyecto, tom√© un tiempo para estudiarlo y saber qu√© tecnolog√≠as iba a necesitar para su desarrollo.
+	\item \textbf{Aprendizaje de las tecnolog√≠as utilizadas.} Una vez me d√≠ cuenta de las tecnolog√≠as necesarias, comenc√© por aprender sobre ellas: para qu√© sirven, c√≥mo utilizarlas \ldots Este proceso es imprescindible para la continuaci√≥n del proyecto.
+	\item \textbf{Desarrollo del proyecto.} Desarrollo del c√≥digo en Python para conseguir las ideas anteriormente expuestas.
+	\item \textbf{Redacci√≥n de la memoria.} Como √∫ltimo paso del proyecto, comenc√© a escribir esta memoria en la que se recopilan en detalle todos los pasos que segu√≠ para la consecuci√≥n del proyecto.
+\end{itemize}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -345,68 +296,171 @@ Lo importante es que quede claro cu·nto tiempo llevas (tiempo natural, p.ej., 6 
 
 \cleardoublepage
 \chapter{Estado del arte}
+\label{chap:estadoarte} % identificador del cap√≠tulo (no se muestra, es para poder referenciarlo)
 
-DescripciÛn de las tecnologÌas que utilizas en tu trabajo. 
-Con dos o tres p·rrafos por cada tecnologÌa, vale. 
-Se supone que aquÌ viene todo lo que no has hecho t˙.
+En esta secci√≥n, se describen las tecnolog√≠as utilizadas para la realizaci√≥n del proyecto:
 
-Puedes citar libros, como el de Bonabeau et al. sobre procesos estigmÈrgicos~\cite{bonabeau:_swarm}. % Nota que el ~ aÒade un espacio en blanco, pero no deja que exista un salto de lÌnea. Imprescindible ponerlo para las citas.
+\section{Python}
+\label{sec:python}
 
-TambiÈn existe la posibilidad de poner notas al pie de p·gina, por ejemplo, una para indicarte que visite la p·gina de LibreSoft\footnote{\url{http://www.libresoft.es}}.
+Python\footnote{\url{https://www.python.org/}} es un lenguaje de programaci√≥n que busca la simplicidad y facilidad, as√≠ como la legibilidad del c√≥digo. Es un lenguaje interpretado, es decir, no necesita ser compilado para ejecutar.\\
 
-\section{SecciÛn 1} 
-\label{sec:seccion1}
+Con Python se pueden hacer todo tipo de programas. Aunque no es un lenguaje espec√≠fico para el desarrollo web, s√≠ se pueden desarrollar p√°ginas con √©l.\\
 
-Hemos hablado de cÛmo incluir figuras.
-Pero no hemos dicho nada de tablas.
-A mÌ me gustan las tablas.
-Mucho.
-AquÌ un ejemplo de tabla, la Tabla~\ref{tabla:ejemplo}.
+Es un lenguaje multiparadigma: permite m√°s de un estilo de programaci√≥n (orientada a objetos, imperativa, funcional \ldots). Tambi√©n es multiplataforma, por lo que se puede usar con distintos sistemas inform√°ticos.\\
 
-\begin{table}
- \begin{center}
-  \begin{tabular}{ | l | c | r |} % tenemos tres colummnas, la primera alineada a la izquierda (l), la segunda al centro (c) y la tercera a la derecha (r). El | indica que entre las columnas habr· una lÌnea separadora.
-    \hline
-    1 & 2 & 3 \\ \hline % el hline nos da una lÌnea vertical
-    4 & 5 & 6 \\ \hline
-    7 & 8 & 9 \\
-    \hline
-  \end{tabular}
-  \label{tabla:ejemplo}
-  \caption{Ejemplo de tabla}
- \end{center}
-\end{table}
+Una ventaja de Python es que cuenta con un gran n√∫mero de funciones incorporadas en el lenguaje (por ejemplo, para tratar strings, ficheros\ldots) y librer√≠as para usos espec√≠ficos que podemos importar a nuestro programa.
 
+
+\section{Latex}
+\label{sec:latex}
+\LaTeX\footnote{\url{https://www.latex-project.org/}} es un sistema de composici√≥n de textos (de software libre), orientado especialmente a la creaci√≥n de libros y documentos cient√≠ficos y t√©cnicos que contengan f√≥rmulas matem√°ticas. Est√° formado por un gran conjunto de macros de TeX, con la intenci√≥n de facilitar el uso del lenguaje de composici√≥n tipogr√≠fica, TeX.\\
+
+Una de las ventajas de \LaTeX es la calidad profesional de los documentos que genera, as√≠ como su excelente calidad de imprenta. Otra ventaja es que permite separar claramente el contenido y el formato del documento.\\
+
+\LaTeX presupone una filosof√≠a de trabajo diferente a la de los procesadores de texto habituales (``lo que ves es lo que obtienes'') y se basa en instrucciones. Tradicionalmente, este aspecto se ha considerado una desventaja. Sin embargo, \LaTeX permite a quien escribe un documento centrarse exclusivamente en el contenido, sin tener que preocuparse de los detalles del formato.
+
+
+\section{Google Forms}
+\label{sec:googleforms}
+Google Forms\footnote{\url{https://www.google.es/intl/es/forms/about/}} es una herramienta √∫til que permite planificar eventos, enviar una encuesta, hacer preguntas o recopilar otro tipo de informaci√≥n de forma f√°cil y sencilla.\\
+
+Crear un formulario es tan f√°cil como a√±adir las preguntas seleccionando en cada uno el tipo que mejor se adapte a nuestras necesidades. Los tipos de pregunta que nos podemos encontrar son, por ejemplo, texto, tipo test, elegir de listas, desplegables, etc. Tambi√©n permite a√±adir im√°genes, videos o saltos de p√°gina para dividir la encuesta en secciones.\\
+
+Una vez enviado el formulario a los destinatarios, se ir√°n recopilando las respuestas recibidas. √âstas se pueden guardar en el propio Google Forms, de manera que se mostrar√°n como un resumen de las respuestas, o se pueden exportar a una hoja de c√°lculo en la que cada l√≠nea estar√°n las respuestas de cada persona (cada respuesta en una columna).
+
+
+\section{Google Sheets API}
+\label{sec:googlesheet}
+
+Google Sheets API\footnote{\url{https://developers.google.com/sheets/api/}} permite leer y modificar cualquier aspecto de una hoja de c√°lculo.\\
+
+Para utilizar esta herramienta en Python, tendremos que descargar la libreria de Google Client (\verb"pip install --upgrade google-api-python-client"), as√≠ como las credenciales necesarias.\\
+
+Para leer el contenido de las celdas, que es lo que interesa en este caso, se utiliza la colecci√≥n \textbf{spreadsheets.values}\footnote{\url{https://forward2.herokuapp.com/developers/sheets/api/reference/rest/v4/spreadsheets.values?hl=es-419}}. Con esta colecci√≥n podremos especificar el rango, o rangos, de celdas que nos interesa leer (o escribir).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% DISE—O E IMPLEMENTACI”N %
+% DISE√ëO E IMPLEMENTACI√ìN %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \cleardoublepage
-\chapter{DiseÒo e implementaciÛn}
+\chapter{Dise√±o e implementaci√≥n}
 
-AquÌ viene todo lo que has hecho t˙ (tecnolÛgicamente). 
-Puedes entrar hasta el detalle. 
-Es la parte m·s importante de la memoria, porque describe lo que has hecho t˙.
-Eso sÌ, normalmente aconsejo no poner cÛdigo, sino diagramas.
-
-\section{Arquitectura general} 
+\section{Arquitectura general}
 \label{sec:arquitectura}
+En la figura \ref{fig:esquema} se puede observar un esquema a modo de res√∫men del proceso que sigue el proyecto. A continuaci√≥n, describir√© cada bloque de este esquema.
 
-Si tu proyecto es un software, siempre es bueno poner la arquitectura (que es cÛmo se estructura tu programa a ``vista de p·jaro'').
-
-Por ejemplo, puedes verlo en la figura~\ref{fig:arquitectura}.
-
-\begin{figure}
-  \centering
-  \includegraphics[width=9cm, keepaspectratio]{img/arquitectura}
-  \caption{Estructura del parser b·sico}
-  \label{fig:arquitectura}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=12cm, keepaspectratio]{Esquema2}
+	\caption{Esquema de funcionamiento}
+	\label{fig:esquema}
 \end{figure}
 
-Si utilizas una base de datos, no te olvides de incluir tambiÈn un diagrama de entidad-relaciÛn.
+
+\section{Creaci√≥n de un formulario (Google Forms)}
+\label{sec:formulario}
+La base para obtener un buen resultado final, es crear desde el inicio un buen formulario. Para ello, hay que anticiparse a las respuestas de las personas que van a rellenar nuestra encuesta y, para esto, Google Forms nos ayuda mucho, ya que nos permite elegir entre m√∫ltiples tipos de respuestas posibles.\\
+
+Por ejemplo, si preguntamos el nombre de la persona, elegiremos como tipo de respuesta la opci√≥n \textbf{Respuesta corta}, ya que el nombre consta de pocas palabras. En cambio, si pedimos una descripci√≥n, convendr√≠a elegir la opci√≥n \textbf{P√°rrafo} (incluso se puede limitar el n√∫mero de caracteres de dicho p√°rrafo). En los casos en los que conocemos de antemano las posibles respuestas de los asistentes, y √©stas se vayan a repetir entre varios de ellos, podemos elegir las opciones de \textbf{Casillas de verificaci√≥n}, \textbf{Selecci√≥n m√∫ltiple} o \textbf{Desplegable}, seg√∫n creamos conveniente. Algunos ejemplos de estos casos ser√≠an unas casillas de verificaci√≥n para respuestas de S√≠/No, o un desplegable para elegir la nacionalidad de la persona.\\
+
+Con estos √∫ltimos casos, conseguiremos que todas las respuestas sean concisas y uniformes. Si no lo hacemos de esta forma y preguntamos, por ejemplo, ``¬øCu√°l es tu mes de nacimiento?'', dos personas distintas que hayan nacido en el mismo mes pueden contestar ``Yo nac√≠ en enero'' y ``Mi mes de nacimiento es enero''. Sin embargo, si aqu√≠ elegimos como tipo de respuesta un desplegable en el que simplemente haya que seleccionar el mes, obtendremos en ambas respuestas ``Enero''. Esto nos puede ayudar en el futuro si queremos, por ejemplo, buscar a todas las personas que tengan la misma respuesta a una determinada pregunta.\\
+
+Adem√°s de estas, hay varias opciones m√°s para las respuestas.
+
+
+\section{Traspaso de respuestas a hoja de c√°lculo}
+\label{sec:pasaraExcel}
+Una vez que los participantes han rellenado el formulario, podemos acceder a sus respuestas de varias maneras: en la propia p√°gina de las preguntas, donde se pueden ver tanto las respuestas individuales como un resumen de las respuestas globales; y exportando las respuestas a una hoja de c√°lculo.\\
+
+Realizaremos esta √∫ltima opci√≥n, de manera que todos los datos quedar√°n volcados en una hoja de c√°lculo de Google. Esta hoja de c√°lculo tendr√° la siguiente estructura:
+\begin{itemize}
+	\item En la primera fila aparece en cada celda una pregunta de las realizadas, a excepci√≥n de la primera celda, llamada ``Timestamp'', que indicar√° la fecha y hora a la que ha contestado cada participante.
+	\item En cada una de las siguientes filas, aparecer√° bajo cada pregunta la correspondiente respuesta de un participante.
+\end{itemize}
+
+
+\section{Extracci√≥n de los valores de la hoja de c√°lculo}
+\label{sec:extraerExcel}
+Esta es la primera parte que pertenece a mi proyecto. Lo primero que hace es obtener las credenciales necesarias para utilizar la API de Google Sheet. Una vez acreditado, con la URL de la hoja de c√°lculo que hemos obtenido del formulario, procedemos a la extracci√≥n de todos los datos. En este caso, no necesitamos la primera fila, donde aparecen los enunciados de las preguntas, por lo que indicaremos en el programa que queremos la informaci√≥n a partir de la celda 'A2'.\\
+
+El resultado de este proceso ser√° un array en el que cada elemento ser√° otro array. Es decir, cada fila de la hoja de c√°lculo, se convertir√° en un array cuyos elementos ser√°n cada respuesta (cada celda). Estas filas (array) se guardan a su vez en otro array, quedando este √∫ltimo como un array de filas. Esta descripci√≥n se puede entender mejor con el siguiente ejemplo:
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=17cm, keepaspectratio]{img/ejemplo45real}
+	\caption{Ejemplo hoja de c√°lculo a array}
+	\label{fig:ejemplo4_5}
+\end{figure}
+
+\subsection{Volcado de valores a NamedTuple}
+\label{subsec:namedtuple}
+Una vez tenemos el array con todos los datos, convertiremos este \textit{array de arrays} en un \textit{array de NamedTuples}.\\
+
+NamedTuple es una \textit{``Tupla con nombre''}. Tiene una estructura parecida a la del array, pero cada elemento de √©ste se identifica con un nombre. Siguiendo el ejemplo anterior de la figura \ref{fig:ejemplo4_5}, el resultado ser√≠a:\\
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=17cm, keepaspectratio]{img/ejemplo45real2}
+	\caption{Ejemplo NamedTuple}
+	\label{fig:ejemplo4_5Namedtuple}
+\end{figure}
+
+
+En este caso, el NamedTuple se llama \textit{Fields}. Los nombres de los campos hay que definirlos antes de generar el NamedTuple. Una vez tenemos definido el NamedTuple, podemos referirnos a cada campo de √©ste con su nombre (si tuviesemos un array, tendr√≠amos que saber en qu√© posici√≥n est√° el campo al que queremos referirnos para llamarlo). Por ejemplo, si del ejemplo anterior de la figura \ref{fig:ejemplo4_5Namedtuple} tenemos guardado el primer NamedTuple en una variable llamada \textit{row}, podremos acceder al nombre de la persona usando (\verb"row.name").
+
+
+\section{Proceso de tratamiento de informaci√≥n}
+\label{sec:tratainfo}
+Antes de generar el documento Latex con la informaci√≥n que se ha extraido de la hoja de c√°lculo, hay que revisar toda esa informaci√≥n que tenemos, y ver si hay que hacer alguna modificaci√≥n, o no usar literalmente el texto que tenemos en un campo.
+
+
+\subsection{Ordenar alfab√©ticamente}
+\label{subsec:orden}
+Como en este caso tratamos con datos personales, hay que definir un orden de aparici√≥n, y para considerar a todos los participantes por igual, sin preferencias, ordenaremos a las personas alfab√©ticamente.\\
+
+Para esto, se extrae el apellido de cada nombre, y se guardan en un array. Este array es ordenado alfab√©ticamente con el m√©todo de Python \textit{sort}. Con la ayuda de un bucle y del array ordenado, se crear√° una nueva lista con todos los NamedTuples de datos ordenado alfab√©ticamente por el apellido del participante.
+
+
+\subsection{Convertir caracteres especiales}
+\label{subsec:especialCars}
+Como la intenci√≥n de este proyecto es generar un documento en Latex, hay que adaptarlo para ello. Latex tiene una serie de caracteres que utiliza para funciones especiales, tales como \textbackslash, \$, \%..., y para que al generar el PDF estos caracteres aparezcan correctamente, tienen que aparecer modificados en el documento Latex.\\
+
+Para solucionar este problema, revisaremos todos los campos en busca de estos caracteres (\$, \#, \%, \&, \^,	\_, \{, \}, \~, \textbackslash) y cuando los encuentre, a√±adir√° delante de ellos un \textit{backslash} (\textbackslash). De esta forma, aparecer√° el caracter deseado, y no generar√° errores y confusiones a la hora de generar el PDF final.\\
+
+Hay algunos casos especiales en los que no conviene hacer este proceso. Por ejemplo, si uno de los campos es una URL, y dicha URL no la vamos a escribir literalmente en el documento final, sino que la vamos a utilizar para obtener otro dato. En este caso tenemos, por ejemplo, un campo que corresponde a la URL de una imagen (se explicar√° a continuaci√≥n), y esta URL ser√° utilizada para descargar la imagen correspondiente, por tanto si hacemos el proceso anterior sobre la URL, cuando la utilicemos en el programa ser√° incorrecta, por lo que no hay que modificarla.
+
+
+\subsection{Descarga de im√°genes personales}
+\label{subsec:imagenes}
+
+
+\subsection{Obtener banderas de nacionalidad}
+\label{subsec:banderas}
+
+
+\subsection{Acortar presentaciones}
+\label{subsec:presentacion}
+
+
+\subsection{Im√°genes de hiring y looking}
+\label{subsec:imaghiringlooking}
+??????
+
+
+\section{Creaci√≥n de la secci√≥n de participantes en Latex}
+\label{sec:creaParticipantes}
+
+
+\section{Guarda el fichero Latex con los datos}
+\label{sec:guardaLatex}
+
+
+
+\section{Busca fichero intro.tex}
+\label{sec:ficheroIntro}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -417,9 +471,9 @@ Si utilizas una base de datos, no te olvides de incluir tambiÈn un diagrama de e
 \cleardoublepage
 \chapter{Resultados}
 
-En este capÌtulo se incluyen los resultados de tu trabajo fin de grado.
+En este cap√≠tulo se incluyen los resultados de tu trabajo fin de grado.
 
-Si es una herramienta de an·lisis lo que has realizado, aquÌ puedes poner ejemplos de haberla utilizado para que se vea su utilidad.
+Si es una herramienta de an√°lisis lo que has realizado, aqu√≠ puedes poner ejemplos de haberla utilizado para que se vea su utilidad.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -432,19 +486,19 @@ Si es una herramienta de an·lisis lo que has realizado, aquÌ puedes poner ejempl
 \label{chap:conclusiones}
 
 
-\section{ConsecuciÛn de objetivos}
+\section{Consecuci√≥n de objetivos}
 \label{sec:consecucion-objetivos}
 
-Esta secciÛn es la secciÛn espejo de las dos primeras del capÌtulo de objetivos, donde se planteaba el objetivo general y se elaboraban los especÌficos.
+Esta secci√≥n es la secci√≥n espejo de las dos primeras del cap√≠tulo de objetivos, donde se planteaba el objetivo general y se elaboraban los espec√≠ficos.
 
-Es aquÌ donde hay que debatir quÈ se ha conseguido y quÈ no. 
-Cuando algo no se ha conseguido, se ha de justificar, en tÈrminos de quÈ problemas se han encontrado y quÈ medidas se han tomado para mitigar esos problemas.
+Es aqu√≠ donde hay que debatir qu√© se ha conseguido y qu√© no.
+Cuando algo no se ha conseguido, se ha de justificar, en t√©rminos de qu√© problemas se han encontrado y qu√© medidas se han tomado para mitigar esos problemas.
 
 
-\section{AplicaciÛn de lo aprendido}
+\section{Aplicaci√≥n de lo aprendido}
 \label{sec:aplicacion}
 
-AquÌ viene lo que has aprendido durante el Grado/M·ster y que has aplicado en el TFG/TFM. Una buena idea es poner las asignaturas m·s relacionadas y comentar en un p·rrafo los conocimientos y habilidades puestos en pr·ctica.
+Aqu√≠ viene lo que has aprendido durante el Grado/M√°ster y que has aplicado en el TFG/TFM. Una buena idea es poner las asignaturas m√°s relacionadas y comentar en un p√°rrafo los conocimientos y habilidades puestos en pr√°ctica.
 
 \begin{enumerate}
   \item a
@@ -455,7 +509,7 @@ AquÌ viene lo que has aprendido durante el Grado/M·ster y que has aplicado en el
 \section{Lecciones aprendidas}
 \label{sec:lecciones_aprendidas}
 
-AquÌ viene lo que has aprendido en el Trabajo Fin de Grado/M·ster.
+Aqu√≠ viene lo que has aprendido en el Trabajo Fin de Grado/M√°ster.
 
 \begin{enumerate}
   \item a
@@ -466,14 +520,14 @@ AquÌ viene lo que has aprendido en el Trabajo Fin de Grado/M·ster.
 \section{Trabajos futuros}
 \label{sec:trabajos_futuros}
 
-Ning˙n software se termina, asÌ que aquÌ vienen ideas y funcionalidades que estarÌa bien tener implementadas en el futuro.
+Ning√∫n software se termina, as√≠ que aqu√≠ vienen ideas y funcionalidades que estar√≠a bien tener implementadas en el futuro.
 
 Es un apartado que sirve para dar ideas de cara a futuros TFGs/TFMs.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% AP…NDICE(S) %
+% AP√âNDICE(S) %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \cleardoublepage
@@ -493,11 +547,11 @@ Es un apartado que sirve para dar ideas de cara a futuros TFGs/TFMs.
 % para incluir las citas en la memoria
 \bibliographystyle{abbrv}
 \bibliography{memoria}  % memoria.bib es el nombre del fichero que contiene
-% las referencias bibliogr·ficas. Abre ese fichero y mira el formato que tiene,
+% las referencias bibliogr√≠ficas. Abre ese fichero y mira el formato que tiene,
 % que se conoce como BibTeX. Hay muchos sitios que exportan referencias en
 % formato BibTeX. Prueba a buscar en http://scholar.google.com por referencias
-% y ver·s que lo puedes hacer de manera sencilla.
-% M·s informaciÛn: 
+% y ver√°s que lo puedes hacer de manera sencilla.
+% M√°s informaci√≥n:
 % http://texblog.org/2014/04/22/using-google-scholar-to-download-bibtex-citations/
 
 \end{document}
