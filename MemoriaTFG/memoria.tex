@@ -414,40 +414,109 @@ En este caso, el NamedTuple se llama \textit{Fields}. Los nombres de los campos 
 
 \section{Proceso de tratamiento de información}
 \label{sec:tratainfo}
-Antes de generar el documento Latex con la información que se ha extraido de la hoja de cálculo, hay que revisar toda esa información que tenemos, y ver si hay que hacer alguna modificación, o no usar literalmente el texto que tenemos en un campo.
+Antes de generar el documento Latex con la información que se ha extraido de la hoja de cálculo, hay que revisar toda esa información que tenemos, y ver si hay que hacer alguna modificación, o no usar literalmente el texto que tenemos en un campo.\\
+
+Para esto, se utiliza un bucle que recorre los datos de todos los participantes. Este bucle tendría la siguiente estructura:
+
+\begin{verbatim}
+        order_by_name
+
+        for row in fields:
+            make_chars_latex_friendly
+            download_image
+            get_flag
+            cut_presentation
+    
+            text_Latex = ...   
+\end{verbatim}
+
+La variable \textit{fields} es el array que contiene los datos de cada persona que ha rellenado la encuesta. Por tanto, en cada pasada del bucle la variable \textit{row} se corresponde con un NamedTuple, por lo que podremos extraer los datos con los nombres de los campos (\textit{row.name, row.affiliation}\ldots).\\
+
+Exceptuando el proceso de ordenar alfabéticamente que se hace una única vez antes de entrar al bucle, los demás procesos se llevan a cabo para cada persona. Una vez tratada toda la información que poseemos, se generará el texto en Latex.
 
 
 \subsection{Ordenar alfabéticamente}
 \label{subsec:orden}
 Como en este caso tratamos con datos personales, hay que definir un orden de aparición, y para considerar a todos los participantes por igual, sin preferencias, ordenaremos a las personas alfabéticamente.\\
 
-Para esto, se extrae el apellido de cada nombre, y se guardan en un array. Este array es ordenado alfabéticamente con el método de Python \textit{sort}. Con la ayuda de un bucle y del array ordenado, se creará una nueva lista con todos los NamedTuples de datos ordenado alfabéticamente por el apellido del participante.
+Para esto, en el método \textbf{\textit{order\_by\_name}} se extrae el apellido de cada nombre, y se guardan en un array. Este array es ordenado alfabéticamente con el método de Python \textit{sort}. Con la ayuda de un bucle y del array ordenado, se creará una nueva lista con todos los NamedTuples de datos ordenado alfabéticamente por el apellido del participante.
 
 
 \subsection{Convertir caracteres especiales}
 \label{subsec:especialCars}
 Como la intención de este proyecto es generar un documento en Latex, hay que adaptarlo para ello. Latex tiene una serie de caracteres que utiliza para funciones especiales, tales como \textbackslash, \$, \%..., y para que al generar el PDF estos caracteres aparezcan correctamente, tienen que aparecer modificados en el documento Latex.\\
 
-Para solucionar este problema, revisaremos todos los campos en busca de estos caracteres (\$, \#, \%, \&, \^,	\_, \{, \}, \~, \textbackslash) y cuando los encuentre, añadirá delante de ellos un \textit{backslash} (\textbackslash). De esta forma, aparecerá el caracter deseado, y no generará errores y confusiones a la hora de generar el PDF final.\\
+Para solucionar este problema, se ha creado el método \textbf{\textit{make\_chars\_latex\_friendly}}, donde revisaremos todos los campos en busca de estos caracteres (\$, \#, \%, \&, \^, \_, \{, \}, \~ , \textbackslash) y cuando los encuentre, añadirá delante de ellos un \textit{backslash} (\textbackslash). De esta forma, aparecerá el caracter deseado, y no generará errores y confusiones a la hora de generar el PDF final.\\
 
 Hay algunos casos especiales en los que no conviene hacer este proceso. Por ejemplo, si uno de los campos es una URL, y dicha URL no la vamos a escribir literalmente en el documento final, sino que la vamos a utilizar para obtener otro dato. En este caso tenemos, por ejemplo, un campo que corresponde a la URL de una imagen (se explicará a continuación), y esta URL será utilizada para descargar la imagen correspondiente, por tanto si hacemos el proceso anterior sobre la URL, cuando la utilicemos en el programa será incorrecta, por lo que no hay que modificarla.
 
 
 \subsection{Descarga de imágenes personales}
 \label{subsec:imagenes}
+Una de las preguntas de nuestro formulario es para que se incluya una imagen personal, para añadirla junto a la información de cada asistente. En esta parte, cada asistente incluye una URL donde se encuentra su imagen, que habrá que descargar para poder incluirla en nuestro documento.\\
+
+El método \textbf{\textit{download\_image}} se encarga de esto. Lo primero que hace es comprobar si la URL es una imagen: abre la URL con la librería urllib.request (\textit{resp = urllib.request.urlopen(url)}) y obtiene la información sobre ella (\textit{resp.info()}), que suele tener la siguiente apariencia:
+\begin{verbatim}
+        resp: Server: nginx/1.9.11
+        Date: Tue, 19 Jun 2018 16:48:45 GMT
+        Content-Type: image/jpeg;charset=UTF-8
+        Transfer-Encoding: chunked
+        Connection: close
+        Content-Disposition: attachment; filename="paola_accioly.jpg"
+        Cache-Control: max-age=604800
+        Expires: Tue, 26 Jun 2018 16:48:45 GMT
+        Strict-Transport-Security: max-age=31536000
+\end{verbatim}
+
+De toda esta información, el campo que nos interesa es el \textit{Content-Type}, ya que en él podremos comprobar si la URL es una imagen. Para extraer la información de este campo lo hacemos con \textit{resp.info().get('Content-Type')}.\\
+
+Una vez que comprueba que este campo empieza por ``image\textbackslash'', se recoge también la extensión de la imagen, que aparece justo después de esta expresión (\textit{imgType}).A continueción, se procede a descargar la imagen con \textit{urllib.request.urlretrieve(url, nameImage)}. Esta expresión descarga la imagen de la URL que se indica en el primer parámetro de entrada, y la guarda con el nombre que aparece en el segundo parámetro.\\
+
+El nombre de la imagen se compone de la ruta de la carpeta donde se va a guardar la imagen, seguido de la cadena ``img'' y un número identificador de cada persona, y acabando con la extensión que hemos almacenado anteriormente en \textit{imgType}.\\
+
+Normalmente, las extensiones de las imágenes suelen ser las comunes .jpg, .png,\ldots, pero también pueden aparecer imágenes con extensión \textbf{.webp}. WebP es un formato de imágen creado por Google para reducir el tamaño de las imágenes y así disminuir el tiempo de carga de las mismas. Este formato no es reconocible por Latex, por lo que hay que es necesario cambiar el formato de este tipo de imágenes, y para ello utilizamos \textit{im = Image.open(nameImage).convert("RGB")}. Ahora tenemos la imagen en el formato que queremos en la variable \textit{im}, por lo que hay que guardarla, por ejemplo, en .jpg, con \textit{im.save(nameImagejpg, "jpeg")}.\\
+
+Además, se redimensionan las imágenes para que todas tengan el mismo tamaño y se genere un resultado uniforme.\\
+
+En los casos en los que no se haya adjuntado URL de imagen, así como cuando haya algún problema para descargar la imagen (URL inexistente, URL no corresponde a una imagen, error en la descarga\ldots), se asignará una imagen por defecto que indica que no poseemos la imagen de esa persona. Además, en estos casos, se incluirá un mensaje de error para que el encargado de generar este documento pueda revisar manualmente estos casos.\\
+
+Finalmente, el método devolverá el nombre con el que se ha guardado la imagen de la persona correspondiente o, en su defecto, la imagen de error.
 
 
 \subsection{Obtener banderas de nacionalidad}
 \label{subsec:banderas}
+Cada persona tendrá que indicar también su país de procedencia, y en vez de poner literalmente el nombre del país, se incluye una bandera de éste. Para ello tenemos una carpeta con todas las banderas guardadas cuyos nombres son el nombre del país en código \textit{``ISO 3166-1 alpha-2''}.\\
 
+Para elegir la bandera correspondiente a cada persona, utilizamos el método \textbf{\textit{get\_flag}}, en el que se utiliza la librería \textit{pycountry} para convertir el nombre del país a código \textit{``ISO 3166-1 alpha-2''}. Para ello se obtiene la información de los códigos del país del cuál buscamos la bandera, con \textit{pycountry.countries.get(name=nationality)}, y nos quedaremos con el código en alpha-2.\\
+
+Por ejemplo, si buscamos España:\\
+\verb"nac = pycountry.countries.get(name='Spain')"
+
+Obtendremos que \textit{nac} es:\\
+\verb"Country(alpha_2='ES', alpha_3='ESP', name='Spain', numeric='724'," 
+\verb"        official_name='Kingdom of Spain')"
+
+Y nos interesaría quedarnos con el código alpha-2 en minúsculas:\\
+\verb"nac.alpha_2.lower()"
+
+De esta forma, añadiendo la extensión y, si fuera necesario, el directorio en el que se almacenan las imágenes de las banderas, se generaría el nombre de imagen \textit{flags/es.png}.\\
+
+Al igual que con las imágenes, si ocurre algún error como que el país que buscamos no es correcto, se indicaría con un mensaje de error al usuario.
 
 \subsection{Acortar presentaciones}
 \label{subsec:presentacion}
+Una de las partes del formulario consiste en una descripción personal. Debido a que es una pregunta de respuesta libre, la extensión de estas respuestas puede variar mucho. Como buscamos un resultado ordenado, no podemos permitir que una presentación que ocupe demasiado desordene nuestro trabajo, al ocupar, por ejemplo, el espacio que debería ocupar la información de otra persona.\\
 
+Por ello, en el método \textbf{\textit{cut\_presentation}}, fijamos una longitud máxima para este campo, y si el texto escrito por el participante sobrepasa este valor, lo cortaremos e indicaremos que ha sido recortado añadiendo puntos suspensivos al final.
 
 \subsection{Imágenes de hiring y looking}
 \label{subsec:imaghiringlooking}
 ??????
+
+
+\section{Fichero de errores}
+\label{sec:errores}
+
 
 
 \section{Creación de la sección de participantes en Latex}
