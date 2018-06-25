@@ -31,6 +31,7 @@
 \usepackage{float}  %% H para posicionar figuras
 \usepackage[nottoc, notlot, notlof, notindex]{tocbibind} %% Opciones de índice
 \usepackage{latexsym}  %% Logo LaTeX
+\usepackage{pdfpages}
 
 \title{Memoria del Proyecto Fin de Carrera "Conference Book Generator"}
 \author{Seila Oliva Muñoz}
@@ -540,6 +541,18 @@ Una vez tenemos todos los datos listos, procedemos a desarrollar el texto en Lat
 \end{figure}
 
 
+\section{Apartados opcionales}
+\label{sec:opcional}
+Opcionalmente, se pueden añadir dos apartados más al documento.
+
+\subsection{Diagramas de sectores}
+\label{subsec:diagramas}
+Con el método \textbf{\textit{generate\_graphs}} podemos obtener diagramas de sectores que indiquen el porcentaje de repetición de las respuestas que deseemos. Para ello, le pasamos como argumento un array con los nombres de los campos de los que queremos que se genere el diagrama. Estos nombres de campos se corresponden con los que indicamos anteriormente para el \textit{NamedTuple}.
+
+\subsection{Listados de personas}
+\label{subsec:listados}
+Usando el método \textbf{\textit{generate\_list}} se puede crear una lista de todas las personas que han contestado \textit{``Sí''} a las preguntas que se pasarán como argumentos en la llamada al método. Una condición básica en este caso, es que las preguntas que indiquemos deben ser de respuesta \textit{Sí/No}. E igual que antes, para darle como argumento las preguntas que queremos, se hará con un array con los nombres del \textit{NamedTuple}.
+
 
 \section{Guarda el fichero Latex con los datos}
 \label{sec:guardaLatex}
@@ -582,10 +595,35 @@ En caso de que haya algún problema para compilar, nos mostrará un mensaje de e
 
 \cleardoublepage
 \chapter{Resultados}
+La mejor manera de mostrar los resultados en este caso, es con ejemplos. Esta aplicación ya ha sido puesta a prueba en 3 ocasiones, en escenarios reales.\\
 
-En este capítulo se incluyen los resultados de tu trabajo fin de grado.
+Aunque se muestran los ejemplos completos en la sección \ref{app:ejemplos}, las siguientes imágenes muestran algunos fragmentos del resultado final.\\
 
-Si es una herramienta de análisis lo que has realizado, aquí puedes poner ejemplos de haberla utilizado para que se vea su utilidad.
+\begin{itemize}
+\item La primera prueba se realizó para el \textbf{\textit{15\raisebox{5pt}{th} International Conference on Mining Software Repositories (MSR) 2018}}\footnote{\url{https://conf.researchr.org/home/msr-2018}}, celebrada el 28 y 29 de mayo de 2018 en Gotemburgo (Suecia), y el resultado fue el mostrado en la figura \ref{fig:imgMSR}.
+\begin{figure}[h!]
+	\centering
+	\fbox{\includegraphics[width=15cm, keepaspectratio]{img/MSR}}
+	\caption{Página ConfBook MSR 2018}
+	\label{fig:imgMSR}
+\end{figure}
+
+\item La segunda ocasión en la que se ha utilizado la aplicación ha sido para el \textbf{\textit{14\raisebox{5pt}{th} International Conference on Open Source Systems (OSS) 2018}}\footnote{\url{https://www.oss2018.org/}}\footnote{\url{http://sattose.org/2018}}, celebrada del 8 al 10 de junio de 2018 en Atenas (Grecia). Este caso se muestra en la figura \ref{fig:imgOSS}.
+\begin{figure}[h!]
+	\centering
+	\fbox{\includegraphics[width=15cm, keepaspectratio]{img/OSS}}
+	\caption{Página ConfBook OSS 2018}
+	\label{fig:imgOSS}
+\end{figure}
+
+\item El último caso en el que se ha usado es en el \textbf{\textit{11\raisebox{5pt}{th} Seminar on Advanced Techniques \& Tools for Sotware Evoluton SATToSE 2018}}, celebrado en Atenas (Grecia) del 4 al 6 de julio de 2018. Este ejemplo es el mostrado en el ejemplo \ref{fig:imgSATToSE}.
+\begin{figure}[h!]
+	\centering
+	\fbox{\includegraphics[width=15cm, keepaspectratio]{img/SATToSE}}
+	\caption{Página ConfBook SATToSE 2018}
+	\label{fig:imgSATToSE}
+\end{figure}
+\end{itemize}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -647,6 +685,10 @@ Es un apartado que sirve para dar ideas de cara a futuros TFGs/TFMs.
 \chapter{Manual de usuario}
 \label{app:manual}
 
+
+\chapter{Ejemplo de uso}
+\label{app:ejemplos}
+%\includepdf[pages=-]{generated}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
