@@ -237,11 +237,13 @@ Este proyecto pretende automatizar la labor de hacer este Book, de manera que ca
 
 Con el fin de facilitar la lectura de la memoria, en esta sección se detalla la estructura de la misma y el contenido que se trata en cada una de las secciones:
 \begin{itemize}
-  \item \textbf{Capítulo \ref{chap:intro} Introducción.} Contexto en el que surge la idea del proyecto y breve explicación de la estructura de la memoria.
+  \item \textbf{Capítulo ~\ref{chap:intro} Introducción.} Contexto en el que surge la idea del proyecto y breve explicación de la estructura de la memoria.
 
-  \item \textbf{Capítulo \ref{chap:objetivos}: Objetivos.} En esta sección se explican los objetivos marcados durante la realización del proyecto.
+  \item \textbf{Capítulo ~\ref{chap:objetivos}: Objetivos.} En esta sección se explican los objetivos marcados durante la realización del proyecto.
 
-  \item \textbf{Capítulo \ref{chap:estadoarte}: Estado del arte.} Presentación de las tecnologías con las que se ha desarrollado el proyecto.
+  \item \textbf{Capítulo ~\ref{chap:estadoarte}: Estado del arte.} Presentación de las tecnologías con las que se ha desarrollado el proyecto.
+  
+  \item \textbf{Capítulo ~\ref{chap:diseño}: Diseño e implementación.} Explicación del desarrollo del proyecyo paso a paso.
 
   \item \ldots
 \end{itemize}
@@ -347,14 +349,15 @@ Para leer el contenido de las celdas, que es lo que interesa en este caso, se ut
 
 \cleardoublepage
 \chapter{Diseño e implementación}
+\label{chap:diseño}
 
 \section{Arquitectura general}
 \label{sec:arquitectura}
-En la figura \ref{fig:esquema} se puede observar un esquema a modo de resúmen del proceso que sigue el proyecto. A continuación, describiré cada bloque de este esquema.
+En la figura ~\ref{fig:esquema} se puede observar un esquema a modo de resúmen del proceso que sigue el proyecto. A continuación, describiré cada bloque de este esquema.
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=12cm, keepaspectratio]{Esquema2}
+	\includegraphics[width=12cm, keepaspectratio]{img/Esquema}
 	\caption{Esquema de funcionamiento}
 	\label{fig:esquema}
 \end{figure}
@@ -399,7 +402,7 @@ El resultado de este proceso será un array en el que cada elemento será otro a
 \label{subsec:namedtuple}
 Una vez tenemos el array con todos los datos, convertiremos este \textit{array de arrays} en un \textit{array de NamedTuples}.\\
 
-NamedTuple es una \textit{``Tupla con nombre''}. Tiene una estructura parecida a la del array, pero cada elemento de éste se identifica con un nombre. Siguiendo el ejemplo anterior de la figura \ref{fig:ejemplo4_5}, el resultado sería:\\
+NamedTuple es una \textit{``Tupla con nombre''}. Tiene una estructura parecida a la del array, pero cada elemento de éste se identifica con un nombre. Siguiendo el ejemplo anterior de la figura ~\ref{fig:ejemplo4_5}, el resultado sería:\\
 
 \begin{figure}[h!]
 	\centering
@@ -409,8 +412,15 @@ NamedTuple es una \textit{``Tupla con nombre''}. Tiene una estructura parecida a
 \end{figure}
 
 
-En este caso, el NamedTuple se llama \textit{Fields}. Los nombres de los campos hay que definirlos antes de generar el NamedTuple. Una vez tenemos definido el NamedTuple, podemos referirnos a cada campo de éste con su nombre (si tuviesemos un array, tendríamos que saber en qué posición está el campo al que queremos referirnos para llamarlo). Por ejemplo, si del ejemplo anterior de la figura \ref{fig:ejemplo4_5Namedtuple} tenemos guardado el primer NamedTuple en una variable llamada \textit{row}, podremos acceder al nombre de la persona usando (\verb"row.name").
+En este caso, el NamedTuple se llama \textit{Fields}. Los nombres de los campos hay que definirlos antes de generar el NamedTuple. Una vez tenemos definido el NamedTuple, podemos referirnos a cada campo de éste con su nombre (si tuviesemos un array, tendríamos que saber en qué posición está el campo al que queremos referirnos para llamarlo). Por ejemplo, si del ejemplo anterior de la figura ~\ref{fig:ejemplo4_5Namedtuple} tenemos guardado el primer NamedTuple en una variable llamada \textit{row}, podremos acceder al nombre de la persona usando (\verb"row.name").
 
+\section{Fichero de errores}
+\label{sec:errores}
+Durante la ejecución del programa, puede haber algún aspecto que no se consiga realizar, y se pueda realizar manualmente. Por ello, es conveniente informar al usuario de qué cosas no ha podido realizar el programa.\\
+
+Al final de la ejecución, se generará también un fichero llamado \textbf{errors.txt} en el que apareceran todos los errores que han ocurrido en la ejecución, así como el proceso para solventarlo manualmente.\\
+
+En las siguientes secciones, se desarrollará más sobre los errores que se pueden dar en cada parte del programa.
 
 \section{Proceso de tratamiento de información}
 \label{sec:tratainfo}
@@ -480,6 +490,15 @@ Además, se redimensionan las imágenes para que todas tengan el mismo tamaño y
 
 En los casos en los que no se haya adjuntado URL de imagen, así como cuando haya algún problema para descargar la imagen (URL inexistente, URL no corresponde a una imagen, error en la descarga\ldots), se asignará una imagen por defecto que indica que no poseemos la imagen de esa persona. Además, en estos casos, se incluirá un mensaje de error para que el encargado de generar este documento pueda revisar manualmente estos casos.\\
 
+Los mensajes de error en estas situaciones podrían ser de la siguiente manera:
+\begin{verbatim}
+-Error in image of Alberto Bacchelli (pos. 4) -> URL not found.
+-Error in image of Safwat Hassan (pos. 26) -> There aren't URL.
+-Error in image of Li Li (pos. 46) -> Download image manually
+(change the name of the image in .tex).
+\end{verbatim}
+Aquí, nos indica en la imagen de qué participante nos ha saltado el error y la posición del documento donde aparece. En el caso en que haya que descargar la imagen manualmente, hay que cambiar en el documento Latex el nombre de la imagen correspondiente (ya que al no poder descargarse se ha adjuntado la imagen por defecto). Para seguir las pautas de todo el proceso, convendría nombrar a la imagen como \textit{img} seguido del número de posición. En el caso del ejemplo el nombre sería \textit{img46}.\\
+
 Finalmente, el método devolverá el nombre con el que se ha guardado la imagen de la persona correspondiente o, en su defecto, la imagen de error.
 
 
@@ -509,27 +528,51 @@ Una de las partes del formulario consiste en una descripción personal. Debido a
 
 Por ello, en el método \textbf{\textit{cut\_presentation}}, fijamos una longitud máxima para este campo, y si el texto escrito por el participante sobrepasa este valor, lo cortaremos e indicaremos que ha sido recortado añadiendo puntos suspensivos al final.
 
-\subsection{Imágenes de hiring y looking}
-\label{subsec:imaghiringlooking}
-??????
-
-
-\section{Fichero de errores}
-\label{sec:errores}
-
-
 
 \section{Creación de la sección de participantes en Latex}
 \label{sec:creaParticipantes}
+Una vez tenemos todos los datos listos, procedemos a desarrollar el texto en Latex. El resultado final que buscamos tiene la siguiente estructura:
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=15cm, keepaspectratio]{img/esquemaLatex}
+	\caption{Estructura información participante}
+	\label{fig:ejemploLatex}
+\end{figure}
+
 
 
 \section{Guarda el fichero Latex con los datos}
 \label{sec:guardaLatex}
+Cuando se ha formado el texto Latex con los datos de todos los participantes, guardado en una variable, se procede a escribir este texto en un fichero .tex llamado \textbf{participants.tex}. En él aparecerá únicamente la sección de participantes. Si queremos incluir esta sección en otro documento Latex (nos referiremos a él como \textit{principal}) podremos hacerlo añadiendo en este último documento el comando \mbox{\textit{\textbackslash input\{participants\}}}.\\
+
+Así, en el documento principal podremos añadir una portada, unas páginas de introducción, formatos para el texto, cabeceras o pies de página, etc.\\
+
+Con esto, al compilar el documento principal, obtendremos un PDF con la unión del documento principal y el de los participantes, que es el resultado deseado.
+
+
+\section{Unir automáticamente documentos Latex}
+\label{sec:uneLatex}
+El proceso de la sección anterior también se puede automatizar, es decir, en vez de tener dos documentos y que uno llame al otro, podemos unir los .tex. Para esto, necesitamos tener listo el documento principal al que nos referíamos antes, y que en él aparezca el comando \mbox{\textit{\textbackslash input\{participants\}}}. Este documento deberá llamarse \textbf{\textit{intro.tex}}\\
+
+Nuestro programa buscará este fichero y leerá su contenido, buscando la sentencia \mbox{\textit{\textbackslash input\{participants\}}}, que será sustituida por el texto que hemos producido con los datos de los participantes. Una vez que tenemos la información de los participantes unida al texto del documento \textit{intro.tex}, lo guardaremos en un nuevo fichero, llamado \textbf{\textit{generated.tex}}, quedando todo el contenido en un único documento Latex.\\
+
+Si no se pueden unir los documentos, es decir, no se encuentra el fichero \textit{intro.tex} o la sentencia donde se introduce la información de los participantes, se mostrará un mensaje indicando que se ha creado el fichero con la sección de los participantes, así como su nombre, listo para incluirse en otro .tex:\\
+\verb"        Participants section created (participants.tex). Include"\\
+\verb"        it in your .tex"
 
 
 
-\section{Busca fichero intro.tex}
-\label{sec:ficheroIntro}
+\section{Compilado del documento Latex}
+\label{sec:compilado}
+En caso de que hayamos conseguido obtener el documento \textit{generated.tex}, y contemos en nuestro PC con el paquete de Latex instalado, el programa intentará compilarlo con el comando \textbf{\textit{xelatex generated.tex}} a través de una llamada al sistema:\\
+\verb"        os.system('xelatex generated.tex')"\\
+
+Si se ha compilado correctamente, obtendremos por pantalla un mensaje informativo indicando que el PDF ha sido generado, y su nombre:\\
+\verb"        PDF has been generated --> generated.pdf"\\
+
+En caso de que haya algún problema para compilar, nos mostrará un mensaje de error:\\
+\verb"        Impossible to generate PDF automatically. You must"\\
+\verb"        compile in Latex manually"
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
