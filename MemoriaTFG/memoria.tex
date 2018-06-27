@@ -33,6 +33,8 @@
 \usepackage{latexsym}  %% Logo LaTeX
 \usepackage{pdfpages}
 
+\usepackage{hyperref}
+
 \title{Memoria del Proyecto Fin de Carrera "Conference Book Generator"}
 \author{Seila Oliva Muñoz}
 
@@ -166,18 +168,14 @@ Además, la pareja quizás no sea para siempre, pero tu madre sí.
 \chapter*{Resumen}
 %\addcontentsline{toc}{chapter}{Resumen} % si queremos que aparezca en el índice
 \markboth{RESUMEN}{RESUMEN} % encabezado
+En la actualidad es muy frecuente la realización de seminarios y conferencias en las que se tratan temas concretos de diferentes índoles, a las que suelen ir personas especializadas en el tema a tratar dispuesta a conocer otras personas que compartan sus mismos intereses, incluso buscando personas con las que trabajar.\\
 
-Aquí viene un resumen del proyecto. Ha de constar de tres o cuatro párrafos, donde se presente de manera clara y concisa de qué va el proyecto.
-Han de quedar respondidas las siguientes preguntas:
+Es por esto que surge la idea de tener los datos de todos los asistentes para conocer sus intereses y datos de contacto por si interesa una posible colaboración/contratación.\\
 
-\begin{itemize}
-  \item ¿De qué va este proyecto? ¿Cuál es su objetivo principal?
-  \item ¿Cómo se ha realizado? ¿Qué tecnologías están involucradas?
-  \item ¿En qué contexto se ha realizado el proyecto? ¿Es un proyecto
-dentro de un marco general?
-\end{itemize}
+Mi proyecto consiste en la elaboración de un \textit{book} en el que aparezcan estos datos de todos los participantes. Para ello, previamente los participantes tendrán que rellenar un formulario de \textit{Google Forms}. Una vez se hayan recopilado los datos de todos los participantes, se trasladarán a una \textit{Google Sheet}, cuya URL se introducirá en el programa que he elaborado con \textbf{\textit{Python}}.\\
 
-Lo mejor es escribir el resumen al final.
+Se extraerán los datos de los participantes de esta hoja de cálculo, y se manipularán en caso de que sea necesario para, con ellos, generar un documento en \textbf{Latex}. Este documento se compilará para obtener un PDF en el que aparecerán los datos de todos los asistentes y estará listo para ser impreso en forma de revista.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Resumen en inglés
@@ -186,9 +184,13 @@ Lo mejor es escribir el resumen al final.
 %\addcontentsline{toc}{chapter}{Summary} % si queremos que aparezca en el índice
 \markboth{SUMMARY}{SUMMARY} % encabezado
 
-Here comes a translation of the ``Resumen'' into English. Please, double check it for correct grammar and spelling.
-As it is the translation of the ``Resumen'', which is supposed to be written at the end, this as well should be filled out
-just before submitting.
+At present, it is very common to make seminars and conferences that address specific issues of different kinds, where usually go people specialized in the issue whobe willing to meet other people who share their same interests, even looking for people with those that work.\\
+
+This is why the idea of ​​having the data of all the attendees to know their interests and contact data in case a possible collaboration/contracting interests.\\
+
+My project consists in the elaboration of a \textit{book} in which these data of all the participants appear. To do this, previously the participants will have to fill a \textit{Google Forms} form. Once the data of all the participants has been collected, they will be moved to a \textit{Google Sheet}, whose URL will be introduced in the program that I have created with \textbf{Python}.\\
+
+The data of the participants of this spreadsheet will be extracted, and they will be manipulated in case it is necessary to generate a document in \textbf{Latex} with them. This document will be compiled to obtain a PDF in which the data of all the attendees will appear and it will be ready to be printed in the form of a magazine.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -235,7 +237,6 @@ Este proyecto pretende automatizar la labor de hacer este Book, de manera que ca
 
 \section{Estructura de la memoria}
 \label{sec:estructura}
-
 Con el fin de facilitar la lectura de la memoria, en esta sección se detalla la estructura de la misma y el contenido que se trata en cada una de las secciones:
 \begin{itemize}
   \item \textbf{Capítulo ~\ref{chap:intro} Introducción.} Contexto en el que surge la idea del proyecto y breve explicación de la estructura de la memoria.
@@ -244,9 +245,11 @@ Con el fin de facilitar la lectura de la memoria, en esta sección se detalla la
 
   \item \textbf{Capítulo ~\ref{chap:estadoarte}: Estado del arte.} Presentación de las tecnologías con las que se ha desarrollado el proyecto.
   
-  \item \textbf{Capítulo ~\ref{chap:diseño}: Diseño e implementación.} Explicación del desarrollo del proyecyo paso a paso.
+  \item \textbf{Capítulo ~\ref{chap:diseño}: Diseño e implementación.} Explicación del desarrollo del proyecto paso a paso.
 
-  \item \ldots
+  \item \textbf{Capítulo ~\ref{chap:resultados}: Resultados.} Análisis de los resultados obtenidos.
+  
+  \item \textbf{Capítulo ~\ref{chap:conclusiones}: Conclusiones.} Conclusiones finales tras la realización del trabajo, como los objetivos conseguidos, posibles mejoras futuras del proyecto, cómo he aplicado lo aprendido en la carrera o lo que he aprendido durante la realización del proyecto.
 \end{itemize}
 
 
@@ -262,7 +265,6 @@ Con el fin de facilitar la lectura de la memoria, en esta sección se detalla la
 
 \section{Objetivo general} % título de sección (se muestra)
 \label{sec:objetivo-general} % identificador de sección (no se muestra, es para poder referenciarla)
-
 El objetivo de este proyecto es crear un recurso para que todas las personas que asistan a una conferencia/seminario puedan conocer al resto de asistentes, así como darse a conocer ellos mismos, y de esta forma poder obtener información sobre cada uno (datos de contacto, situación laboral \ldots).\\
 
 Para ello, se persigue otro objetivo que es automatizar esta labor: crear un programa que sea capaz de tomar como entrada los datos de cada asistente y generar un documento con toda la información.
@@ -270,7 +272,6 @@ Para ello, se persigue otro objetivo que es automatizar esta labor: crear un pro
 
 \section{Objetivos específicos}
 \label{sec:objetivos-especificos}
-
 Los objetivos específicos que llevé a cabo a lo largo del proyecto fueron los siguientes:
 \begin{itemize}
   \item \textbf{Usar la aplicación para casos reales.} Utilizar la aplicación para generar \textit{books} para conferencias reales, imprimirlos y que se repartan en ellas.
@@ -279,7 +280,6 @@ Los objetivos específicos que llevé a cabo a lo largo del proyecto fueron los 
 
 \section{Planificación temporal}
 \label{sec:planificacion-temporal}
-
 La realización de este proyecto me ha ocupado todo un curso acadámico (9 meses), y las fases que he seguido han sido las siguientes:
 \begin{itemize}
 	\item \textbf{Idea de proyecto.} En primer lugar, me reuní con mi tutor del proyecto, Gregorio, para que me ayudase a elegir un proyecto que se adaptase a lo que estaba buscando. Una vez decidido el proyecto, tomé un tiempo para estudiarlo y saber qué tecnologías iba a necesitar para su desarrollo.
@@ -302,8 +302,7 @@ En esta sección, se describen las tecnologías utilizadas para la realización 
 
 \section{Python}
 \label{sec:python}
-
-Python\footnote{\url{https://www.python.org/}} es un lenguaje de programación que busca la simplicidad y facilidad, así como la legibilidad del código. Es un lenguaje interpretado, es decir, no necesita ser compilado para ejecutar.\\
+Python\cite{python:1} es un lenguaje de programación que busca la simplicidad y facilidad, así como la legibilidad del código. Es un lenguaje interpretado, es decir, no necesita ser compilado para ejecutar.\\
 
 Con Python se pueden hacer todo tipo de programas. Aunque no es un lenguaje específico para el desarrollo web, sí se pueden desarrollar páginas con él.\\
 
@@ -314,7 +313,7 @@ Una ventaja de Python es que cuenta con un gran número de funciones incorporada
 
 \section{Latex}
 \label{sec:latex}
-\LaTeX\footnote{\url{https://www.latex-project.org/}} es un sistema de composición de textos (de software libre), orientado especialmente a la creación de libros y documentos científicos y técnicos que contengan fórmulas matemáticas. Está formado por un gran conjunto de macros de TeX, con la intención de facilitar el uso del lenguaje de composición tipogrífica, TeX.\\
+\LaTeX\cite{latex:1} es un sistema de composición de textos (de software libre), orientado especialmente a la creación de libros y documentos científicos y técnicos que contengan fórmulas matemáticas. Está formado por un gran conjunto de macros de TeX, con la intención de facilitar el uso del lenguaje de composición tipográfica, TeX.\\
 
 Una de las ventajas de \LaTeX es la calidad profesional de los documentos que genera, así como su excelente calidad de imprenta. Otra ventaja es que permite separar claramente el contenido y el formato del documento.\\
 
@@ -323,7 +322,7 @@ Una de las ventajas de \LaTeX es la calidad profesional de los documentos que ge
 
 \section{Google Forms}
 \label{sec:googleforms}
-Google Forms\footnote{\url{https://www.google.es/intl/es/forms/about/}} es una herramienta útil que permite planificar eventos, enviar una encuesta, hacer preguntas o recopilar otro tipo de información de forma fácil y sencilla.\\
+Google Forms\cite{forms:1} es una herramienta útil que permite planificar eventos, enviar una encuesta, hacer preguntas o recopilar otro tipo de información de forma fácil y sencilla.\\
 
 Crear un formulario es tan fácil como añadir las preguntas seleccionando en cada uno el tipo que mejor se adapte a nuestras necesidades. Los tipos de pregunta que nos podemos encontrar son, por ejemplo, texto, tipo test, elegir de listas, desplegables, etc. También permite añadir imágenes, videos o saltos de página para dividir la encuesta en secciones.\\
 
@@ -332,8 +331,7 @@ Una vez enviado el formulario a los destinatarios, se irán recopilando las resp
 
 \section{Google Sheets API}
 \label{sec:googlesheet}
-
-Google Sheets API\footnote{\url{https://developers.google.com/sheets/api/}} permite leer y modificar cualquier aspecto de una hoja de cálculo.\\
+Google Sheets API\cite{sheet:1} permite leer y modificar cualquier aspecto de una hoja de cálculo.\\
 
 Para utilizar esta herramienta en Python, tendremos que descargar la libreria de Google Client (\verb"pip install --upgrade google-api-python-client"), así como las credenciales necesarias.\\
 
@@ -646,7 +644,6 @@ Al principio de esta memoria enumeré una serie de objetivos que pretendía cons
 
 \section{Aplicación de lo aprendido}
 \label{sec:aplicacion}
-
 A lo largo de la carrera he adquirido muchas habilidades y aprendizajes en diferentes áreas, siempre relacionadas con mi carrera de Ingeniería de Tecnologías de la Telecomunicación. De todas ellas, las que he podido aplicar en el desarrollo de este proyecto han sido:
 
 \begin{enumerate}
@@ -692,11 +689,44 @@ Otra idea es, además de la web, hacer una aplicación móvil, de manera que en 
 \appendix
 \chapter{Manual de usuario}
 \label{app:manual}
+Para que la aplicación funcione correctamente, es necesario tener instalado \textbf{\textit{Python 3}} o superior, además de los siguientes paquetes, en las versiones indicadas:
+\begin{itemize}
+	\item \textbf{\textit{google-api-python-client}}\cite{google_api_client:1} versión 1.6.5 o superior.
+	\item \textbf{\textit{pycountry}}\cite{pycountry:1} versión 18.2.23 o superior.
+	\item \textbf{\textit{pillow}}\cite{pillow:1} versión 5.1.0 o superior.
+	\item \textbf{\textit{oauth2client}}\cite{oauth2client:1} versión 4.1.2 o superior.
+\end{itemize}
+
+Además, para conseguir el compilado en Latex y que en la misma ejecución nos genere el documento en PDF, necesitamos tener instalado también \textbf{\textit{latex-xetex}} en la versión 3 o superior.\\
+
+Una vez instalado todo lo anterior, tenemos que ejecutar el programa. Para hacerlo desde una \textit{Shell Unix} hay que ejecutar el comando \verb"python3 creator.py". Si todo va bien, al finalizar obtendremos en la carpeta de destino tanto los ficheros Latex como el PDF con el resultado final.
+
+\section{Dónde descargar la aplicación}
+\label{sec:descarga_aplicacion}
+El programa está disponible en el repositorio de GitHub:\\
+\url{https://github.com/SheilaOM/TFG}
 
 
+\cleardoublepage
 \chapter{Ejemplo de uso}
 \label{app:ejemplos}
-%\includepdf[pages=-]{generated}
+Como he indicado con anterioridad, este proyecto se ha utilizado en casos reales, y los resultados han sido los siguientes.
+
+\newpage
+\section{15\raisebox{5pt}{th} International Conference on Mining Software Repositories (MSR) 2018}
+\label{MSR}
+\includepdf[pages=-]{2018-MSR-Confbook}
+
+
+\section{14\raisebox{5pt}{th} International Conference on Open Source Systems (OSS) 2018}
+\label{OSS}
+\includepdf[pages=-]{2018-OSS-Confbook}
+
+
+\section{11\raisebox{5pt}{th} Seminar on Advanced Techniques \& Tools for Sotware Evoluton SATToSE 2018}
+\label{SATToSE}
+\includepdf[pages=-]{2018-SATToSE-Confbook}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -707,7 +737,9 @@ Otra idea es, además de la web, hacer una aplicación móvil, de manera que en 
 
 % Las siguientes dos instrucciones es todo lo que necesitas
 % para incluir las citas en la memoria
-\bibliographystyle{abbrv}
+%\bibliographystyle{abbrv}
+\bibliographystyle{unsrt}
+
 \bibliography{memoria}  % memoria.bib es el nombre del fichero que contiene
 % las referencias bibliogríficas. Abre ese fichero y mira el formato que tiene,
 % que se conoce como BibTeX. Hay muchos sitios que exportan referencias en
