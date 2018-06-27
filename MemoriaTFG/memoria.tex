@@ -174,7 +174,7 @@ Es por esto que surge la idea de tener los datos de todos los asistentes para co
 
 Mi proyecto consiste en la elaboración de un \textit{book} en el que aparezcan estos datos de todos los participantes. Para ello, previamente los participantes tendrán que rellenar un formulario de \textit{Google Forms}. Una vez se hayan recopilado los datos de todos los participantes, se trasladarán a una \textit{Google Sheet}, cuya URL se introducirá en el programa que he elaborado con \textbf{\textit{Python}}.\\
 
-Se extraerán los datos de los participantes de esta hoja de cálculo, y se manipularán en caso de que sea necesario para, con ellos, generar un documento en \textbf{Latex}. Este documento se compilará para obtener un PDF en el que aparecerán los datos de todos los asistentes y estará listo para ser impreso en forma de revista.
+Se extraerán los datos de los participantes de esta hoja de cálculo, y se manipularán en caso de que sea necesario para, con ellos, generar un documento en \LaTeX. Este documento se compilará para obtener un PDF en el que aparecerán los datos de todos los asistentes y estará listo para ser impreso en forma de revista.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -186,11 +186,11 @@ Se extraerán los datos de los participantes de esta hoja de cálculo, y se mani
 
 At present, it is very common to make seminars and conferences that address specific issues of different kinds, where usually go people specialized in the issue whobe willing to meet other people who share their same interests, even looking for people with those that work.\\
 
-This is why the idea of ​​having the data of all the attendees to know their interests and contact data in case a possible collaboration/contracting interests.\\
+This is why the idea of having the data of all the attendees to know their interests and contact data in case a possible collaboration/contracting interests.\\
 
 My project consists in the elaboration of a \textit{book} in which these data of all the participants appear. To do this, previously the participants will have to fill a \textit{Google Forms} form. Once the data of all the participants has been collected, they will be moved to a \textit{Google Sheet}, whose URL will be introduced in the program that I have created with \textbf{Python}.\\
 
-The data of the participants of this spreadsheet will be extracted, and they will be manipulated in case it is necessary to generate a document in \textbf{Latex} with them. This document will be compiled to obtain a PDF in which the data of all the attendees will appear and it will be ready to be printed in the form of a magazine.
+The data of the participants of this spreadsheet will be extracted, and they will be manipulated in case it is necessary to generate a document in \LaTeX with them. This document will be compiled to obtain a PDF in which the data of all the attendees will appear and it will be ready to be printed in the form of a magazine.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -280,10 +280,10 @@ Los objetivos específicos que llevé a cabo a lo largo del proyecto fueron los 
 
 \section{Planificación temporal}
 \label{sec:planificacion-temporal}
-La realización de este proyecto me ha ocupado todo un curso acadámico (9 meses), y las fases que he seguido han sido las siguientes:
+La realización de este proyecto me ha ocupado todo un curso académico (9 meses), y las fases que he seguido han sido las siguientes:
 \begin{itemize}
 	\item \textbf{Idea de proyecto.} En primer lugar, me reuní con mi tutor del proyecto, Gregorio, para que me ayudase a elegir un proyecto que se adaptase a lo que estaba buscando. Una vez decidido el proyecto, tomé un tiempo para estudiarlo y saber qué tecnologías iba a necesitar para su desarrollo.
-	\item \textbf{Aprendizaje de las tecnologías utilizadas.} Una vez me dí cuenta de las tecnologías necesarias, comencé por aprender sobre ellas: para qué sirven, cómo utilizarlas \ldots Este proceso es imprescindible para la continuación del proyecto.
+	\item \textbf{Aprendizaje de las tecnologías utilizadas.} Una vez me di cuenta de las tecnologías necesarias, comencé por aprender sobre ellas: para qué sirven, cómo utilizarlas \ldots Este proceso es imprescindible para la continuación del proyecto.
 	\item \textbf{Desarrollo del proyecto.} Desarrollo del código en Python para conseguir las ideas anteriormente expuestas.
 	\item \textbf{Redacción de la memoria.} Como último paso del proyecto, comencé a escribir esta memoria en la que se recopilan en detalle todos los pasos que seguí para la consecución del proyecto.
 \end{itemize}
@@ -302,41 +302,54 @@ En esta sección, se describen las tecnologías utilizadas para la realización 
 
 \section{Python}
 \label{sec:python}
-Python\cite{python:1} es un lenguaje de programación que busca la simplicidad y facilidad, así como la legibilidad del código. Es un lenguaje interpretado, es decir, no necesita ser compilado para ejecutar.\\
+Python~\cite{python:1} es un lenguaje de programación que busca la simplicidad y facilidad, así como la legibilidad del código. Es un lenguaje interpretado, es decir, no necesita ser compilado para ejecutar.\\
 
 Con Python se pueden hacer todo tipo de programas. Aunque no es un lenguaje específico para el desarrollo web, sí se pueden desarrollar páginas con él.\\
 
 Es un lenguaje multiparadigma: permite más de un estilo de programación (orientada a objetos, imperativa, funcional \ldots). También es multiplataforma, por lo que se puede usar con distintos sistemas informáticos.\\
 
-Una ventaja de Python es que cuenta con un gran número de funciones incorporadas en el lenguaje (por ejemplo, para tratar strings, ficheros\ldots) y librerías para usos específicos que podemos importar a nuestro programa.
+Una ventaja de Python es que cuenta con un gran número de funciones incorporadas en el lenguaje (por ejemplo, para tratar \emph{strings}, ficheros\ldots) y librerías para usos específicos que podemos importar a nuestro programa.
 
+FIXME: la descripción de Python debería ser al menos de una página
 
-\section{Latex}
+FIXME: Deberías hablar de Python2 y Python3
+
+\section{\LaTeX}
 \label{sec:latex}
-\LaTeX\cite{latex:1} es un sistema de composición de textos (de software libre), orientado especialmente a la creación de libros y documentos científicos y técnicos que contengan fórmulas matemáticas. Está formado por un gran conjunto de macros de TeX, con la intención de facilitar el uso del lenguaje de composición tipográfica, TeX.\\
+\LaTeX~\cite{latex:1} es un sistema de composición de textos (de software libre), orientado especialmente a la creación de libros y documentos científicos y técnicos que contengan fórmulas matemáticas. Está formado por un gran conjunto de macros de \TeX, con la intención de facilitar el uso del lenguaje de composición tipográfica, \TeX.\\
 
 Una de las ventajas de \LaTeX es la calidad profesional de los documentos que genera, así como su excelente calidad de imprenta. Otra ventaja es que permite separar claramente el contenido y el formato del documento.\\
 
 \LaTeX presupone una filosofía de trabajo diferente a la de los procesadores de texto habituales (``lo que ves es lo que obtienes'') y se basa en instrucciones. Tradicionalmente, este aspecto se ha considerado una desventaja. Sin embargo, \LaTeX permite a quien escribe un documento centrarse exclusivamente en el contenido, sin tener que preocuparse de los detalles del formato.
 
+FIXME: la descripción de Latex debería ser al menos de una página. Debería comentarse el proceso de creación de documentos latex, incluida su compilación
+
+FIXME: quizás estaría bien hablar también de Xetex, que es lo que utilizamos.
 
 \section{Google Forms}
 \label{sec:googleforms}
-Google Forms\cite{forms:1} es una herramienta útil que permite planificar eventos, enviar una encuesta, hacer preguntas o recopilar otro tipo de información de forma fácil y sencilla.\\
+Google Forms~\cite{forms:1} es una herramienta útil que permite planificar eventos, enviar una encuesta, hacer preguntas o recopilar otro tipo de información de forma fácil y sencilla.\\
 
-Crear un formulario es tan fácil como añadir las preguntas seleccionando en cada uno el tipo que mejor se adapte a nuestras necesidades. Los tipos de pregunta que nos podemos encontrar son, por ejemplo, texto, tipo test, elegir de listas, desplegables, etc. También permite añadir imágenes, videos o saltos de página para dividir la encuesta en secciones.\\
+Crear un formulario es tan fácil como añadir las preguntas seleccionando en cada uno el tipo que mejor se adapte a nuestras necesidades. Los tipos de pregunta que nos podemos encontrar son, por ejemplo, texto, tipo test, elegir de listas, desplegables, etc. También permite añadir imágenes, vídeos o saltos de página para dividir la encuesta en secciones.\\
 
 Una vez enviado el formulario a los destinatarios, se irán recopilando las respuestas recibidas. Éstas se pueden guardar en el propio Google Forms, de manera que se mostrarán como un resumen de las respuestas, o se pueden exportar a una hoja de cálculo en la que cada línea estarán las respuestas de cada persona (cada respuesta en una columna).
 
 
 \section{Google Sheets API}
 \label{sec:googlesheet}
-Google Sheets API\cite{sheet:1} permite leer y modificar cualquier aspecto de una hoja de cálculo.\\
+Google Sheets API~\cite{sheet:1} permite leer y modificar cualquier aspecto de una hoja de cálculo.\\
 
-Para utilizar esta herramienta en Python, tendremos que descargar la libreria de Google Client (\verb"pip install --upgrade google-api-python-client"), así como las credenciales necesarias.\\
+Para utilizar esta herramienta en Python, tendremos que descargar la biblioteca de Google Client (\verb"pip install --upgrade google-api-python-client"), así como las credenciales necesarias.\\
 
 Para leer el contenido de las celdas, que es lo que interesa en este caso, se utiliza la colección \textbf{spreadsheets.values}\footnote{\url{https://forward2.herokuapp.com/developers/sheets/api/reference/rest/v4/spreadsheets.values?hl=es-419}}. Con esta colección podremos especificar el rango, o rangos, de celdas que nos interesa leer (o escribir).
 
+FIXME: la descripción de las Google Sheets APIs debería ser al menos de una página
+
+FIXME: deberías hablar de Oauth2client y del fichero que tienes de claves... (¡seguridad!)
+
+FIMXE: deberías comentar también las otras dependencias que tenemos: pycountry, pillow, 
+
+FIXME: ¿no usabas pandas para las gráficas? ¡Coméntalo aquí!
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -349,7 +362,7 @@ Para leer el contenido de las celdas, que es lo que interesa en este caso, se ut
 
 \section{Arquitectura general}
 \label{sec:arquitectura}
-En la figura ~\ref{fig:esquema} se puede observar un esquema a modo de resúmen del proceso que sigue el proyecto. A continuación, describiré cada bloque de este esquema.
+En la figura ~\ref{fig:esquema} se puede observar un esquema a modo de resumen del proceso que sigue el proyecto. A continuación, describiré cada bloque de este esquema.
 
 \begin{figure}[h!]
 	\centering
@@ -368,6 +381,8 @@ Por ejemplo, si preguntamos el nombre de la persona, elegiremos como tipo de res
 Con estos últimos casos, conseguiremos que todas las respuestas sean concisas y uniformes. Si no lo hacemos de esta forma y preguntamos, por ejemplo, ``¿Cuál es tu mes de nacimiento?'', dos personas distintas que hayan nacido en el mismo mes pueden contestar ``Yo nací en enero'' y ``Mi mes de nacimiento es enero''. Sin embargo, si aquí elegimos como tipo de respuesta un desplegable en el que simplemente haya que seleccionar el mes, obtendremos en ambas respuestas ``Enero''. Esto nos puede ayudar en el futuro si queremos, por ejemplo, buscar a todas las personas que tengan la misma respuesta a una determinada pregunta.\\
 
 Además de estas, hay varias opciones más para las respuestas.
+
+FIXME: faltaría un pantallazo del Google Forms
 
 
 \section{Traspaso de respuestas a hoja de cálculo}
@@ -408,19 +423,19 @@ NamedTuple es una \textit{``Tupla con nombre''}. Tiene una estructura parecida a
 \end{figure}
 
 
-En este caso, el NamedTuple se llama \textit{Fields}. Los nombres de los campos hay que definirlos antes de generar el NamedTuple. Una vez tenemos definido el NamedTuple, podemos referirnos a cada campo de éste con su nombre (si tuviesemos un array, tendríamos que saber en qué posición está el campo al que queremos referirnos para llamarlo). Por ejemplo, si del ejemplo anterior de la figura ~\ref{fig:ejemplo4_5Namedtuple} tenemos guardado el primer NamedTuple en una variable llamada \textit{row}, podremos acceder al nombre de la persona usando (\verb"row.name").
+En este caso, el NamedTuple se llama \textit{Fields}. Los nombres de los campos hay que definirlos antes de generar el NamedTuple. Una vez tenemos definido el NamedTuple, podemos referirnos a cada campo de éste con su nombre (si tuviésemos un array, tendríamos que saber en qué posición está el campo al que queremos referirnos para llamarlo). Por ejemplo, si del ejemplo anterior de la figura ~\ref{fig:ejemplo4_5Namedtuple} tenemos guardado el primer NamedTuple en una variable llamada \textit{row}, podremos acceder al nombre de la persona usando (\verb"row.name").
 
 \section{Fichero de errores}
 \label{sec:errores}
 Durante la ejecución del programa, puede haber algún aspecto que no se consiga realizar, y se pueda realizar manualmente. Por ello, es conveniente informar al usuario de qué cosas no ha podido realizar el programa.\\
 
-Al final de la ejecución, se generará también un fichero llamado \textbf{errors.txt} en el que apareceran todos los errores que han ocurrido en la ejecución, así como el proceso para solventarlo manualmente.\\
+Al final de la ejecución, se generará también un fichero llamado \textbf{errors.txt} en el que aparecerán todos los errores que han ocurrido en la ejecución, así como el proceso para solventarlo manualmente.\\
 
 En las siguientes secciones, se desarrollará más sobre los errores que se pueden dar en cada parte del programa.
 
 \section{Proceso de tratamiento de información}
 \label{sec:tratainfo}
-Antes de generar el documento Latex con la información que se ha extraido de la hoja de cálculo, hay que revisar toda esa información que tenemos, y ver si hay que hacer alguna modificación, o no usar literalmente el texto que tenemos en un campo.\\
+Antes de generar el documento \LaTeX con la información que se ha extraído de la hoja de cálculo, hay que revisar toda esa información que tenemos, y ver si hay que hacer alguna modificación, o no usar literalmente el texto que tenemos en un campo.\\
 
 Para esto, se utiliza un bucle que recorre los datos de todos los participantes. Este bucle tendría la siguiente estructura:
 
@@ -438,7 +453,7 @@ Para esto, se utiliza un bucle que recorre los datos de todos los participantes.
 
 La variable \textit{fields} es el array que contiene los datos de cada persona que ha rellenado la encuesta. Por tanto, en cada pasada del bucle la variable \textit{row} se corresponde con un NamedTuple, por lo que podremos extraer los datos con los nombres de los campos (\textit{row.name, row.affiliation}\ldots).\\
 
-Exceptuando el proceso de ordenar alfabéticamente que se hace una única vez antes de entrar al bucle, los demás procesos se llevan a cabo para cada persona. Una vez tratada toda la información que poseemos, se generará el texto en Latex.
+Exceptuando el proceso de ordenar alfabéticamente que se hace una única vez antes de entrar al bucle, los demás procesos se llevan a cabo para cada persona. Una vez tratada toda la información que poseemos, se generará el texto en \LaTeX.
 
 
 \subsection{Ordenar alfabéticamente}
@@ -450,9 +465,9 @@ Para esto, en el método \textbf{\textit{order\_by\_name}} se extrae el apellido
 
 \subsection{Convertir caracteres especiales}
 \label{subsec:especialCars}
-Como la intención de este proyecto es generar un documento en Latex, hay que adaptarlo para ello. Latex tiene una serie de caracteres que utiliza para funciones especiales, tales como \textbackslash, \$, \%..., y para que al generar el PDF estos caracteres aparezcan correctamente, tienen que aparecer modificados en el documento Latex.\\
+Como la intención de este proyecto es generar un documento en \LaTeX, hay que adaptarlo para ello. \LaTeX tiene una serie de caracteres que utiliza para funciones especiales, tales como \textbackslash, \$, \%..., y para que al generar el PDF estos caracteres aparezcan correctamente, tienen que aparecer modificados en el documento \LaTeX.\\
 
-Para solucionar este problema, se ha creado el método \textbf{\textit{make\_chars\_latex\_friendly}}, donde revisaremos todos los campos en busca de estos caracteres (\$, \#, \%, \&, \^, \_, \{, \}, \~ , \textbackslash) y cuando los encuentre, añadirá delante de ellos un \textit{backslash} (\textbackslash). De esta forma, aparecerá el caracter deseado, y no generará errores y confusiones a la hora de generar el PDF final.\\
+Para solucionar este problema, se ha creado el método \textbf{\textit{make\_chars\_latex\_friendly}}, donde revisaremos todos los campos en busca de estos caracteres (\$, \#, \%, \&, \^, \_, \{, \}, \~ , \textbackslash) y cuando los encuentre, añadirá delante de ellos un \textit{backslash} (\textbackslash). De esta forma, aparecerá el carácter deseado, y no generará errores y confusiones a la hora de generar el PDF final.\\
 
 Hay algunos casos especiales en los que no conviene hacer este proceso. Por ejemplo, si uno de los campos es una URL, y dicha URL no la vamos a escribir literalmente en el documento final, sino que la vamos a utilizar para obtener otro dato. En este caso tenemos, por ejemplo, un campo que corresponde a la URL de una imagen (se explicará a continuación), y esta URL será utilizada para descargar la imagen correspondiente, por tanto si hacemos el proceso anterior sobre la URL, cuando la utilicemos en el programa será incorrecta, por lo que no hay que modificarla.
 
@@ -476,11 +491,11 @@ El método \textbf{\textit{download\_image}} se encarga de esto. Lo primero que 
 
 De toda esta información, el campo que nos interesa es el \textit{Content-Type}, ya que en él podremos comprobar si la URL es una imagen. Para extraer la información de este campo lo hacemos con \textit{resp.info().get('Content-Type')}.\\
 
-Una vez que comprueba que este campo empieza por ``image\textbackslash'', se recoge también la extensión de la imagen, que aparece justo después de esta expresión (\textit{imgType}).A continueción, se procede a descargar la imagen con \textit{urllib.request.urlretrieve(url, nameImage)}. Esta expresión descarga la imagen de la URL que se indica en el primer parámetro de entrada, y la guarda con el nombre que aparece en el segundo parámetro.\\
+Una vez que comprueba que este campo empieza por ``image\textbackslash'', se recoge también la extensión de la imagen, que aparece justo después de esta expresión (\textit{imgType}).A continuación, se procede a descargar la imagen con \textit{urllib.request.urlretrieve(url, nameImage)}. Esta expresión descarga la imagen de la URL que se indica en el primer parámetro de entrada, y la guarda con el nombre que aparece en el segundo parámetro.\\
 
 El nombre de la imagen se compone de la ruta de la carpeta donde se va a guardar la imagen, seguido de la cadena ``img'' y un número identificador de cada persona, y acabando con la extensión que hemos almacenado anteriormente en \textit{imgType}.\\
 
-Normalmente, las extensiones de las imágenes suelen ser las comunes .jpg, .png,\ldots, pero también pueden aparecer imágenes con extensión \textbf{.webp}. WebP es un formato de imágen creado por Google para reducir el tamaño de las imágenes y así disminuir el tiempo de carga de las mismas. Este formato no es reconocible por Latex, por lo que hay que es necesario cambiar el formato de este tipo de imágenes, y para ello utilizamos \textit{im = Image.open(nameImage).convert("RGB")}. Ahora tenemos la imagen en el formato que queremos en la variable \textit{im}, por lo que hay que guardarla, por ejemplo, en .jpg, con \textit{im.save(nameImagejpg, "jpeg")}.\\
+Normalmente, las extensiones de las imágenes suelen ser las comunes .jpg, .png,\ldots, pero también pueden aparecer imágenes con extensión \textbf{.webp}. WebP es un formato de imagen creado por Google para reducir el tamaño de las imágenes y así disminuir el tiempo de carga de las mismas. Este formato no es reconocible por \LaTeX, por lo que hay que es necesario cambiar el formato de este tipo de imágenes, y para ello utilizamos \textit{im = Image.open(nameImage).convert("RGB")}. Ahora tenemos la imagen en el formato que queremos en la variable \textit{im}, por lo que hay que guardarla, por ejemplo, en .jpg, con \textit{im.save(nameImagejpg, "jpeg")}.\\
 
 Además, se redimensionan las imágenes para que todas tengan el mismo tamaño y se genere un resultado uniforme.\\
 
@@ -493,7 +508,7 @@ Los mensajes de error en estas situaciones podrían ser de la siguiente manera:
 -Error in image of Li Li (pos. 46) -> Download image manually
 (change the name of the image in .tex).
 \end{verbatim}
-Aquí, nos indica en la imagen de qué participante nos ha saltado el error y la posición del documento donde aparece. En el caso en que haya que descargar la imagen manualmente, hay que cambiar en el documento Latex el nombre de la imagen correspondiente (ya que al no poder descargarse se ha adjuntado la imagen por defecto). Para seguir las pautas de todo el proceso, convendría nombrar a la imagen como \textit{img} seguido del número de posición. En el caso del ejemplo el nombre sería \textit{img46}.\\
+Aquí, nos indica en la imagen de qué participante nos ha saltado el error y la posición del documento donde aparece. En el caso en que haya que descargar la imagen manualmente, hay que cambiar en el documento \LaTeX el nombre de la imagen correspondiente (ya que al no poder descargarse se ha adjuntado la imagen por defecto). Para seguir las pautas de todo el proceso, convendría nombrar a la imagen como \textit{img} seguido del número de posición. En el caso del ejemplo el nombre sería \textit{img46}.\\
 
 Finalmente, el método devolverá el nombre con el que se ha guardado la imagen de la persona correspondiente o, en su defecto, la imagen de error.
 
@@ -525,9 +540,9 @@ Una de las partes del formulario consiste en una descripción personal. Debido a
 Por ello, en el método \textbf{\textit{cut\_presentation}}, fijamos una longitud máxima para este campo, y si el texto escrito por el participante sobrepasa este valor, lo cortaremos e indicaremos que ha sido recortado añadiendo puntos suspensivos al final.
 
 
-\section{Creación de la sección de participantes en Latex}
+\section{Creación de la sección de participantes en \LaTeX}
 \label{sec:creaParticipantes}
-Una vez tenemos todos los datos listos, procedemos a desarrollar el texto en Latex. El resultado final que buscamos tiene la siguiente estructura:
+Una vez tenemos todos los datos listos, procedemos a desarrollar el texto en \LaTeX. El resultado final que buscamos tiene la siguiente estructura:
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=15cm, keepaspectratio]{img/esquemaLatex}
@@ -549,20 +564,20 @@ Con el método \textbf{\textit{generate\_graphs}} podemos obtener diagramas de s
 Usando el método \textbf{\textit{generate\_list}} se puede crear una lista de todas las personas que han contestado \textit{``Sí''} a las preguntas que se pasarán como argumentos en la llamada al método. Una condición básica en este caso, es que las preguntas que indiquemos deben ser de respuesta \textit{Sí/No}. E igual que antes, para darle como argumento las preguntas que queremos, se hará con un array con los nombres del \textit{NamedTuple}.
 
 
-\section{Guarda el fichero Latex con los datos}
+\section{Guarda el fichero \LaTeX con los datos}
 \label{sec:guardaLatex}
-Cuando se ha formado el texto Latex con los datos de todos los participantes, guardado en una variable, se procede a escribir este texto en un fichero .tex llamado \textbf{participants.tex}. En él aparecerá únicamente la sección de participantes. Si queremos incluir esta sección en otro documento Latex (nos referiremos a él como \textit{principal}) podremos hacerlo añadiendo en este último documento el comando \mbox{\textit{\textbackslash input\{participants\}}}.\\
+Cuando se ha formado el texto \LaTeX con los datos de todos los participantes, guardado en una variable, se procede a escribir este texto en un fichero .tex llamado \textbf{participants.tex}. En él aparecerá únicamente la sección de participantes. Si queremos incluir esta sección en otro documento \LaTeX (nos referiremos a él como \textit{principal}) podremos hacerlo añadiendo en este último documento el comando \mbox{\textit{\textbackslash input\{participants\}}}.\\
 
 Así, en el documento principal podremos añadir una portada, unas páginas de introducción, formatos para el texto, cabeceras o pies de página, etc.\\
 
 Con esto, al compilar el documento principal, obtendremos un PDF con la unión del documento principal y el de los participantes, que es el resultado deseado.
 
 
-\section{Unir automáticamente documentos Latex}
+\section{Unir automáticamente documentos \LaTeX}
 \label{sec:uneLatex}
 El proceso de la sección anterior también se puede automatizar, es decir, en vez de tener dos documentos y que uno llame al otro, podemos unir los .tex. Para esto, necesitamos tener listo el documento principal al que nos referíamos antes, y que en él aparezca el comando \mbox{\textit{\textbackslash input\{participants\}}}. Este documento deberá llamarse \textbf{\textit{intro.tex}}\\
 
-Nuestro programa buscará este fichero y leerá su contenido, buscando la sentencia \mbox{\textit{\textbackslash input\{participants\}}}, que será sustituida por el texto que hemos producido con los datos de los participantes. Una vez que tenemos la información de los participantes unida al texto del documento \textit{intro.tex}, lo guardaremos en un nuevo fichero, llamado \textbf{\textit{generated.tex}}, quedando todo el contenido en un único documento Latex.\\
+Nuestro programa buscará este fichero y leerá su contenido, buscando la sentencia \mbox{\textit{\textbackslash input\{participants\}}}, que será sustituida por el texto que hemos producido con los datos de los participantes. Una vez que tenemos la información de los participantes unida al texto del documento \textit{intro.tex}, lo guardaremos en un nuevo fichero, llamado \textbf{\textit{generated.tex}}, quedando todo el contenido en un único documento \LaTeX.\\
 
 Si no se pueden unir los documentos, es decir, no se encuentra el fichero \textit{intro.tex} o la sentencia donde se introduce la información de los participantes, se mostrará un mensaje indicando que se ha creado el fichero con la sección de los participantes, así como su nombre, listo para incluirse en otro .tex:\\
 \verb"        Participants section created (participants.tex). Include"\\
@@ -570,9 +585,9 @@ Si no se pueden unir los documentos, es decir, no se encuentra el fichero \texti
 
 
 
-\section{Compilado del documento Latex}
+\section{Compilado del documento \LaTeX}
 \label{sec:compilado}
-En caso de que hayamos conseguido obtener el documento \textit{generated.tex}, y contemos en nuestro PC con el paquete de Latex instalado, el programa intentará compilarlo con el comando \textbf{\textit{xelatex generated.tex}} a través de una llamada al sistema:\\
+En caso de que hayamos conseguido obtener el documento \textit{generated.tex}, y contemos en nuestro PC con el paquete de \LaTeX instalado, el programa intentará compilarlo con el comando \textbf{\textit{xelatex generated.tex}} a través de una llamada al sistema:\\
 \verb"        os.system('xelatex generated.tex')"\\
 
 Si se ha compilado correctamente, obtendremos por pantalla un mensaje informativo indicando que el PDF ha sido generado, y su nombre:\\
@@ -660,7 +675,7 @@ Una de las cosas más importantes que he aprendido con este trabajo ha sido plan
 
 También he adquirido conocimientos en aplicaciones y tecnologías antes desconocidas para mí, como pueden ser \textit{Google Forms} o \textit{Google Sheet API}, que me han sido de gran ayuda en este proyecto, ya que me han permitido poder trabajar con los datos de manera online, sin tener que descargar y tratar documentos en local.\\
 
-También he podido aprender mucho más sobre el lenguaje Latex, del cual sabía muy poco antes de este trabajo. Además de utilizarlo en el programa para generar el book final, lo he utilizado para realizar esta memoria, y me han sido muy útiles los conocimientos adquiridos para ello.\\
+También he podido aprender mucho más sobre el lenguaje \LaTeX, del cual sabía muy poco antes de este trabajo. Además de utilizarlo en el programa para generar el book final, lo he utilizado para realizar esta memoria, y me han sido muy útiles los conocimientos adquiridos para ello.\\
 
 Por último, y no menos importante, la realización de este proyecto, que he llevado a cabo a lo largo del curso, lo que incluye las épocas de mayor carga de trabajo como son los exámenes, unido a la realización de las prácticas curriculares, me ha enseñado a compaginar grandes cargas de trabajo para conseguir el mayor objetivo personal que tengo en este momento: la finalización del grado.
 
@@ -697,9 +712,9 @@ Para que la aplicación funcione correctamente, es necesario tener instalado \te
 	\item \textbf{\textit{oauth2client}}\cite{oauth2client:1} versión 4.1.2 o superior.
 \end{itemize}
 
-Además, para conseguir el compilado en Latex y que en la misma ejecución nos genere el documento en PDF, necesitamos tener instalado también \textbf{\textit{latex-xetex}} en la versión 3 o superior.\\
+Además, para conseguir el compilado en \LaTeX y que en la misma ejecución nos genere el documento en PDF, necesitamos tener instalado también \textbf{\textit{latex-xetex}} en la versión 3 o superior.\\
 
-Una vez instalado todo lo anterior, tenemos que ejecutar el programa. Para hacerlo desde una \textit{Shell Unix} hay que ejecutar el comando \verb"python3 creator.py". Si todo va bien, al finalizar obtendremos en la carpeta de destino tanto los ficheros Latex como el PDF con el resultado final.
+Una vez instalado todo lo anterior, tenemos que ejecutar el programa. Para hacerlo desde una \textit{Shell Unix} hay que ejecutar el comando \verb"python3 creator.py". Si todo va bien, al finalizar obtendremos en la carpeta de destino tanto los ficheros \LaTeX como el PDF con el resultado final.
 
 \section{Dónde descargar la aplicación}
 \label{sec:descarga_aplicacion}
