@@ -304,15 +304,33 @@ En esta sección, se describen las tecnologías utilizadas para la realización 
 \label{sec:python}
 Python~\cite{python:1} es un lenguaje de programación que busca la simplicidad y facilidad, así como la legibilidad del código. Es un lenguaje interpretado, es decir, no necesita ser compilado para ejecutar.\\
 
+Fue creado en los finales de los ochenta por Guido Can Rossum en el Centro para las Matemáticas y la Informatica (CWI, Centrum Wiskunde \& Informatica), en los Países Bajos. El nombre del lenguaje proviene de la afición de su creador por el grupo de humoristas británicos \textit{Monty Python}.\\
+
 Con Python se pueden hacer todo tipo de programas. Aunque no es un lenguaje específico para el desarrollo web, sí se pueden desarrollar páginas con él.\\
 
 Es un lenguaje multiparadigma: permite más de un estilo de programación (orientada a objetos, imperativa, funcional \ldots). También es multiplataforma, por lo que se puede usar con distintos sistemas informáticos.\\
 
-Una ventaja de Python es que cuenta con un gran número de funciones incorporadas en el lenguaje (por ejemplo, para tratar \emph{strings}, ficheros\ldots) y librerías para usos específicos que podemos importar a nuestro programa.
+Una ventaja de Python es que cuenta con un gran número de funciones incorporadas en el lenguaje (por ejemplo, para tratar \emph{strings}, ficheros\ldots) y librerías para usos específicos que podemos importar a nuestro programa, lo que nos ayuda a realizar muchas tareas sin necesidad de programarlas desde cero.\\
 
-FIXME: la descripción de Python debería ser al menos de una página
+Phyton es ideal para trabajar con grandes volúmenes de datos, porque favorece su extracción y procesamiento, siendo el elegido por las empresas de Big Data. A nivel científico, posee una amplia biblioteca de recursos con especial énfasis en las matemáticas.
 
-FIXME: Deberías hablar de Python2 y Python3
+
+\subsection{Python 2 y Python 3}
+\label{python2y3}
+Hay dos versiones principales de Python: Python 2 y Python 3. Python 2 ha estado presente durante mucho tiempo, por lo que es la versión más extendida actualmente y la que tiene mayor disponibilidad de bibliotecas. La versión más popular de Python 2 es Python 2.7.\\
+
+Sin embargo, Python 3 se considera el futuro de Python, ya que está pensado para añadir más características y corregir errores anteriores, y está en continuo desarrollo. Mientras, Python 2 no añadirá ya prácticamente nuevas características. Por ello, Python 3 comienza a adelantar a Python 2, en lo que a usuarios que la usan se refiere.\\
+
+Las funcionalidades de Python 2 y 3 son, en su mayoría, iguales, pero hay algunas diferencias en la sintaxis y la manipulación. Las principales diferencias entre estas dos versiones son:
+\begin{itemize}
+	\item \textbf{Print:} quizá es la diferencia más destacada a simple vista, y es que \textit{print} ha pasado de ser una sentencia a ser una función. Esto se traduce, sobre todo, a que con Python 2 se puede escribir \verb"print 'Hello World'" , sin necesidad de paréntesis. En cambio, en Python 3 es obligatorio el uso de paréntesis para hacer un \textit{print}: \verb"print('Hello World')".
+	\item \textbf{División entera}: en Python 2 la división de dos números enteros da como resultado un número entero (3/2 = 1), y para que el resultado tenga decimales hay que escribir dividendo y divisor en forma de decimal (3.0/2.0 = 1.5). En Python 3 la división de enteros ya da como resultado un número decimal (3/2 = 1.5).
+	\item \textbf{Soporte Unicode:} para hacer una cadena Unicode en Python 2, se debe añadir el caracter \textit{'u'} a la cadena: \verb"u'Hello World'", mientras que en Python 3 las cadenas son Unicode por omisión.
+	\item \textbf{Next (iterables):} en Python 2, para obtener el siguiente elemento de un iterador, se pueden usar tanto el método iter\textbf{.next()} como la función \textbf{next}(iter). Sin embargo, en Python 3 sólo se puede utilizar la función.
+	\item \textbf{Input:} en Python 2 hay dos funciones para introducir datos por teclado: \textit{raw\_input()} (los datos introducidos los trata como una cadena de texto) e \textit{input()} (los datos introducidos los trata por su tipo, es decir, si introducimos 15 lo trata como un int). En Python 3 se ha eliminado la función \textit{raw\_input()}, y en su lugar permanece la función \textit{input()} con las características del \textit{raw\_input()} de Python 2.
+\end{itemize}
+
+
 
 \section{\LaTeX}
 \label{sec:latex}
@@ -320,11 +338,55 @@ FIXME: Deberías hablar de Python2 y Python3
 
 Una de las ventajas de \LaTeX es la calidad profesional de los documentos que genera, así como su excelente calidad de imprenta. Otra ventaja es que permite separar claramente el contenido y el formato del documento.\\
 
-\LaTeX presupone una filosofía de trabajo diferente a la de los procesadores de texto habituales (``lo que ves es lo que obtienes'') y se basa en instrucciones. Tradicionalmente, este aspecto se ha considerado una desventaja. Sin embargo, \LaTeX permite a quien escribe un documento centrarse exclusivamente en el contenido, sin tener que preocuparse de los detalles del formato.
+\LaTeX presupone una filosofía de trabajo diferente a la de los procesadores de texto habituales (``lo que ves es lo que obtienes'') y se basa en instrucciones. Tradicionalmente, este aspecto se ha considerado una desventaja. Sin embargo, \LaTeX permite a quien escribe un documento centrarse exclusivamente en el contenido, sin tener que preocuparse de los detalles del formato.\\
 
-FIXME: la descripción de Latex debería ser al menos de una página. Debería comentarse el proceso de creación de documentos latex, incluida su compilación
+El proceso de generación de un documento con \LaTeX consiste en 3 pasos:
+\begin{itemize}
+	\item \textbf{Editar.} El primer paso es usar un editor para generar un archivo con extensión \textit{.tex}, y en él escribir el código \LaTeX que describa la estructura y contenido del documento.
+	\item \textbf{Compilar.} Compilar es el proceso realizado por el motor de \LaTeX, que convierte los archivos \textit{.tex} en documentos con formato \textit{.pdf}, que se podrán imprimir y ver en pantalla. El proceso de compilación detectará e indicará los errores que tenga el código, que habrá que corregir y volver a compilar para obtener el documento \textit{.pdf}.
+	\item \textbf{Visualizar.} Una vez compilado, y sin errores, podremos visualizar el resultado. Hay editores específicos para \LaTeX que permiten compilar y visualizar el documento desde el propio editor; si no fuese el caso, habría que dirigirse al directorio para buscar y abrir el archivo \textit{.pdf} que ha sido generado.
+\end{itemize}
 
-FIXME: quizás estaría bien hablar también de Xetex, que es lo que utilizamos.
+\subsection{Creación de un documento \LaTeX}
+\label{crearLatex}
+Un documento \LaTeX tiene dos partes principales: el preámbulo y el cuerpo del documento.
+\begin{itemize}
+	\item \textbf{Preámbulo.} Comienza por la instrucción \textit{\textbackslash documentclass[.]\{.\}}. En todas las instrucciones, entre [] se incluyen los parámetros opcionales, que en el caso del \textit{documentclass} son el tamaño de letra (11pt, 12pt\ldots), si el texto va a dos columnas (twocolumn) o ajuste de los márgenes para imprimir a doble cara (twoside). Entre \{\} se incluyen los parámetros obligatorios, que en este caso es el tipo de documento que estamos elaborando (article, report, book\ldots).\\
+	En el preámbulo se pueden incluir instrucciones para activar paquetes que agregan funciones adicionales a \LaTeX, así como datos generales sobre el documento que se está escribiendo. Y al final se incluyen los campos \textit{\textbackslash title, \textbackslash author} y \textit{\textbackslash date}, que especifican los datos que irán en el encabezado del documento.\\
+	Se puede ver un ejemplo de preámbulo en la Figura ~\ref{fig:preambulo}.
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=8cm, keepaspectratio]{img/preambulo_latex}
+		\caption{Ejemplo de preámbulo}
+		\label{fig:preambulo}
+	\end{figure}
+	
+	\item \textbf{Cuerpo del documento.} Está delimitado por los comandos \textit{\textbackslash begin\{document\}} y \textit{\textbackslash end\{document\}}. Si comenzamos el cuerpo con el comando \textit{\textbackslash maketitle} se escribirán los datos del título con la información que se indicó en el preámbulo (título, autor y fecha).\\
+	Lo único que queda es empezar a escribir el texto, y \LaTeX se encargará del formato y apariencia. Algunas cosas importantes a tener en cuenta son: 
+	\begin{itemize}
+		\item \textbf{Signos especiales:} Algunos símbolos no aparecen en el pdf tal cual los escribimos en el editor en el \textit{.tex}, y hay que escribirlos de manera especial, como los signos de apertura de interrogación y exclamación (?` y !`) que habría que escribir ? y ! seguido de un acento grave para que se visualicen correctamente; o las comillas que, tanto para simples como para dobles, para abrirlas hay que escribir acento grave y para cerrarlas comilla simple.
+		\item \textbf{Comandos para formato de texto:} hay comandos para títulos y secciones (\mbox{\textit{\textbackslash chapter\{\}}}, \textit{\textbackslash section\{\}}, \textit{\textbackslash subsection\{\}}\ldots) y para enfatizar o cambiar el formato del texto (\textbf{\textbackslash textbf\{\}}, \textit{\textbackslash textit\{\}}, \textsc{\textbackslash textsc\{\}}, \textsf{\textbackslash textsf\{\}}, \textsl{\textbackslash textsl\{\}}, \texttt{\textbackslash texttt\{\}}\ldots).
+		\item \textbf{Índice:} \LaTeX genera el índice del documento automáticamente si añadimos la instrucción \textbackslash tableofcontents.
+	\end{itemize}
+	
+	Se puede ver un ejemplo del cuerpo del documento en la Figura ~\ref{fig:cuerpo}.	
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=13cm, keepaspectratio]{img/cuerpo_latex}
+		\caption{Ejemplo de cuerpo del documento}
+		\label{fig:cuerpo}
+	\end{figure}
+	
+\end{itemize}
+
+\subsection{XeTeX}
+\label{xetex}
+Aunque \LaTeX proporcinoa un amplio conjunto de fuentes, es posible que se desee utilizar una fuente externa que nos guste más, y que esté instalada previamente en el sistema. Esto es posible gracias a XeTeX, que es un motor de tipografía \TeX que utiliza Unicode y es compatible con tecnologías de fuentes modernas como OpenType (OTF), TrueType (TTF), Graphite y Apple Advanced Typography (AAT). El compilador necesario es XeTeX o XeLaTeX.\\
+
+En este proyecto, estamos compilando con \textbf{XeLaTeX}.
+
+
 
 \section{Google Forms}
 \label{sec:googleforms}
