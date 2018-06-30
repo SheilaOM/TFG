@@ -382,7 +382,7 @@ Un documento \LaTeX tiene dos partes principales: el preámbulo y el cuerpo del 
 
 \subsection{XeTeX}
 \label{xetex}
-Aunque \LaTeX proporcinoa un amplio conjunto de fuentes, es posible que se desee utilizar una fuente externa que nos guste más, y que esté instalada previamente en el sistema. Esto es posible gracias a XeTeX, que es un motor de tipografía \TeX que utiliza Unicode y es compatible con tecnologías de fuentes modernas como OpenType (OTF), TrueType (TTF), Graphite y Apple Advanced Typography (AAT). El compilador necesario es XeTeX o XeLaTeX.\\
+Aunque \LaTeX proporcinoa un amplio conjunto de fuentes, es posible que se desee utilizar una fuente externa que nos guste más, y que esté instalada previamente en el sistema. Esto es posible gracias a XeTeX~\cite{xetex:1}, que es un motor de tipografía \TeX que utiliza Unicode y es compatible con tecnologías de fuentes modernas como OpenType (OTF), TrueType (TTF), Graphite y Apple Advanced Typography (AAT). El compilador necesario es XeTeX o XeLaTeX.\\
 
 En este proyecto, estamos compilando con \textbf{XeLaTeX}.
 
@@ -399,17 +399,74 @@ Una vez enviado el formulario a los destinatarios, se irán recopilando las resp
 
 \section{Google Sheets API}
 \label{sec:googlesheet}
-Google Sheets API~\cite{sheet:1} permite leer y modificar cualquier aspecto de una hoja de cálculo.\\
+Google Sheets API~\cite{sheet:1} permite leer y modificar cualquier aspecto de una hoja de cálculo. La API ofrece dos formas principales de interactuar con la hoja de cálculo:
+\begin{itemize}
+	\item Leer o escribir solo valores de celdas (con la colección \textit{spreadsheets.values}).
+	\item Leer o escribir cualquier aspecto de la hoja de cálculo (con la colección \textit{spreadsheets}).
+\end{itemize}
 
-Para utilizar esta herramienta en Python, tendremos que descargar la biblioteca de Google Client (\verb"pip install --upgrade google-api-python-client"), así como las credenciales necesarias.\\
+En nuestro caso, es suficiente con la lectura de los valores de las celdas, por lo que usaremos la colección \textbf{spreadsheets.values}\footnote{\url{https://forward2.herokuapp.com/developers/sheets/api/reference/rest/v4/spreadsheets.values?hl=es-419}}.\\
 
-Para leer el contenido de las celdas, que es lo que interesa en este caso, se utiliza la colección \textbf{spreadsheets.values}\footnote{\url{https://forward2.herokuapp.com/developers/sheets/api/reference/rest/v4/spreadsheets.values?hl=es-419}}. Con esta colección podremos especificar el rango, o rangos, de celdas que nos interesa leer (o escribir).
+Todos los métodos de la API requieren un parámetro \textit{spreadsheetId} que se utiliza para identificar la hoja de cálculo a la que se accederá. Este ID es el valor entre \textit{``/d/''} y \textit{``/edit''} de la URL de la hoja de cálculo. Esta URL también contiene el \textit{sheetId}, que es el ID de la hoja concreta con la que queremos trabajar. Este valor aparece como el valor del parámetro \textit{gid}. Por tanto, la URL de una hoja de cálculo tendrá el siguiente aspecto:
 
-FIXME: la descripción de las Google Sheets APIs debería ser al menos de una página
+{\footnotesize\texttt{https://docs.google.com/spreadsheets/d/\textbf{spreadsheetId}/edit\#gid=\textbf{sheetId}}}\\
 
-FIXME: deberías hablar de Oauth2client y del fichero que tienes de claves... (¡seguridad!)
+Para indicar el rango de celdas que queremos leer (o escribir), habrá que escribir ese rango como parámetro del método utilizado, en notación A1.\\
 
-FIMXE: deberías comentar también las otras dependencias que tenemos: pycountry, pillow, 
+Para utilizar esta herramienta en Python, tendremos que descargar la biblioteca de Google Client (\texttt{pip install --upgrade google-api-python-client}), así como las credenciales necesarias.\\
+
+
+\subsection{Método \textit{spreadsheets.value.get}}
+\label{spreadsheets_value_get}
+Este método lee y devuelve los valores de un rango de celdas de una hoja de cálculo. Se encarga de enviar un HTTP Request con la siguiente forma:
+
+{\footnotesize\texttt{GET https://sheets.googleapis.com/v4/spreadsheets/\textbf{\{spreadsheetId\}}/values/\textbf{\{range\}}}}
+
+La respuesta de esta petición tendrá la siguiente estructura:
+{\footnotesize\begin{verbatim}
+{
+  "range": ...,
+  "majorDimension": ...,
+  "values": [
+    ...
+  ]
+}
+\end{verbatim}}
+
+\textit{range} es el rango de celdas que hemos extraido, \textit{majorDimension} indica si se ha leido por filas o por columnas (por defecto lee por filas) y \textit{values} es un array con el valor de las celdas: cada elemento del array se corresponde con una fila (o con una columna si majorDimension = COLUMNS) y, a su vez, cada fila se describe con otro array.\\
+
+Para este caso, necesitaremos sólo el campo \textit{values}.
+
+
+\subsection{OAuth 2.0}
+\label{oauth2client}
+Las APIs de Google usan el protocolo OAuth 2.0~\cite{oauth2client:1} para autenticación y autorización. Para utilizar una API utilizando OAuth 2.0 hay que seguir los siguientes pasos:
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=8cm, keepaspectratio]{img/webflow}
+	\caption{Esquema solicitud token para OAuth 2.0}
+	\label{fig:OAuth}
+\end{figure}
+\begin{enumerate}
+	\item \textbf{Obtener las credenciales de OAuth 2.0 desde la Consola de la API de Google,} que serán una ID y un \textit{client secret} conocidos tanto por Google como por la aplicación. Estas credenciales hay que descargarlas en un JSON, cuyo nombre necesitará la aplicación para los pasos posteriores.
+	\item \textbf{Obtener un token de acceso del Servidor de Autorización de Google.} La aplicación realiza la solicitud del token al Servidor, que le devolverá el token preciso.
+	\item \textbf{Enviar el token de acceso a la API a la que se desea acceder.} Una vez que la aplicación obtiene un token de acceso, lo envía a la API en un encabezado de autorización HTTP. 
+	\item \textbf{Actualiza el token de acceso, si es necesario.} Los tokens de acceso tienen vidas limitadas, por lo que se puede obtener un token de actualización, que permitirá a la aplicación obtener nuevos tokens de acceso.
+\end{enumerate}
+
+
+\section{Pycountry}
+\textit{pycountry}~\cite{pycountry:1} es un paquete que proporciona idioma, territorio, moneda y códigos de script de ISO de los países, así como sus traducciones entre ellos, tomados del paquete \textit{iso-codes}.\\
+
+Se puede acceder a los países a través de un objeto de base de datos que ya está configurado al importar pycountry: \textit{\textbf{countries}}. Para acceder a un país específico, habrá que hacerlo con \textit{\textbf{get()}} (\textit{pycountry.countries.get(name=...)}).
+
+\section{Pillow}
+\textit{pillow}~\cite{pillow:1} es un \textit{fork} de PIL~\footnote{\url{https://pypi.org/project/PIL/}}. PIL es la Biblioteca de Imágenes de Python (Python Imaging Library) que agrega capacidades de procesamiento de imágenes a su intérprete de Python. Esta biblioteca es compatible con muchos formatos de archivo y proporciona un potente procesamiento de imágenes y capacidades gráficas.\\
+
+En este proyecto se utiliza el método \textit{Image} de PIL~\footnote{\url{https://pillow.readthedocs.io/en/3.1.x/reference/Image.html}}, que se utiliza para representar una imagen. Proporciona funciones como cargar imágenes desde archivos, o crear nuevas imágenes.
+
+
+\section{Pandas}
 
 FIXME: ¿no usabas pandas para las gráficas? ¡Coméntalo aquí!
 
@@ -769,9 +826,9 @@ Otra idea es, además de la web, hacer una aplicación móvil, de manera que en 
 Para que la aplicación funcione correctamente, es necesario tener instalado \textbf{\textit{Python 3}} o superior, además de los siguientes paquetes, en las versiones indicadas:
 \begin{itemize}
 	\item \textbf{\textit{google-api-python-client}}\cite{google_api_client:1} versión 1.6.5 o superior.
-	\item \textbf{\textit{pycountry}}\cite{pycountry:1} versión 18.2.23 o superior.
+	\item \textbf{\textit{pycountry}}~\footnote{\url{https://pypi.org/project/pycountry/}} versión 18.2.23 o superior.
 	\item \textbf{\textit{pillow}}\cite{pillow:1} versión 5.1.0 o superior.
-	\item \textbf{\textit{oauth2client}}\cite{oauth2client:1} versión 4.1.2 o superior.
+	\item \textbf{\textit{oauth2client}}~\footnote{\url{https://pypi.org/project/oauth2client/}} versión 4.1.2 o superior.
 \end{itemize}
 
 Además, para conseguir el compilado en \LaTeX y que en la misma ejecución nos genere el documento en PDF, necesitamos tener instalado también \textbf{\textit{latex-xetex}} en la versión 3 o superior.\\
