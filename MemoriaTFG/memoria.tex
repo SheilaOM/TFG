@@ -467,8 +467,18 @@ En este proyecto se utiliza el método \textit{Image} de PIL~\footnote{\url{http
 
 
 \section{Pandas}
+\label{pandas}
+\textit{Pandas}~\cite{pandas:1} es una biblioteca de código abierto de Python que proporciona estructuras de datos y herramientas de análisis de datos de alto rendimiento. Pandas lleva a cabo tareas como alinear datos para su comparación, fusionar conjuntos de datos o calcular tablas de frecuencias, entre otros.\\
 
-FIXME: ¿no usabas pandas para las gráficas? ¡Coméntalo aquí!
+La estructura de datos básica de pandas es el \textit{DataFrame}, que es una estructura de datos tabular que se compone de columnas y filas ordenadas.
+
+
+\section{Matplotlib}
+\label{matplotlib}
+\textit{Matplotlib}~\cite{matplotlib:1} es una biblioteca de dibujo 2D de Python que produce figuras. Puede generar gráficos, histogramas, espectros de potencia, gráficos de barras, diagramas de errores, diagramas de dispersión, etc. con solo unas pocas líneas de código.\\
+
+El módulo \textit{\textbf{pyplot}}~\cite{pyplot:1} proporciona una interfaz parecida a MATLAB~\footnote{\url{https://es.mathworks.com/products/matlab.html}}. Para el usuario avanzado, tiene un control total de los estilos de línea, las propiedades de fuente, las propiedades de los ejes, etc. a través de una interfaz orientada a objetos o mediante un conjunto de funciones familiares para los usuarios de MATLAB.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -497,11 +507,15 @@ La base para obtener un buen resultado final, es crear desde el inicio un buen f
 
 Por ejemplo, si preguntamos el nombre de la persona, elegiremos como tipo de respuesta la opción \textbf{Respuesta corta}, ya que el nombre consta de pocas palabras. En cambio, si pedimos una descripción, convendría elegir la opción \textbf{Párrafo} (incluso se puede limitar el número de caracteres de dicho párrafo). En los casos en los que conocemos de antemano las posibles respuestas de los asistentes, y éstas se vayan a repetir entre varios de ellos, podemos elegir las opciones de \textbf{Casillas de verificación}, \textbf{Selección múltiple} o \textbf{Desplegable}, según creamos conveniente. Algunos ejemplos de estos casos serían unas casillas de verificación para respuestas de Sí/No, o un desplegable para elegir la nacionalidad de la persona.\\
 
-Con estos últimos casos, conseguiremos que todas las respuestas sean concisas y uniformes. Si no lo hacemos de esta forma y preguntamos, por ejemplo, ``¿Cuál es tu mes de nacimiento?'', dos personas distintas que hayan nacido en el mismo mes pueden contestar ``Yo nací en enero'' y ``Mi mes de nacimiento es enero''. Sin embargo, si aquí elegimos como tipo de respuesta un desplegable en el que simplemente haya que seleccionar el mes, obtendremos en ambas respuestas ``Enero''. Esto nos puede ayudar en el futuro si queremos, por ejemplo, buscar a todas las personas que tengan la misma respuesta a una determinada pregunta.\\
+Con estos últimos casos, conseguiremos que todas las respuestas sean concisas y uniformes. Si no lo hacemos de esta forma y preguntamos, por ejemplo, ``?`Cuál es tu mes de nacimiento?'', dos personas distintas que hayan nacido en el mismo mes pueden contestar ``Yo nací en enero'' y ``Mi mes de nacimiento es enero''. Sin embargo, si aquí elegimos como tipo de respuesta un desplegable en el que simplemente haya que seleccionar el mes, obtendremos en ambas respuestas ``Enero''. Esto nos puede ayudar en el futuro si queremos, por ejemplo, buscar a todas las personas que tengan la misma respuesta a una determinada pregunta.\\
 
-Además de estas, hay varias opciones más para las respuestas.
-
-FIXME: faltaría un pantallazo del Google Forms
+Además de estas, hay varias opciones más para las respuestas, como se puede observar en la Figura~\ref{fig:form}.
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=14cm, keepaspectratio]{img/form}
+	\caption{Tipos de respuesta de Google Forms}
+	\label{fig:form}
+\end{figure}
 
 
 \section{Traspaso de respuestas a hoja de cálculo}
