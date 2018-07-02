@@ -323,9 +323,9 @@ Sin embargo, Python 3 se considera el futuro de Python, ya que está pensado par
 
 Las funcionalidades de Python 2 y 3 son, en su mayoría, iguales, pero hay algunas diferencias en la sintaxis y la manipulación. Las principales diferencias entre estas dos versiones son:
 \begin{itemize}
-	\item \textbf{Print:} quizá es la diferencia más destacada a simple vista, y es que \textit{print} ha pasado de ser una sentencia a ser una función. Esto se traduce, sobre todo, a que con Python 2 se puede escribir \verb"print 'Hello World'" , sin necesidad de paréntesis. En cambio, en Python 3 es obligatorio el uso de paréntesis para hacer un \textit{print}: \verb"print('Hello World')".
+	\item \textbf{Print:} quizá es la diferencia más destacada a simple vista, y es que \textit{print} ha pasado de ser una sentencia a ser una función. Esto se traduce, sobre todo, a que con Python 2 se puede escribir \texttt{print ``Hello World''}, sin necesidad de paréntesis. En cambio, en Python 3 es obligatorio el uso de paréntesis para hacer un \textit{print}: \texttt{print(``Hello World'')}.
 	\item \textbf{División entera}: en Python 2 la división de dos números enteros da como resultado un número entero (3/2 = 1), y para que el resultado tenga decimales hay que escribir dividendo y divisor en forma de decimal (3.0/2.0 = 1.5). En Python 3 la división de enteros ya da como resultado un número decimal (3/2 = 1.5).
-	\item \textbf{Soporte Unicode:} para hacer una cadena Unicode en Python 2, se debe añadir el caracter \textit{'u'} a la cadena: \verb"u'Hello World'", mientras que en Python 3 las cadenas son Unicode por omisión.
+	\item \textbf{Soporte Unicode:} para hacer una cadena Unicode en Python 2, se debe añadir el caracter \textit{`u'} a la cadena: \texttt{u``Hello World''}, mientras que en Python 3 las cadenas son Unicode por omisión.
 	\item \textbf{Next (iterables):} en Python 2, para obtener el siguiente elemento de un iterador, se pueden usar tanto el método iter\textbf{.next()} como la función \textbf{next}(iter). Sin embargo, en Python 3 sólo se puede utilizar la función.
 	\item \textbf{Input:} en Python 2 hay dos funciones para introducir datos por teclado: \textit{raw\_input()} (los datos introducidos los trata como una cadena de texto) e \textit{input()} (los datos introducidos los trata por su tipo, es decir, si introducimos 15 lo trata como un int). En Python 3 se ha eliminado la función \textit{raw\_input()}, y en su lugar permanece la función \textit{input()} con las características del \textit{raw\_input()} de Python 2.
 \end{itemize}
@@ -556,7 +556,7 @@ NamedTuple es una \textit{``Tupla con nombre''}. Tiene una estructura parecida a
 \end{figure}
 
 
-En este caso, el NamedTuple se llama \textit{Fields}. Los nombres de los campos hay que definirlos antes de generar el NamedTuple. Una vez tenemos definido el NamedTuple, podemos referirnos a cada campo de éste con su nombre (si tuviésemos un array, tendríamos que saber en qué posición está el campo al que queremos referirnos para llamarlo). Por ejemplo, si del ejemplo anterior de la figura ~\ref{fig:ejemplo4_5Namedtuple} tenemos guardado el primer NamedTuple en una variable llamada \textit{row}, podremos acceder al nombre de la persona usando (\verb"row.name").
+En este caso, el NamedTuple se llama \textit{Fields}. Los nombres de los campos hay que definirlos antes de generar el NamedTuple. Una vez tenemos definido el NamedTuple, podemos referirnos a cada campo de éste con su nombre (si tuviésemos un array, tendríamos que saber en qué posición está el campo al que queremos referirnos para llamarlo). Por ejemplo, si del ejemplo anterior de la figura ~\ref{fig:ejemplo4_5Namedtuple} tenemos guardado el primer NamedTuple en una variable llamada \textit{row}, podremos acceder al nombre de la persona usando \texttt{row.name}.
 
 \section{Fichero de errores}
 \label{sec:errores}
@@ -653,14 +653,13 @@ Cada persona tendrá que indicar también su país de procedencia, y en vez de p
 Para elegir la bandera correspondiente a cada persona, utilizamos el método \textbf{\textit{get\_flag}}, en el que se utiliza la librería \textit{pycountry} para convertir el nombre del país a código \textit{``ISO 3166-1 alpha-2''}. Para ello se obtiene la información de los códigos del país del cuál buscamos la bandera, con \textit{pycountry.countries.get(name=nationality)}, y nos quedaremos con el código en alpha-2.\\
 
 Por ejemplo, si buscamos España:\\
-\verb"nac = pycountry.countries.get(name='Spain')"
+\texttt{nac = pycountry.countries.get(name=``Spain'')}
 
 Obtendremos que \textit{nac} es:\\
-\verb"Country(alpha_2='ES', alpha_3='ESP', name='Spain', numeric='724'," 
-\verb"        official_name='Kingdom of Spain')"
+\texttt{Country(alpha\_2=`ES', alpha\_3=`ESP', name=`Spain', numeric=`724', official\_name=`Kingdom of Spain')}
 
 Y nos interesaría quedarnos con el código alpha-2 en minúsculas:\\
-\verb"nac.alpha_2.lower()"
+\texttt{nac.alpha\_2.lower()}
 
 De esta forma, añadiendo la extensión y, si fuera necesario, el directorio en el que se almacenan las imágenes de las banderas, se generaría el nombre de imagen \textit{flags/es.png}.\\
 
@@ -710,25 +709,24 @@ Con esto, al compilar el documento principal, obtendremos un PDF con la unión d
 \label{sec:uneLatex}
 El proceso de la sección anterior también se puede automatizar, es decir, en vez de tener dos documentos y que uno llame al otro, podemos unir los .tex. Para esto, necesitamos tener listo el documento principal al que nos referíamos antes, y que en él aparezca el comando \mbox{\textit{\textbackslash input\{participants\}}}. Este documento deberá llamarse \textbf{\textit{intro.tex}}\\
 
-Nuestro programa buscará este fichero y leerá su contenido, buscando la sentencia \mbox{\textit{\textbackslash input\{participants\}}}, que será sustituida por el texto que hemos producido con los datos de los participantes. Una vez que tenemos la información de los participantes unida al texto del documento \textit{intro.tex}, lo guardaremos en un nuevo fichero, llamado \textbf{\textit{generated.tex}}, quedando todo el contenido en un único documento \LaTeX.\\
+Nuestro programa buscará este fichero y leerá su contenido, buscando la sentencia \mbox{\textit{\textbackslash input\{participants\}}}, que será sustituida por el texto que hemos producido con los datos de los participantes. Una vez que tenemos la información de los participantes unida al texto del documento \textit{intro.tex}, lo guardaremos en un nuevo fichero, llamado \textbf{\textit{ConfBook.tex}}, quedando todo el contenido en un único documento \LaTeX.\\
 
-Si no se pueden unir los documentos, es decir, no se encuentra el fichero \textit{intro.tex} o la sentencia donde se introduce la información de los participantes, se mostrará un mensaje indicando que se ha creado el fichero con la sección de los participantes, así como su nombre, listo para incluirse en otro .tex:\\
-\verb"        Participants section created (participants.tex). Include"\\
-\verb"        it in your .tex"
+Si no se pueden unir los documentos, es decir, no se encuentra el fichero \textit{intro.tex} o la sentencia donde se introduce la información de los participantes, se mostrará un mensaje indicando que se ha creado el fichero con la sección de los participantes, así como su nombre, listo para incluirse en otro .tex:
+
+\texttt{Participants section created (participants.tex). Include it in your .tex}
 
 
 
 \section{Compilado del documento \LaTeX}
 \label{sec:compilado}
-En caso de que hayamos conseguido obtener el documento \textit{generated.tex}, y contemos en nuestro PC con el paquete de \LaTeX instalado, el programa intentará compilarlo con el comando \textbf{\textit{xelatex generated.tex}} a través de una llamada al sistema:\\
-\verb"        os.system('xelatex generated.tex')"\\
+En caso de que hayamos conseguido obtener el documento \textit{ConfBook.tex}, y contemos en nuestro PC con el paquete de \LaTeX instalado, el programa intentará compilarlo con el comando \textbf{\textit{xelatex ConfBook.tex}} a través de una llamada al sistema:\\
+\texttt{os.system('xelatex ConfBook.tex')}\\
 
 Si se ha compilado correctamente, obtendremos por pantalla un mensaje informativo indicando que el PDF ha sido generado, y su nombre:\\
-\verb"        PDF has been generated --> generated.pdf"\\
+\texttt{PDF has been generated --> ConfBook.pdf}\\
 
 En caso de que haya algún problema para compilar, nos mostrará un mensaje de error:\\
-\verb"        Impossible to generate PDF automatically. You must"\\
-\verb"        compile in Latex manually"
+\texttt{Impossible to generate PDF automatically. You must compile in Latex manually}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -847,7 +845,7 @@ Para que la aplicación funcione correctamente, es necesario tener instalado \te
 
 Además, para conseguir el compilado en \LaTeX y que en la misma ejecución nos genere el documento en PDF, necesitamos tener instalado también \textbf{\textit{latex-xetex}} en la versión 3 o superior.\\
 
-Una vez instalado todo lo anterior, tenemos que ejecutar el programa. Para hacerlo desde una \textit{Shell Unix} hay que ejecutar el comando \verb"python3 creator.py". Si todo va bien, al finalizar obtendremos en la carpeta de destino tanto los ficheros \LaTeX como el PDF con el resultado final.
+Una vez instalado todo lo anterior, tenemos que ejecutar el programa. Para hacerlo desde una \textit{Shell Unix} hay que ejecutar el comando \texttt{python3 creator.py}. Si todo va bien, al finalizar obtendremos en la carpeta de destino tanto los ficheros \LaTeX como el PDF con el resultado final.
 
 \section{Dónde descargar la aplicación}
 \label{sec:descarga_aplicacion}
