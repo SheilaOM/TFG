@@ -693,9 +693,7 @@ Con el método \textbf{\textit{generate\_graphs}} podemos obtener diagramas de s
 
 \subsection{Listados de personas}
 \label{subsec:listados}
-Usando el método \textbf{\textit{generate\_list}} se puede crear una lista de todas las personas que han contestado \textit{``Sí''} a las preguntas que se pasarán como argumentos en la llamada al método. Una condición básica en este caso, es que las preguntas que indiquemos deben ser de respuesta \textit{Sí/No}. E igual que antes, para darle como argumento las preguntas que queremos, se hará con un array con los nombres del \textit{NamedTuple}.
-
-FIXME: Actualizarlo a la nueva funcionalidad de este método.
+Usando el método \textbf{\textit{generate\_list}} se puede crear una lista de todas las personas que han dado una respuesta concreta a una pregunta. Como argumento a este método se pasará un array con todos los casos que queremos cubrir. Cada caso se indicará con un array de dos posiciones: pregunta de la que queremos hacer la lista, indicada con el nombre que se le ha asignado para el \textit{NamedTuple}; y un \textit{string} con la respuesta que buscamos.\\
 
 
 \section{Guarda el fichero \LaTeX con los datos}
