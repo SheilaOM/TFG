@@ -6,6 +6,7 @@ import os
 import csv
 from collections import namedtuple
 import urllib.request
+import string
 
 import httplib2
 from apiclient import discovery
@@ -15,14 +16,12 @@ from oauth2client.file import Storage
 from PIL import Image
 import pycountry
 
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from operator import itemgetter
 
-#SPREADSHEET_ID = '1tX2SheuK8BFyp_bPEaFt_rs4gjRr_eXPEBnNadVdCaI' # id of Google Spreadsheet
+
 SPREADSHEET_ID = '1cWBAVb_pUqJlmlaxsXmajPK3601ZxToZWv6qP3wRj3g'
-HEADER = ['date', 'name', 'position', 'affiliation', 'nationality', 'graduation', 'dietary', 'picture', 'topics', 'looking_for', 'homepage', 'twitter', 'presentation', 'programming', 'hobbies', 'tabs', 'looking', 'hiring']
+HEADER = ['date', 'name', 'position', 'affiliation', 'nationality', 'graduation', 'picture', 'topics', 'homepage', 'twitter', 'presentation', 'programming', 'hobbies', 'looking', 'hiring']
 
 SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
 CLIENT_SECRET_FILE = 'client_secret.json'
@@ -60,10 +59,7 @@ class Creator():
         if not credentials or credentials.invalid:
             flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPES)
             flow.user_agent = APPLICATION_NAME
-            if self.flags:
-                credentials = tools.run_flow(flow, store, self.flags)
-            else: # Needed only for compatibility with Python 2.6   - FIXME: then the rest of the script should work for Python2
-                credentials = tools.run(flow, store)
+            credentials = tools.run_flow(flow, store, self.flags)
             print('Storing credentials to ' + credential_path)
         return credentials
 
@@ -80,8 +76,7 @@ class Creator():
         service = discovery.build('sheets', 'v4', http=http,
                                   discoveryServiceUrl=discoveryUrl)
 
-        rangeName = 'A2:R'
-#        rangeName = 'A2:'+ string.ascii_uppercase[len(HEADER)-1] # sheet, and rows and columns
+        rangeName = 'A2:'+ string.ascii_uppercase[len(HEADER)-1] # sheet, and rows and columns
         result = service.spreadsheets().values().get(
             spreadsheetId=SPREADSHEET_ID, range=rangeName).execute()
         values = result.get('values', [])
@@ -89,13 +84,21 @@ class Creator():
         if not values:
             print('No data found.')
         else:
+            id = 1
             Fields = namedtuple("Fields", ' '.join(HEADER))
             for row in values:
+                id += 1
                 if row and len(row) == len(HEADER):  # in case of an empty row (deleted by hand from the spreadsheet)
                     fields = Fields(*row)
                     self.fields.append(fields)
+                elif (len(row) < len(HEADER)) and (len(row) > (len(HEADER) - 5)):
+                    while(len(row) != len(HEADER)):
+                        row.append("-")
+                    fields = Fields(*row)
+                    self.fields.append(fields)
                 else:
-                    self.err.write("- Error. Not enough values in row: " + str(row) + "\n")
+                    self.err.write("- Error. Not enough values in row " + str(id) + ": "+ str(row) + "\n")
+
 
     def make_chars_latex_friendly(self, row):
         """
@@ -103,10 +106,12 @@ class Creator():
         """
         for data, name in zip(row, row._fields):
             if (name != "picture"):
-                for c in ["_", "&", "#", "$", "%", "{", "}"]:
+                for c in ["_", "&", "#", "$", "%", "{", "}", "^"]:
                     if data.find(c) != -1:
                         if c == '~':
                             data = data.replace(c, "\\textasciitilde ")
+                        elif c == '\\':
+                            data = data.replace(c, "\\textbackslash ")
                         elif c == '\n':
                             data = data.replace(c, "")
                         else:
@@ -123,40 +128,44 @@ class Creator():
 
         Returns the (relative) path to the image file
         """
-        # FIXME: long try-excepts should be enhanced
 
         url = row.picture
+        msgError = ("It's impossible to download the image automatically. Please, try download it manually, and" +
+                    "name it img" + str(id) + ".jpg. Next, change the name of this person's image in the .tex")
+
         try:
             resp = urllib.request.urlopen(url)          # Reads URL (does not download)
-            contentType = resp.info().get("Content-Type")
-            if contentType.startswith("image/"):
-                imgType = contentType.split('/')[-1]
-                imgType = imgType.split(';')[0]
-                urllib.request.urlretrieve(url, "images/img" + str(id) + "." + imgType)  # If URL is an image, then download
+        except ValueError as e:
+            image = "images/img0.jpg"
+            self.err.write("- Error in image of " + row.name + " (pos. " + str(id) + ") -> This person hasn't provided image link.\n")
+            return image
+        except:
+            image = "images/img0.jpg"
+            self.err.write("- Error in image of " + row.name + " (pos. " + str(id) + ") -> " + msgError + "\n")
+            return image
 
-                if imgType == "webp":  # If webp image, convert to jpeg
-                    im = Image.open("images/img" + str(id) + ".webp").convert("RGB")
-                    im.thumbnail(IMAGE_SIZE, Image.ANTIALIAS)
-                    im.save("images/img" + str(id) + ".jpg", "jpeg")
-                    os.remove("images/img" + str(id) + ".webp")
-                else:
-                    im = Image.open("images/img" + str(id) + "." + imgType)
-                    im.thumbnail(IMAGE_SIZE, Image.ANTIALIAS)
-                    im = im.convert('RGB')
-                    im.save("images/img" + str(id) + "." + imgType, imgType)
+        contentType = resp.info().get("Content-Type")
+        if contentType.startswith("image/"):
+            imgType = contentType.split('/')[-1]
+            imgType = imgType.split(';')[0]
+            nameImage = "images/img" + str(id) + "." + imgType
+            urllib.request.urlretrieve(url, nameImage)  # If URL is an image, then download
 
-                image = "images/img" + str(id) + "." + imgType
+            if imgType == "webp":  # If webp image, convert to jpeg
+                im = Image.open(nameImage).convert("RGB")
+                im.thumbnail(IMAGE_SIZE, Image.ANTIALIAS)
+                im.save("images/img" + str(id) + ".jpg", "jpeg")
+                os.remove(nameImage)
             else:
-                image = "images/img0.jpg"
-                self.err.write("-Error in image of " + row.name + " (pos. " + str(id) + ") -> Download image manually (change the name of the image in generated.tex).\n")
+                im = Image.open(nameImage)
+                im.thumbnail(IMAGE_SIZE, Image.ANTIALIAS)
+                im = im.convert('RGB')
+                im.save(nameImage, imgType)
 
-        except (urllib.error.HTTPError, urllib.error.URLError) as e:
+            image = nameImage
+        else:
             image = "images/img0.jpg"
-            self.err.write("-Error in image of " + row.name + " (pos. " + str(id) + ") -> URL not found.\n")
-
-        except ValueError:
-            image = "images/img0.jpg"
-            self.err.write("-Error in image of " + row.name + " (pos. " + str(id) + ") -> There aren't URL.\n")
+            self.err.write("- Error in image of " + row.name + " (pos. " + str(id) + ") -> " + msgError + "\n")
 
         return image
 
@@ -171,7 +180,7 @@ class Creator():
             nac = pycountry.countries.get(name=row.nationality)
             flag_icon = "flags/" + nac.alpha_2.lower() + ".png"
         except KeyError:
-            self.err.write("-Error in nationality of " + row.name + " (pos. " + str(id) + ") -> Country not found or not provided.\n")
+            self.err.write("- Error in nationality of " + row.name + " (pos. " + str(id) + ") -> Country not found or not provided.\n")
             flag_icon = ""
 
         return flag_icon
@@ -191,9 +200,6 @@ class Creator():
             description = " ".join(description) + r" \ldots"
         else:
             description = desc
-
-        #if len(description) != 0:
-        #    description += r"\\" + "\n"
 
         return description
 
@@ -238,15 +244,19 @@ class Creator():
         Returns lists with the results.
         """
         msg = ""
-        for fld in HEADER:
-            if fld in fields:
+        for fld in fields:
+            if fld[0] in HEADER:
+                fld_name = fld[0]
+                fld_answer = fld[1]
+                print(fld_name + "--" + fld_answer)
                 msg += (r"\newpage" + "\n" +
-                        r"\color{color1}\uppercase{\textbf{" + fld + r"}}" + "\n" +
-                        r"\color{color2}" + "\n" +
+                        r"\color{color1}\uppercase{\textbf{" + fld_name + r"}}\\" + "\n" +
+                        r"\color{color2}People whose answer to the question of '" +
+                        fld_name + "' has been '" + fld_answer + "':" + "\n" +
                         r"\begin{multicols}{2}" + "\n" +
                         r"\begin{itemize}" + "\n")
                 for row in self.fields:                  #through all the participants
-                    if getattr(row, fld) == "Yes":     #Participants with "Yes" in the chosen field
+                    if getattr(row, fld_name) == fld_answer:     #Participants with 'answer' in the chosen 'field'
                         msg += r"\item " + row.name + "\n"
                 msg += r"\end{itemize}" + "\n" + r"\end{multicols}"
         return msg
@@ -327,20 +337,6 @@ class Creator():
             if row.homepage:
                 msg += (r"{\scriptsize " + row.homepage + r"}" + "\n")
 
-            """
-            # Optional data
-            opcional = False
-            for fld in self.fields:
-                if fld.show == "yes":
-                    opcional = True
-                    if fld.text != "":
-                        msg += fld.text + ": " + getattr(row, fld.name) + r" - "
-                    else:
-                        msg += getattr(row, fld.name) + r" - "
-            if opcional:
-                msg = msg[:len(msg)-3]
-            """
-
             msg += r"\end{minipage}" + "\n"
 
             msg += r"\newline\newline\newline\newline" + "\n"
@@ -350,7 +346,9 @@ class Creator():
         #msg += c.generate_graphs(['hiring', 'looking'])
 
         # List of people
-        #msg += c.generate_list(['hiring', 'looking'])
+        print("1")
+        msg += c.generate_list([['hiring', 'Yes'], ['looking', 'Yes'], ['nationality', 'Spain']])
+        print("2")
 
         self.err.close()
         return msg
@@ -360,22 +358,20 @@ if __name__ == "__main__":
     c = Creator()
     c.spreadsheet_to_namedtuple()
     participants = c.namedtuple_to_latex()
-    partic = open("participants.tex", "w", encoding="utf-8")
-    partic.write(participants)
-    partic.close()
+    with open("participants.tex", "w", encoding="utf-8") as partic:
+        partic.write(participants)
 
     try:
-        introd = open("intro.tex", "r", encoding="utf-8")
-        text = introd.read().replace("\input{participants}", participants)
-        introd.close()
-        gener = open("generated.tex", "w", encoding="utf-8")     # FIXME: change to with
-        gener.write(text)
-        gener.close()
+        with open("intro.tex", "r", encoding="utf-8") as introd:
+            text = introd.read().replace("\input{participants}", participants)
+
+        with open("ConfBook.tex", "w", encoding="utf-8") as gener:
+            gener.write(text)
         try:
-            os.system("xelatex generated.tex")
-            print("PDF has been generated --> generated.pdf")
+            os.system("xelatex ConfBook.tex")
+            print("PDF has been generated --> ConfBook.pdf")
         except:
             print("Impossible to generate PDF automatically. You must compile in Latex manually")
 
     except FileNotFoundError:
-        print("Participants section created. Include it in your .tex")
+        print("Participants section created (participants.tex). Include it in your .tex")
