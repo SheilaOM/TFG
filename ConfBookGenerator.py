@@ -7,6 +7,7 @@ import csv
 from collections import namedtuple
 import urllib.request
 import string
+from string import Template
 
 import httplib2
 from apiclient import discovery
@@ -19,15 +20,20 @@ import pycountry
 import pandas as pd
 import matplotlib.pyplot as plt
 
+from settings import *
 
-SPREADSHEET_ID = '1cWBAVb_pUqJlmlaxsXmajPK3601ZxToZWv6qP3wRj3g'
-HEADER = ['date', 'name', 'position', 'affiliation', 'nationality', 'graduation', 'picture', 'topics', 'homepage', 'twitter', 'presentation', 'programming', 'hobbies', 'looking', 'hiring']
+#SPREADSHEET_ID = '1cWBAVb_pUqJlmlaxsXmajPK3601ZxToZWv6qP3wRj3g'
+#HEADER = ['date', 'name', 'position', 'affiliation', 'nationality', 'graduation', 'picture', 'topics', 'homepage', 'twitter', 'presentation', 'programming', 'hobbies', 'looking', 'hiring']
 
 SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
 CLIENT_SECRET_FILE = 'client_secret.json'
 APPLICATION_NAME = 'Yearbook Generator'
+
 IMAGE_SIZE = 512, 512 # Maximum participant image size
 LIMIT_DESCRIPTION = 200 # Maximum participant description size
+
+ERRORS_FILE = "errors.txt"
+
 
 class Creator():
 
@@ -82,7 +88,7 @@ class Creator():
         values = result.get('values', [])
 
         if not values:
-            print('No data found.')
+            self.err.write("- Error. Not data found.")
         else:
             id = 1
             Fields = namedtuple("Fields", ' '.join(HEADER))
@@ -130,7 +136,7 @@ class Creator():
         """
 
         url = row.picture
-        msgError = ("It's impossible to download the image automatically. Please, try download it manually, and" +
+        msgError = ("It's impossible to download the image automatically. Please, try download it manually, and " +
                     "name it img" + str(id) + ".jpg. Next, change the name of this person's image in the .tex")
 
         try:
@@ -248,7 +254,6 @@ class Creator():
             if fld[0] in HEADER:
                 fld_name = fld[0]
                 fld_answer = fld[1]
-                print(fld_name + "--" + fld_answer)
                 msg += (r"\newpage" + "\n" +
                         r"\color{color1}\uppercase{\textbf{" + fld_name + r"}}\\" + "\n" +
                         r"\color{color2}People whose answer to the question of '" +
@@ -346,15 +351,18 @@ class Creator():
         #msg += c.generate_graphs(['hiring', 'looking'])
 
         # List of people
-        print("1")
         msg += c.generate_list([['hiring', 'Yes'], ['looking', 'Yes'], ['nationality', 'Spain']])
-        print("2")
 
         self.err.close()
         return msg
 
 
 if __name__ == "__main__":
+    s = Template(open('defs.tpl').read())
+    tex_header = s.safe_substitute(conference_long = LONG_NAME, conference_short = SHORT_NAME,
+                                   conference_place = PLACE, conference_dates = DATES,
+                                   conference_frontimage = FRONT_IMAGE, conference_logo = LOGO)
+
     c = Creator()
     c.spreadsheet_to_namedtuple()
     participants = c.namedtuple_to_latex()
@@ -363,7 +371,7 @@ if __name__ == "__main__":
 
     try:
         with open("intro.tex", "r", encoding="utf-8") as introd:
-            text = introd.read().replace("\input{participants}", participants)
+            text = introd.read().replace("\include{defs}", tex_header).replace("\input{participants}", participants)
 
         with open("ConfBook.tex", "w", encoding="utf-8") as gener:
             gener.write(text)
