@@ -639,14 +639,13 @@ Además, se redimensionan las imágenes para que todas tengan el mismo tamaño y
 
 En los casos en los que no se haya adjuntado URL de imagen, así como cuando haya algún problema para descargar la imagen (URL inexistente, URL no corresponde a una imagen, error en la descarga\ldots), se asignará una imagen por defecto que indica que no poseemos la imagen de esa persona. Además, en estos casos, se incluirá un mensaje de error para que el encargado de generar este documento pueda revisar manualmente estos casos.\\
 
-Los mensajes de error en estas situaciones podrían ser de la siguiente manera:
-\begin{verbatim}
--Error in image of Alberto Bacchelli (pos. 4) -> URL not found.
--Error in image of Safwat Hassan (pos. 26) -> There aren't URL.
--Error in image of Li Li (pos. 46) -> Download image manually
-(change the name of the image in .tex).
-\end{verbatim}
-Aquí, nos indica en la imagen de qué participante nos ha saltado el error y la posición del documento donde aparece. En el caso en que haya que descargar la imagen manualmente, hay que cambiar en el documento \LaTeX el nombre de la imagen correspondiente (ya que al no poder descargarse se ha adjuntado la imagen por defecto). Para seguir las pautas de todo el proceso, convendría nombrar a la imagen como \textit{img} seguido del número de posición. En el caso del ejemplo el nombre sería \textit{img46}.\\
+Los mensajes de error en estas situaciones podrían ser de la siguiente manera:\\
+\texttt{
+- Error in image of Alberto Bacchelli (pos. 4) -> It's impossible to download the image automatically. Please, try download it manually, and name it img4.jpg. Next, change the name of this person's image in the .tex\\
+- Error in image of Safwat Hassan (pos. 26) -> This person hasn't provided image link.
+}\\
+
+Aquí, nos indica en la imagen de qué participante nos ha saltado el error y la posición del documento donde aparece. En el caso en que haya que descargar la imagen manualmente, hay que cambiar en el documento \LaTeX el nombre de la imagen correspondiente (ya que al no poder descargarse se ha adjuntado la imagen por defecto). Para seguir las pautas de todo el proceso, convendría guardar la imagen con el nombre que se indica en el mensaje de error.\\
 
 Finalmente, el método devolverá el nombre con el que se ha guardado la imagen de la persona correspondiente o, en su defecto, la imagen de error.
 
@@ -734,6 +733,38 @@ En caso de que haya algún problema para compilar, nos mostrará un mensaje de e
 \texttt{Impossible to generate PDF automatically. You must compile in Latex manually}
 
 
+\section{Personalización}
+Antes de la ejecución del programa, tenemos que indicarle ciertos datos, como el \textit{id} de la hoja de cálculo de la que queremos extraer los datos, el título que queremos dar a nuestro \textit{book}, la imagen de la portada y del logo, etc.\\
+
+Para ello, tenemos el fichero \textbf{\textit{settings.py}}, en el que tendremos que completar todos estos datos:
+\begin{itemize}
+	\item \textbf{SPREADSHEET\_ID.} Id de la hoja de cálculo de la que queremos extraer los datos.
+	\item \textbf{LONG\_NAME.} Nombre completo de la conferencia.
+	\item \textbf{SHORT\_NAME.} Abreviatura del nombre de la conferencia.
+	\item \textbf{PLACE.} Lugar de realización.
+	\item \textbf{DATES.} Fechas de realización.
+	\item \textbf{FRONT\_IMAGE.} Imagen de portada.
+	\item \textbf{FRONT\_IMAGE\_WIDTH.} Medida del ancho de la imagen de portada.
+	\item \textbf{LOGO.} Imagen del logo.
+	\item \textbf{LOGO\_HEIGHT.} Medida del alto de la imagen del logo.
+	\item \textbf{HEADER.} Array con los nombres asignados a cada campo del NamedTuple, y con los que se trabajará en el programa. Cada nombre corresponde, por orden, a cada columna (pregunta) de la hoja de cálculo. En este array, deberán aparecer siempre una serie de nombres, sin importar el orden. Estos nombres son: \textit{name, position, affiliation, nationality, graduation, picture, homepage, twitter, presentation, looking} y \textit{hiring}. Además de estos, se pueden añadir cualesquiera.
+\end{itemize}
+
+Los datos que incluyamos aquí serán introducidos en la plantilla llamada \textit{defs.tpl}, que contiene toda la información sobre la portada, los pies de página, el formato\ldots, y toda esta información será adjuntada en nuestro \textit{.tex} final.\\
+
+Para que esto ocurra, debemos tener el fichero \textit{intro.tex}, y en él debe aparecer la sentencia \textit{\textbackslash include\{defs\}} (al igual que hacíamos con la sección de participantes y la sentencia \mbox{\textit{\textbackslash input\{participants\}}}).
+
+\subsection{Personalización avanzada}
+Si queremos modificar el formato que se asigna por defecto, tenemos dos opciones:
+\begin{itemize}
+	\item Acceder al fichero final tras la ejecución, y modificarlo.
+	\item Antes de ejecutar, crear un nuevo fichero con la nueva personalización, llamado con un nombre distinto a\textit{defs}, y crear el documento \textit{intro.tex} con la sentencia \textit{\textbackslash include\{NOMBRE\_FICHERO\}}. De esta forma, cuando ejecutemos no incluirá la plantilla por defecto, sino el fichero personalizado.
+\end{itemize}
+
+
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % RESULTADOS %
@@ -747,7 +778,7 @@ La mejor manera de mostrar los resultados en este caso, es con ejemplos. Esta ap
 Aunque se muestran los ejemplos completos en la sección \ref{app:ejemplos}, las siguientes imágenes muestran algunos fragmentos del resultado final.\\
 
 \begin{itemize}
-\item La primera prueba se realizó para el \textbf{\textit{15\raisebox{5pt}{th} International Conference on Mining Software Repositories (MSR) 2018}}\footnote{\url{https://conf.researchr.org/home/msr-2018}}, celebrada el 28 y 29 de mayo de 2018 en Gotemburgo (Suecia), y el resultado fue el mostrado en la figura \ref{fig:imgMSR}.
+\item La primera prueba se realizó para el \textbf{\textit{15\textsuperscript{th} International Conference on Mining Software Repositories (MSR) 2018}}\footnote{\url{https://conf.researchr.org/home/msr-2018}}, celebrada el 28 y 29 de mayo de 2018 en Gotemburgo (Suecia), y el resultado fue el mostrado en la figura \ref{fig:imgMSR}.
 \begin{figure}[h!]
 	\centering
 	\fbox{\includegraphics[width=15cm, keepaspectratio]{img/MSR}}
@@ -755,7 +786,7 @@ Aunque se muestran los ejemplos completos en la sección \ref{app:ejemplos}, las
 	\label{fig:imgMSR}
 \end{figure}
 
-\item La segunda ocasión en la que se ha utilizado la aplicación ha sido para el \textbf{\textit{14\raisebox{5pt}{th} International Conference on Open Source Systems (OSS) 2018}}\footnote{\url{https://www.oss2018.org/}}\footnote{\url{http://sattose.org/2018}}, celebrada del 8 al 10 de junio de 2018 en Atenas (Grecia). Este caso se muestra en la figura \ref{fig:imgOSS}.
+\item La segunda ocasión en la que se ha utilizado la aplicación ha sido para el \textbf{\textit{14\textsuperscript{th} International Conference on Open Source Systems (OSS) 2018}}\footnote{\url{https://www.oss2018.org/}}\footnote{\url{http://sattose.org/2018}}, celebrada del 8 al 10 de junio de 2018 en Atenas (Grecia). Este caso se muestra en la figura \ref{fig:imgOSS}.
 \begin{figure}[h!]
 	\centering
 	\fbox{\includegraphics[width=15cm, keepaspectratio]{img/OSS}}
@@ -763,7 +794,7 @@ Aunque se muestran los ejemplos completos en la sección \ref{app:ejemplos}, las
 	\label{fig:imgOSS}
 \end{figure}
 
-\item El último caso en el que se ha usado es en el \textbf{\textit{11\raisebox{5pt}{th} Seminar on Advanced Techniques \& Tools for Sotware Evoluton SATToSE 2018}}, celebrado en Atenas (Grecia) del 4 al 6 de julio de 2018. Este ejemplo es el mostrado en el ejemplo \ref{fig:imgSATToSE}.
+\item El último caso en el que se ha usado es en el \textbf{\textit{11\textsuperscript{th} Seminar on Advanced Techniques \& Tools for Sotware Evoluton SATToSE 2018}}, celebrado en Atenas (Grecia) del 4 al 6 de julio de 2018. Este ejemplo es el mostrado en el ejemplo \ref{fig:imgSATToSE}.
 \begin{figure}[h!]
 	\centering
 	\fbox{\includegraphics[width=15cm, keepaspectratio]{img/SATToSE}}
@@ -863,9 +894,9 @@ Otra idea es, además de la web, hacer una aplicación móvil, de manera que en 
 \label{app:manual}
 Para que la aplicación funcione correctamente, es necesario tener instalado \textbf{\textit{Python 3}} o superior, además de los siguientes paquetes, en las versiones indicadas:
 \begin{itemize}
-	\item \textbf{\textit{google-api-python-client}}\cite{google_api_client:1} versión 1.6.5 o superior.
+	\item \textbf{\textit{google-api-python-client}}\footnote{\url{https://developers.google.com/api-client-library/python/start/installation}} versión 1.6.5 o superior.
 	\item \textbf{\textit{pycountry}}~\footnote{\url{https://pypi.org/project/pycountry/}} versión 18.2.23 o superior.
-	\item \textbf{\textit{pillow}}\cite{pillow:1} versión 5.1.0 o superior.
+	\item \textbf{\textit{pillow}}~\footnote{\url{https://pypi.org/project/Pillow/}} versión 5.1.0 o superior.
 	\item \textbf{\textit{oauth2client}}~\footnote{\url{https://pypi.org/project/oauth2client/}} versión 4.1.2 o superior.
 \end{itemize}
 
@@ -885,19 +916,19 @@ El programa está disponible en el repositorio de GitHub:\\
 Como he indicado con anterioridad, este proyecto se ha utilizado en casos reales, y los resultados han sido los siguientes.
 
 \newpage
-\section{15\raisebox{5pt}{th} International Conference on Mining Software Repositories (MSR) 2018}
+\section{15\textsuperscript{th} International Conference on Mining Software Repositories (MSR) 2018}
 \label{MSR}
-\includepdf[pages=-]{2018-MSR-Confbook}
+%\includepdf[pages=-]{2018-MSR-Confbook}
 
 
-\section{14\raisebox{5pt}{th} International Conference on Open Source Systems (OSS) 2018}
+\section{14\textsuperscript{th} International Conference on Open Source Systems (OSS) 2018}
 \label{OSS}
-\includepdf[pages=-]{2018-OSS-Confbook}
+%\includepdf[pages=-]{2018-OSS-Confbook}
 
 
-\section{11\raisebox{5pt}{th} Seminar on Advanced Techniques \& Tools for Sotware Evoluton SATToSE 2018}
+\section{11\textsuperscript{th} Seminar on Advanced Techniques \& Tools for Sotware Evoluton SATToSE 2018}
 \label{SATToSE}
-\includepdf[pages=-]{2018-SATToSE-Confbook}
+%\includepdf[pages=-]{2018-SATToSE-Confbook}
 
 
 \end{document}
