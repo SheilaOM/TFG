@@ -84,7 +84,7 @@ CONFERENCE BOOK GENERATOR
 \vspace{4cm}
 
 \large
-Autor : Seila Oliva Muñoz \\
+Autora : Seila Oliva Muñoz \\
 Tutor : Dr. Gregorio Robles
 \end{center}
 \end{titlepage}
@@ -111,7 +111,7 @@ Conference Book Generator
 
 \vspace{1cm}
 \large
-\textbf{Autor :} Seila Oliva Muñoz \\
+\textbf{Autora :} Seila Oliva Muñoz \\
 \textbf{Tutor :} Dr. Gregorio Robles Martínez
 
 \end{center}
@@ -173,9 +173,9 @@ Quiero acordarme también del resto de mi familia, en especial de mis abuelos, y
 \chapter*{Resumen}
 %\addcontentsline{toc}{chapter}{Resumen} % si queremos que aparezca en el índice
 \markboth{RESUMEN}{RESUMEN} % encabezado
-En la actualidad es muy frecuente la realización de seminarios y conferencias en las que se tratan temas concretos de diferentes índoles, a las que suelen ir personas especializadas en el tema a tratar dispuesta a conocer otras personas que compartan sus mismos intereses, incluso buscando personas con las que trabajar.\\
+En la actualidad es muy frecuente la realización de seminarios y conferencias en las que se tratan temas concretos de diferentes índoles, a las que suelen ir personas especializadas en el tema a tratar dispuestas a conocer otras personas que compartan sus mismos intereses, incluso buscando personas con las que trabajar.\\
 
-Es por esto que surge la idea de tener los datos de todos los asistentes para conocer sus intereses y datos de contacto por si interesa una posible colaboración/contratación.\\
+Es por esto que surge la idea de tener la información de todos los asistentes para conocer sus intereses, así como sus datos de contacto por si interesa una posible colaboración/contratación.\\
 
 Mi proyecto consiste en la elaboración de un \textit{book} en el que aparezcan estos datos de todos los participantes. Para ello, previamente los participantes tendrán que rellenar un formulario de \textit{Google Forms}. Una vez se hayan recopilado los datos de todos los participantes, se trasladarán a una \textit{Google Sheet}, cuya URL se introducirá en el programa que he elaborado con \textbf{\textit{Python}}.\\
 
@@ -244,7 +244,7 @@ Este proyecto pretende automatizar la labor de hacer este Book, de manera que ca
 \label{sec:estructura}
 Con el fin de facilitar la lectura de la memoria, en esta sección se detalla la estructura de la misma y el contenido que se trata en cada una de las secciones:
 \begin{itemize}
-  \item \textbf{Capítulo ~\ref{chap:intro} Introducción.} Contexto en el que surge la idea del proyecto y breve explicación de la estructura de la memoria.
+  \item \textbf{Capítulo ~\ref{chap:intro}: Introducción.} Contexto en el que surge la idea del proyecto y breve explicación de la estructura de la memoria.
 
   \item \textbf{Capítulo ~\ref{chap:objetivos}: Objetivos.} En esta sección se explican los objetivos marcados durante la realización del proyecto.
 
@@ -328,10 +328,10 @@ Sin embargo, Python 3 se considera el futuro de Python, ya que está pensado par
 
 Las funcionalidades de Python 2 y 3 son, en su mayoría, iguales, pero hay algunas diferencias en la sintaxis y la manipulación. Las principales diferencias entre estas dos versiones son:
 \begin{itemize}
-	\item \textbf{Print:} quizá es la diferencia más destacada a simple vista, y es que \textit{print} ha pasado de ser una sentencia a ser una función. Esto se traduce, sobre todo, a que con Python 2 se puede escribir \texttt{print ``Hello World''}, sin necesidad de paréntesis. En cambio, en Python 3 es obligatorio el uso de paréntesis para hacer un \textit{print}: \texttt{print(``Hello World'')}.
+	\item \textbf{Print:} quizá es la diferencia más destacada a simple vista, y es que \textit{print} ha pasado de ser una sentencia a ser una función. Esto se traduce, sobre todo, a que con Python 2 se puede escribir \texttt{print ``Hello World''}, sin necesidad de paréntesis. En cambio, en Python~3 es obligatorio el uso de paréntesis para hacer un \textit{print}: \texttt{print(``Hello World'')}.
 	\item \textbf{División entera}: en Python 2 la división de dos números enteros da como resultado un número entero (3/2 = 1), y para que el resultado tenga decimales hay que escribir dividendo y divisor en forma de decimal (3.0/2.0 = 1.5). En Python 3 la división de enteros ya da como resultado un número decimal (3/2 = 1.5).
 	\item \textbf{Soporte Unicode:} para hacer una cadena Unicode en Python 2, se debe añadir el caracter \textit{`u'} a la cadena: \texttt{u``Hello World''}, mientras que en Python 3 las cadenas son Unicode por omisión.
-	\item \textbf{Next (iterables):} en Python 2, para obtener el siguiente elemento de un iterador, se pueden usar tanto el método iter\textbf{.next()} como la función \textbf{next}(iter). Sin embargo, en Python 3 sólo se puede utilizar la función.
+	\item \textbf{Next (iterables):} en Python 2, para obtener el siguiente elemento de un iterador, se pueden usar tanto el método iter\textbf{.next()} como la función \textbf{next}(iter). Sin embargo, en Python~3 sólo se puede utilizar la función.
 	\item \textbf{Input:} en Python 2 hay dos funciones para introducir datos por teclado: \textit{raw\_input()} (los datos introducidos los trata como una cadena de texto) e \textit{input()} (los datos introducidos los trata por su tipo, es decir, si introducimos 15 lo trata como un int). En Python 3 se ha eliminado la función \textit{raw\_input()}, y en su lugar permanece la función \textit{input()} con las características del \textit{raw\_input()} de Python 2.
 \end{itemize}
 
@@ -356,9 +356,9 @@ El proceso de generación de un documento con \LaTeX consiste en 3 pasos:
 \label{crearLatex}
 Un documento \LaTeX tiene dos partes principales: el preámbulo y el cuerpo del documento.
 \begin{itemize}
-	\item \textbf{Preámbulo.} Comienza por la instrucción \textit{\textbackslash documentclass[.]\{.\}}. En todas las instrucciones, entre [] se incluyen los parámetros opcionales, que en el caso del \textit{documentclass} son el tamaño de letra (11pt, 12pt\ldots), si el texto va a dos columnas (twocolumn) o ajuste de los márgenes para imprimir a doble cara (twoside). Entre \{\} se incluyen los parámetros obligatorios, que en este caso es el tipo de documento que estamos elaborando (article, report, book\ldots).\\
+	\item \textbf{Preámbulo.} Comienza por la instrucción \textit{\textbackslash documentclass[.]\{.\}}. En todas las instrucciones, entre [ ] se incluyen los parámetros opcionales, que en el caso del \textit{documentclass} son el tamaño de letra (11pt, 12pt\ldots), si el texto va a dos columnas (\textit{twocolumn}) o ajuste de los márgenes para imprimir a doble cara (\textit{twoside}). Entre \{ \} se incluyen los parámetros obligatorios, que en este caso es el tipo de documento que estamos elaborando (\textit{article, report, book}\ldots).\\
 	En el preámbulo se pueden incluir instrucciones para activar paquetes que agregan funciones adicionales a \LaTeX, así como datos generales sobre el documento que se está escribiendo. Y al final se incluyen los campos \textit{\textbackslash title, \textbackslash author} y \textit{\textbackslash date}, que especifican los datos que irán en el encabezado del documento.\\
-	Se puede ver un ejemplo de preámbulo en la Figura ~\ref{fig:preambulo}.
+Se puede ver un ejemplo de preámbulo en la Figura ~\ref{fig:preambulo}.
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=8cm, keepaspectratio]{img/preambulo_latex}
@@ -371,17 +371,17 @@ Un documento \LaTeX tiene dos partes principales: el preámbulo y el cuerpo del 
 	\begin{itemize}
 		\item \textbf{Signos especiales:} Algunos símbolos no aparecen en el pdf tal cual los escribimos en el editor en el \textit{.tex}, y hay que escribirlos de manera especial, como los signos de apertura de interrogación y exclamación (?` y !`) que habría que escribir ? y ! seguido de un acento grave para que se visualicen correctamente; o las comillas que, tanto para simples como para dobles, para abrirlas hay que escribir acento grave y para cerrarlas comilla simple.
 		\item \textbf{Comandos para formato de texto:} hay comandos para títulos y secciones (\mbox{\textit{\textbackslash chapter\{\}}}, \textit{\textbackslash section\{\}}, \textit{\textbackslash subsection\{\}}\ldots) y para enfatizar o cambiar el formato del texto (\textbf{\textbackslash textbf\{\}}, \textit{\textbackslash textit\{\}}, \textsc{\textbackslash textsc\{\}}, \textsf{\textbackslash textsf\{\}}, \textsl{\textbackslash textsl\{\}}, \texttt{\textbackslash texttt\{\}}\ldots).
-		\item \textbf{Índice:} \LaTeX genera el índice del documento automáticamente si añadimos la instrucción \textbackslash tableofcontents.
+		\item \textbf{Índice:} \LaTeX genera el índice del documento automáticamente si añadimos la instrucción \textit{\textbackslash tableofcontents}.
 	\end{itemize}
 	
-	Se puede ver un ejemplo del cuerpo del documento en la Figura ~\ref{fig:cuerpo}.	
+Se puede ver un ejemplo del cuerpo del documento en la Figura ~\ref{fig:cuerpo}.	
 	
-	\begin{figure}[h!]
-		\centering
-		\includegraphics[width=13cm, keepaspectratio]{img/cuerpo_latex}
-		\caption{Ejemplo de cuerpo del documento}
-		\label{fig:cuerpo}
-	\end{figure}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=13cm, keepaspectratio]{img/cuerpo_latex}
+	\caption{Ejemplo de cuerpo del documento}
+	\label{fig:cuerpo}
+\end{figure}
 	
 \end{itemize}
 
@@ -397,7 +397,7 @@ En este proyecto, estamos compilando con \textbf{XeLaTeX}.
 \label{sec:googleforms}
 Google Forms~\cite{forms:1} es una herramienta útil que permite planificar eventos, enviar una encuesta, hacer preguntas o recopilar otro tipo de información de forma fácil y sencilla.\\
 
-Crear un formulario es tan fácil como añadir las preguntas seleccionando en cada uno el tipo que mejor se adapte a nuestras necesidades. Los tipos de pregunta que nos podemos encontrar son, por ejemplo, texto, tipo test, elegir de listas, desplegables, etc. También permite añadir imágenes, vídeos o saltos de página para dividir la encuesta en secciones.\\
+Crear un formulario es tan fácil como añadir las preguntas seleccionando en cada una el tipo que mejor se adapte a nuestras necesidades. Los tipos de pregunta que nos podemos encontrar son, por ejemplo, texto, tipo test, elegir de listas, desplegables, etc. También permite añadir imágenes, vídeos o saltos de página para dividir la encuesta en secciones.\\
 
 Una vez enviado el formulario a los destinatarios, se irán recopilando las respuestas recibidas. Éstas se pueden guardar en el propio Google Forms, de manera que se mostrarán como un resumen de las respuestas, o se pueden exportar a una hoja de cálculo en la que cada línea estarán las respuestas de cada persona (cada respuesta en una columna).
 
@@ -529,16 +529,16 @@ Una vez que los participantes han rellenado el formulario, podemos acceder a sus
 
 Realizaremos esta última opción, de manera que todos los datos quedarán volcados en una hoja de cálculo de Google. Esta hoja de cálculo tendrá la siguiente estructura:
 \begin{itemize}
-	\item En la primera fila aparece en cada celda una pregunta de las realizadas, a excepción de la primera celda, llamada ``Timestamp'', que indicará la fecha y hora a la que ha contestado cada participante.
-	\item En cada una de las siguientes filas, aparecerá bajo cada pregunta la correspondiente respuesta de un participante.
+	\item En la primera fila aparecen en cada celda las preguntas realizadas, a excepción de la primera celda, llamada ``Timestamp'', que indicará la fecha y hora a la que ha contestado cada participante.
+	\item En cada una de las siguientes filas aparecerá, bajo cada pregunta, la correspondiente respuesta de un participante.
 \end{itemize}
 
 
 \section{Extracción de los valores de la hoja de cálculo}
 \label{sec:extraerExcel}
-Esta es la primera parte que pertenece a mi proyecto. Lo primero que hace es obtener las credenciales necesarias para utilizar la API de Google Sheet. Una vez acreditado, con la URL de la hoja de cálculo que hemos obtenido del formulario, procedemos a la extracción de todos los datos. En este caso, no necesitamos la primera fila, donde aparecen los enunciados de las preguntas, por lo que indicaremos en el programa que queremos la información a partir de la celda 'A2'.\\
+Esta es la primera parte que pertenece a mi proyecto. Lo primero que hace es obtener las credenciales necesarias para utilizar la API de Google Sheet. Una vez acreditado, con el \mbox{\textit{spreadsheetId}} de la hoja de cálculo que hemos obtenido del formulario, procedemos a la extracción de todos los datos. En este caso, no necesitamos la primera fila, donde aparecen los enunciados de las preguntas, por lo que indicaremos en el programa que queremos la información a partir de la celda 'A2'.\\
 
-El resultado de este proceso será un array en el que cada elemento será otro array. Es decir, cada fila de la hoja de cálculo, se convertirá en un array cuyos elementos serán cada respuesta (cada celda). Estas filas (array) se guardan a su vez en otro array, quedando este último como un array de filas. Esta descripción se puede entender mejor con el siguiente ejemplo:
+El resultado de este proceso será un array en el que cada elemento será otro array. Es decir, cada fila de la hoja de cálculo, se convertirá en un array cuyos elementos serán cada respuesta (cada celda). Estas filas (arrays) se guardan a su vez en otro array, quedando este último como un array de filas. Esta descripción se puede entender mejor con el siguiente ejemplo:
 
 \begin{figure}[h!]
 	\centering
@@ -576,7 +576,7 @@ En las siguientes secciones, se desarrollará más sobre los errores que se pued
 Antes de generar el documento \LaTeX con la información que se ha extraído de la hoja de cálculo, hay que revisar toda esa información que tenemos, y ver si hay que hacer alguna modificación, o no usar literalmente el texto que tenemos en un campo.\\
 
 Para esto, se utiliza un bucle que recorre los datos de todos los participantes. Este bucle tendría la siguiente estructura:
-
+\newpage
 \begin{verbatim}
         order_by_name
 
@@ -605,7 +605,7 @@ Para esto, en el método \textbf{\textit{order\_by\_name}} se extrae el apellido
 \label{subsec:especialCars}
 Como la intención de este proyecto es generar un documento en \LaTeX, hay que adaptarlo para ello. \LaTeX tiene una serie de caracteres que utiliza para funciones especiales, tales como \textbackslash, \$, \%..., y para que al generar el PDF estos caracteres aparezcan correctamente, tienen que aparecer modificados en el documento \LaTeX.\\
 
-Para solucionar este problema, se ha creado el método \textbf{\textit{make\_chars\_latex\_friendly}}, donde revisaremos todos los campos en busca de estos caracteres (\$, \#, \%, \&, \^, \_, \{, \}, \~ , \textbackslash) y cuando los encuentre, añadirá delante de ellos un \textit{backslash} (\textbackslash). De esta forma, aparecerá el carácter deseado, y no generará errores y confusiones a la hora de generar el PDF final.\\
+Para solucionar este problema, se ha creado el método \textbf{\textit{make\_chars\_latex\_friendly}}, donde revisaremos todos los campos en busca de estos caracteres (\$, \#, \%, \&, \textasciicircum, \_, \{, \}, \textasciitilde, \textbackslash) y cuando los encuentre, añadirá delante de ellos un \textit{backslash} (\textbackslash), o lo convertirá convenientemente para que aparezca el símbolo correctamente (ejemplo: `\textbackslash' = `\textbackslash textbackslash'). De esta forma, aparecerá el carácter deseado, y no generará errores y confusiones a la hora de generar el PDF final.\\
 
 Hay algunos casos especiales en los que no conviene hacer este proceso. Por ejemplo, si uno de los campos es una URL, y dicha URL no la vamos a escribir literalmente en el documento final, sino que la vamos a utilizar para obtener otro dato. En este caso tenemos, por ejemplo, un campo que corresponde a la URL de una imagen (se explicará a continuación), y esta URL será utilizada para descargar la imagen correspondiente, por tanto si hacemos el proceso anterior sobre la URL, cuando la utilicemos en el programa será incorrecta, por lo que no hay que modificarla.
 
@@ -615,6 +615,7 @@ Hay algunos casos especiales en los que no conviene hacer este proceso. Por ejem
 Una de las preguntas de nuestro formulario es para que se incluya una imagen personal, para añadirla junto a la información de cada asistente. En esta parte, cada asistente incluye una URL donde se encuentra su imagen, que habrá que descargar para poder incluirla en nuestro documento.\\
 
 El método \textbf{\textit{download\_image}} se encarga de esto. Lo primero que hace es comprobar si la URL es una imagen: abre la URL con la librería urllib.request (\textit{resp = urllib.request.urlopen(url)}) y obtiene la información sobre ella (\textit{resp.info()}), que suele tener la siguiente apariencia:
+\newpage
 \begin{verbatim}
         resp: Server: nginx/1.9.11
         Date: Tue, 19 Jun 2018 16:48:45 GMT
@@ -629,11 +630,11 @@ El método \textbf{\textit{download\_image}} se encarga de esto. Lo primero que 
 
 De toda esta información, el campo que nos interesa es el \textit{Content-Type}, ya que en él podremos comprobar si la URL es una imagen. Para extraer la información de este campo lo hacemos con \textit{resp.info().get('Content-Type')}.\\
 
-Una vez que comprueba que este campo empieza por ``image\textbackslash'', se recoge también la extensión de la imagen, que aparece justo después de esta expresión (\textit{imgType}).A continuación, se procede a descargar la imagen con \textit{urllib.request.urlretrieve(url, nameImage)}. Esta expresión descarga la imagen de la URL que se indica en el primer parámetro de entrada, y la guarda con el nombre que aparece en el segundo parámetro.\\
+Una vez que comprueba que este campo empieza por ``image/'', se recoge también la extensión de la imagen, que aparece justo después de esta expresión (\textit{imgType}).A continuación, se procede a descargar la imagen con \textit{urllib.request.urlretrieve(url, nameImage)}. Esta expresión descarga la imagen de la URL que se indica en el primer parámetro de entrada, y la guarda con el nombre que aparece en el segundo parámetro.\\
 
 El nombre de la imagen se compone de la ruta de la carpeta donde se va a guardar la imagen, seguido de la cadena ``img'' y un número identificador de cada persona, y acabando con la extensión que hemos almacenado anteriormente en \textit{imgType}.\\
 
-Normalmente, las extensiones de las imágenes suelen ser las comunes .jpg, .png,\ldots, pero también pueden aparecer imágenes con extensión \textbf{.webp}. WebP es un formato de imagen creado por Google para reducir el tamaño de las imágenes y así disminuir el tiempo de carga de las mismas. Este formato no es reconocible por \LaTeX, por lo que hay que es necesario cambiar el formato de este tipo de imágenes, y para ello utilizamos \textit{im = Image.open(nameImage).convert("RGB")}. Ahora tenemos la imagen en el formato que queremos en la variable \textit{im}, por lo que hay que guardarla, por ejemplo, en .jpg, con \textit{im.save(nameImagejpg, "jpeg")}.\\
+Normalmente, las extensiones de las imágenes suelen ser las comunes .jpg, .png,\ldots, pero también pueden aparecer imágenes con extensión \textbf{.webp}. WebP es un formato de imagen creado por Google para reducir el tamaño de las imágenes y así disminuir el tiempo de carga de las mismas. Este formato no es reconocible por \LaTeX, por lo que es necesario cambiar el formato de este tipo de imágenes, y para ello utilizamos \mbox{\textit{im = Image.open(nameImage).convert(``RGB'')}}. Ahora tenemos la imagen en el formato que queremos en la variable \textit{im}, por lo que hay que guardarla, por ejemplo, en .jpg, con \textit{im.save(nameImage.jpg, ``jpeg'')}.\\
 
 Además, se redimensionan las imágenes para que todas tengan el mismo tamaño y se genere un resultado uniforme.\\
 
@@ -645,16 +646,16 @@ Los mensajes de error en estas situaciones podrían ser de la siguiente manera:\
 - Error in image of Safwat Hassan (pos. 26) -> This person hasn't provided image link.
 }\\
 
-Aquí, nos indica en la imagen de qué participante nos ha saltado el error y la posición del documento donde aparece. En el caso en que haya que descargar la imagen manualmente, hay que cambiar en el documento \LaTeX el nombre de la imagen correspondiente (ya que al no poder descargarse se ha adjuntado la imagen por defecto). Para seguir las pautas de todo el proceso, convendría guardar la imagen con el nombre que se indica en el mensaje de error.\\
+Aquí, nos indica en la imagen de qué participante nos ha saltado el error y la posición del documento donde aparece. En el caso en que haya que descargar la imagen manualmente, hay que cambiar en el documento \LaTeX el nombre de la imagen correspondiente (ya que al no poder descargarse se ha adjuntado la imagen por defecto, llamada \textit{img0.jpg}). Para seguir las pautas de todo el proceso, convendría guardar la imagen con el nombre que se indica en el mensaje de error.\\
 
 Finalmente, el método devolverá el nombre con el que se ha guardado la imagen de la persona correspondiente o, en su defecto, la imagen de error.
 
 
 \subsection{Obtener banderas de nacionalidad}
 \label{subsec:banderas}
-Cada persona tendrá que indicar también su país de procedencia, y en vez de poner literalmente el nombre del país, se incluye una bandera de éste. Para ello tenemos una carpeta con todas las banderas guardadas cuyos nombres son el nombre del país en código \textit{``ISO 3166-1 alpha-2''}.\\
+Cada persona tendrá que indicar también su país de procedencia, y en vez de poner literalmente el nombre del país, se incluye una bandera de éste. Para ello tenemos una carpeta con todas las banderas guardadas cuyos nombres son el nombre del país en código \mbox{\textit{ISO 3166-1 alpha-2}}.\\
 
-Para elegir la bandera correspondiente a cada persona, utilizamos el método \textbf{\textit{get\_flag}}, en el que se utiliza la librería \textit{pycountry} para convertir el nombre del país a código \textit{``ISO 3166-1 alpha-2''}. Para ello se obtiene la información de los códigos del país del cuál buscamos la bandera, con \textit{pycountry.countries.get(name=nationality)}, y nos quedaremos con el código en alpha-2.\\
+Para elegir la bandera correspondiente a cada persona, utilizamos el método \textbf{\textit{get\_flag}}, en el que se utiliza la librería \textit{pycountry} para convertir el nombre del país a código \mbox{\textit{ISO 3166-1 alpha-2}}. Para ello se obtiene la información de los códigos del país del cuál buscamos la bandera, con \textit{pycountry.countries.get(name=nationality)}, y nos quedaremos con el código en alpha-2.\\
 
 Por ejemplo, si buscamos España:\\
 \texttt{nac = pycountry.countries.get(name=``Spain'')}
@@ -678,14 +679,33 @@ Por ello, en el método \textbf{\textit{cut\_presentation}}, fijamos una longitu
 
 \section{Creación de la sección de participantes en \LaTeX}
 \label{sec:creaParticipantes}
-Una vez tenemos todos los datos listos, procedemos a desarrollar el texto en \LaTeX. El resultado final que buscamos tiene la siguiente estructura:
+Una vez tenemos todos los datos listos, procedemos a desarrollar el texto en \LaTeX. El resultado final que buscamos tiene una estructura como la figura \ref{fig:ejemploLatex}, y se consigue con el siguiente código \LaTeX:
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=15cm, keepaspectratio]{img/esquemaLatex}
 	\caption{Estructura información participante}
 	\label{fig:ejemploLatex}
 \end{figure}
-
+{\footnotesize \begin{verbatim}
+\begin{minipage}{0.3\textwidth}
+    \centering
+    \includegraphics[height=5cm]{images/img2.jpeg}
+\end{minipage}
+\hfill
+\begin{minipage}{0.6\textwidth}\raggedright
+    \color{color1}\uppercase{\textbf{Bram Adams}}
+    \color{color2}\hspace{0.2cm}\includegraphics{flags/be.png}
+    \hspace{0.1cm}{\scriptsize (PhD 2008)}
+    \hspace{0.2cm}\textit{@mcis\_lab}\hspace{0.1cm}\includegraphics[height=0.5cm]
+    {figs/hiring.png}\\
+    Associate Professor at MCIS, Polytechnique Montreal\\
+    {\footnotesize Heading the lab on Maintenance, Construction and Intelligence of 
+    Software (MCIS), which uses MSR techniques on a variety of research problems 
+    related to release engineering, human affect and the \ldots}\\
+    \includegraphics[height=0.4cm]{figs/internet.png}\hspace{0.1cm}
+    {\footnotesize \color{color1}\url{http://mcis.polymtl.ca/bram.html}}
+\end{minipage}
+\end{verbatim}}
 
 \section{Apartados opcionales}
 \label{sec:opcional}
@@ -693,16 +713,16 @@ Opcionalmente, se pueden añadir dos apartados más al documento.
 
 \subsection{Diagramas de sectores}
 \label{subsec:diagramas}
-Con el método \textbf{\textit{generate\_graphs}} podemos obtener diagramas de sectores que indiquen el porcentaje de repetición de las respuestas que deseemos. Para ello, le pasamos como argumento un array con los nombres de los campos de los que queremos que se genere el diagrama. Estos nombres de campos se corresponden con los que indicamos anteriormente para el \textit{NamedTuple}.
+Con el método \textbf{\textit{generate\_graph}} podemos obtener diagramas de sectores que indiquen el porcentaje de repetición de las respuestas que deseemos. Para ello, le pasamos como argumento un array con los nombres de los campos de los que queremos que se genere el diagrama. Estos nombres de campos se corresponden con los que indicamos anteriormente para el \textit{NamedTuple}.
 
 \subsection{Listados de personas}
 \label{subsec:listados}
 Usando el método \textbf{\textit{generate\_list}} se puede crear una lista de todas las personas que han dado una respuesta concreta a una pregunta. Como argumento a este método se pasará un array con todos los casos que queremos cubrir. Cada caso se indicará con un array de dos posiciones: pregunta de la que queremos hacer la lista, indicada con el nombre que se le ha asignado para el \textit{NamedTuple}; y un \textit{string} con la respuesta que buscamos.\\
 
 
-\section{Guarda el fichero \LaTeX con los datos}
+\section{Guardar el fichero \LaTeX con los datos}
 \label{sec:guardaLatex}
-Cuando se ha formado el texto \LaTeX con los datos de todos los participantes, guardado en una variable, se procede a escribir este texto en un fichero .tex llamado \textbf{participants.tex}. En él aparecerá únicamente la sección de participantes. Si queremos incluir esta sección en otro documento \LaTeX (nos referiremos a él como \textit{principal}) podremos hacerlo añadiendo en este último documento el comando \mbox{\textit{\textbackslash input\{participants\}}}.\\
+Cuando se ha formado el texto \LaTeX con los datos de todos los participantes, guardado en una variable, se procede a escribir este texto en un fichero .tex llamado \textbf{participants.tex}. En él aparecerá únicamente la sección de participantes. Si queremos incluir esta sección en otro documento \LaTeX (nos referiremos a él como \textit{principal}) podremos hacerlo añadiendo en este último documento el comando \mbox{\textit{\textbackslash input\{participants\}}} en el lugar en el que queramos que aparezca esta sección.\\
 
 Así, en el documento principal podremos añadir una portada, unas páginas de introducción, formatos para el texto, cabeceras o pies de página, etc.\\
 
@@ -723,7 +743,7 @@ Si no se pueden unir los documentos, es decir, no se encuentra el fichero \texti
 
 \section{Compilado del documento \LaTeX}
 \label{sec:compilado}
-En caso de que hayamos conseguido obtener el documento \textit{ConfBook.tex}, y contemos en nuestro PC con el paquete de \LaTeX instalado, el programa intentará compilarlo con el comando \textbf{\textit{xelatex ConfBook.tex}} a través de una llamada al sistema:\\
+En caso de que hayamos conseguido obtener el documento \textit{ConfBook.tex}, y contemos en nuestro PC con el paquete de \LaTeX \thinspace instalado (en nuestro caso utilizamos XeLaTeX), el programa intentará compilarlo con el comando \textbf{\textit{xelatex ConfBook.tex}} a través de una llamada al sistema:\\
 \texttt{os.system('xelatex ConfBook.tex')}\\
 
 Si se ha compilado correctamente, obtendremos por pantalla un mensaje informativo indicando que el PDF ha sido generado, y su nombre:\\
@@ -748,6 +768,10 @@ Para ello, tenemos el fichero \textbf{\textit{settings.py}}, en el que tendremos
 	\item \textbf{LOGO.} Imagen del logo.
 	\item \textbf{LOGO\_HEIGHT.} Medida del alto de la imagen del logo.
 	\item \textbf{HEADER.} Array con los nombres asignados a cada campo del NamedTuple, y con los que se trabajará en el programa. Cada nombre corresponde, por orden, a cada columna (pregunta) de la hoja de cálculo. En este array, deberán aparecer siempre una serie de nombres, sin importar el orden. Estos nombres son: \textit{name, position, affiliation, nationality, graduation, picture, homepage, twitter, presentation, looking} y \textit{hiring}. Además de estos, se pueden añadir cualesquiera.
+	\item \textbf{GENERATE\_GRAPHICS.} Indica si se quieren generar gráficas de estadísticas. Será \textit{True} o \textit{False}.
+	\item \textbf{GRAPHICS\_TO\_GENERATE.} En el caso de que queramos que se generen los gráficos, aquí se indicará de qué apartados los queremos generar. Se asignarán con un array cuyos elementos son los nombres de cada campo del que queremos el gráfico.
+	\item \textbf{GENERATE\_LISTS.} Indica si se quieren generar listas de personas que hayan contestado de manera concreta a una pregunta. Será \textit{True} o \textit{False}.
+	\item \textbf{LISTS\_TO\_GENERATE.} En el caso de que queramos que se generen las listas, aquí se indicará el apartado del que queremos la lista, y la respuesta que nos interesa. Se hará con un array en el que cada elemento es otro array de dos posiciones: nombre del campo y respuesta que buscamos.
 \end{itemize}
 
 Los datos que incluyamos aquí serán introducidos en la plantilla llamada \textit{defs.tpl}, que contiene toda la información sobre la portada, los pies de página, el formato\ldots, y toda esta información será adjuntada en nuestro \textit{.tex} final.\\
@@ -758,10 +782,8 @@ Para que esto ocurra, debemos tener el fichero \textit{intro.tex}, y en él debe
 Si queremos modificar el formato que se asigna por defecto, tenemos dos opciones:
 \begin{itemize}
 	\item Acceder al fichero final tras la ejecución, y modificarlo.
-	\item Antes de ejecutar, crear un nuevo fichero con la nueva personalización, llamado con un nombre distinto a\textit{defs}, y crear el documento \textit{intro.tex} con la sentencia \textit{\textbackslash include\{NOMBRE\_FICHERO\}}. De esta forma, cuando ejecutemos no incluirá la plantilla por defecto, sino el fichero personalizado.
+	\item Antes de ejecutar, crear un nuevo fichero con la nueva personalización, llamado con un nombre distinto a \textit{defs}, y crear el documento \textit{intro.tex} con la sentencia \textit{\textbackslash include\{NOMBRE\_FICHERO\}}. De esta forma, cuando ejecutemos no incluirá la plantilla por defecto, sino el fichero personalizado.
 \end{itemize}
-
-
 
 
 
@@ -775,7 +797,7 @@ Si queremos modificar el formato que se asigna por defecto, tenemos dos opciones
 \label{chap:resultados}
 La mejor manera de mostrar los resultados en este caso, es con ejemplos. Esta aplicación ya ha sido puesta a prueba en 3 ocasiones, en escenarios reales.\\
 
-Aunque se muestran los ejemplos completos en la sección \ref{app:ejemplos}, las siguientes imágenes muestran algunos fragmentos del resultado final.\\
+Aunque se muestran los ejemplos completos en el Apéndice \ref{app:ejemplos}, las siguientes imágenes muestran algunos fragmentos del resultado final.\\
 
 \begin{itemize}
 \item La primera prueba se realizó para el \textbf{\textit{15\textsuperscript{th} International Conference on Mining Software Repositories (MSR) 2018}}\footnote{\url{https://conf.researchr.org/home/msr-2018}}, celebrada el 28 y 29 de mayo de 2018 en Gotemburgo (Suecia), y el resultado fue el mostrado en la figura \ref{fig:imgMSR}.
@@ -819,8 +841,8 @@ Aunque se muestran los ejemplos completos en la sección \ref{app:ejemplos}, las
 Al principio de esta memoria enumeré una serie de objetivos que pretendía conseguir a lo largo del proyecto, los cuales se analizan a continuación para comprobar si se han conseguido o no.
 
 \begin{itemize}
-  \item \textbf{Usar la aplicación para casos reales.} Como se ha indicado anteriormente en la sección de Resultados, este aplicación se ha utilizado en tres casos reales: \textit{MSR, OSS} y \textit{SATToSE}.
-  \item \textbf{Sencillez de uso.} Para personas familiarizadas este campo, así como las tecnologías utilizadas, resultará fácil ejecutar el programa para la obtención del \textit{book}. Sin embargo, en el caso de las personas que no tengan ninguna relación con las tecnologías que se han utilizado, podría resultar difícil la ejecución.
+  \item \textbf{Usar la aplicación para casos reales.} Como se ha indicado anteriormente en la sección de Resultados, esta aplicación se ha utilizado en tres casos reales: \textit{MSR, OSS} y \textit{SATToSE}.
+  \item \textbf{Sencillez de uso.} Para personas familiarizadas con este campo, así como las tecnologías utilizadas, resultará fácil ejecutar el programa para la obtención del \textit{book}. Sin embargo, en el caso de las personas que no tengan ninguna relación con las tecnologías que se han utilizado, podría resultar difícil la ejecución.
 \end{itemize}
 
 
@@ -842,7 +864,7 @@ Una de las cosas más importantes que he aprendido con este trabajo ha sido plan
 
 También he adquirido conocimientos en aplicaciones y tecnologías antes desconocidas para mí, como pueden ser \textit{Google Forms} o \textit{Google Sheet API}, que me han sido de gran ayuda en este proyecto, ya que me han permitido poder trabajar con los datos de manera online, sin tener que descargar y tratar documentos en local.\\
 
-También he podido aprender mucho más sobre el lenguaje \LaTeX, del cual sabía muy poco antes de este trabajo. Además de utilizarlo en el programa para generar el book final, lo he utilizado para realizar esta memoria, y me han sido muy útiles los conocimientos adquiridos para ello.\\
+También he podido aprender mucho más sobre el lenguaje \LaTeX, del cual sabía muy poco antes de este trabajo. Además de utilizarlo en el programa para generar el \textit{book} final, lo he utilizado para realizar esta memoria, y me han sido muy útiles los conocimientos adquiridos para ello.\\
 
 Por último, y no menos importante, la realización de este proyecto, que he llevado a cabo a lo largo del curso, lo que incluye las épocas de mayor carga de trabajo como son los exámenes, unido a la realización de las prácticas curriculares, me ha enseñado a compaginar grandes cargas de trabajo para conseguir el mayor objetivo personal que tengo en este momento: la finalización del grado.
 
@@ -918,17 +940,17 @@ Como he indicado con anterioridad, este proyecto se ha utilizado en casos reales
 \newpage
 \section{15\textsuperscript{th} International Conference on Mining Software Repositories (MSR) 2018}
 \label{MSR}
-%\includepdf[pages=-]{2018-MSR-Confbook}
+\includepdf[pages=-]{2018-MSR-Confbook}
 
 
 \section{14\textsuperscript{th} International Conference on Open Source Systems (OSS) 2018}
 \label{OSS}
-%\includepdf[pages=-]{2018-OSS-Confbook}
+\includepdf[pages=-]{2018-OSS-Confbook}
 
 
 \section{11\textsuperscript{th} Seminar on Advanced Techniques \& Tools for Sotware Evoluton SATToSE 2018}
 \label{SATToSE}
-%\includepdf[pages=-]{2018-SATToSE-Confbook}
+\includepdf[pages=-]{2018-SATToSE-Confbook}
 
 
 \end{document}
