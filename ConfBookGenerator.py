@@ -2,7 +2,7 @@
 
 from __future__ import print_function
 
-import os
+import os, sys
 import csv
 from collections import namedtuple
 import urllib.request
@@ -39,14 +39,22 @@ class Creator():
 
     def __init__(self):
         self.fields = []        # NamedTuple with fields and their info
-        self.err = open("errors.txt", "w", encoding="utf-8")  # FIXME: should be a parameter; default STDERR
-                                            # FIXME: should be the path, not the file descriptor!
+        open(ERRORS_FILE, 'w').close() # empty error files
 
         try:
             import argparse
             self.flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
         except ImportError:
             self.flags = None
+
+
+
+    def write_error(self, text):
+        """
+        Writes error messages to file
+        """
+        with open(ERRORS_FILE, "a") as error_output:
+            error_output.write(text)
 
 
     def get_credentials(self):
@@ -88,7 +96,7 @@ class Creator():
         values = result.get('values', [])
 
         if not values:
-            self.err.write("- Error. Not data found.")
+            self.write_error("- Error. Not data found.")
         else:
             id = 1
             Fields = namedtuple("Fields", ' '.join(HEADER))
@@ -103,7 +111,7 @@ class Creator():
                     fields = Fields(*row)
                     self.fields.append(fields)
                 else:
-                    self.err.write("- Error. Not enough values in row " + str(id) + ": "+ str(row) + "\n")
+                    self.write_error("- Error. Not enough values in row " + str(id) + ": "+ str(row) + "\n")
 
 
     def make_chars_latex_friendly(self, row):
@@ -134,7 +142,6 @@ class Creator():
 
         Returns the (relative) path to the image file
         """
-
         url = row.picture
         msgError = ("It's impossible to download the image automatically. Please, try download it manually, and " +
                     "name it img" + str(id) + ".jpg. Next, change the name of this person's image in the .tex")
@@ -143,11 +150,11 @@ class Creator():
             resp = urllib.request.urlopen(url)          # Reads URL (does not download)
         except ValueError as e:
             image = "images/img0.jpg"
-            self.err.write("- Error in image of " + row.name + " (pos. " + str(id) + ") -> This person hasn't provided image link.\n")
+            self.write_error("- Error in image of " + row.name + " (pos. " + str(id) + ") -> This person hasn't provided image link.\n")
             return image
         except:
             image = "images/img0.jpg"
-            self.err.write("- Error in image of " + row.name + " (pos. " + str(id) + ") -> " + msgError + "\n")
+            self.write_error("- Error in image of " + row.name + " (pos. " + str(id) + ") -> " + msgError + "\n")
             return image
 
         contentType = resp.info().get("Content-Type")
@@ -155,7 +162,12 @@ class Creator():
             imgType = contentType.split('/')[-1]
             imgType = imgType.split(';')[0]
             nameImage = "images/img" + str(id) + "." + imgType
-            urllib.request.urlretrieve(url, nameImage)  # If URL is an image, then download
+            try:
+                urllib.request.urlretrieve(url, nameImage)  # If URL is an image, then download
+            except:
+                image = "images/img0.jpg"
+                self.write_error("- Error in image of " + row.name + " (pos. " + str(id) + ") -> " + msgError + "\n")
+                return image
 
             if imgType == "webp":  # If webp image, convert to jpeg
                 im = Image.open(nameImage).convert("RGB")
@@ -171,7 +183,7 @@ class Creator():
             image = nameImage
         else:
             image = "images/img0.jpg"
-            self.err.write("- Error in image of " + row.name + " (pos. " + str(id) + ") -> " + msgError + "\n")
+            self.write_error("- Error in image of " + row.name + " (pos. " + str(id) + ") -> " + msgError + "\n")
 
         return image
 
@@ -186,7 +198,7 @@ class Creator():
             nac = pycountry.countries.get(name=row.nationality)
             flag_icon = "flags/" + nac.alpha_2.lower() + ".png"
         except KeyError:
-            self.err.write("- Error in nationality of " + row.name + " (pos. " + str(id) + ") -> Country not found or not provided.\n")
+            self.write_error("- Error in nationality of " + row.name + " (pos. " + str(id) + ") -> Country not found or not provided.\n")
             flag_icon = ""
 
         return flag_icon
@@ -210,7 +222,7 @@ class Creator():
         return description
 
 
-    def generate_graphs (self, fields):
+    def generate_graph (self, fields):
         """
         Generate a pie chart with the statistics of the answers
         of the indicated fields
@@ -223,16 +235,16 @@ class Creator():
                 tab = pd.crosstab(index=df[fld],columns="frecuencia")
                 plt.pie(tab, autopct="%1.1f%%", pctdistance=0.8, radius=1.2)
                 plt.legend(labels=tab.index,bbox_to_anchor=(0.9, 1), loc="upper left")
-                plt.title(fld, fontsize=15)
+                plt.title(fld + " statistics", fontsize=15)
                 plt.savefig("graph" + str(n) + ".png", bbox_inches="tight")
                 n += 1
 
         msg = (r"\newpage" + "\n" +
-               r"\begin{figure}" + "\n" +
+               r"\section*{Statistics graphs}" +
+               r"\begin{figure}[!ht]" + "\n" +
                r"\centering" + "\n")
 
         for i in range(n-1):
-            #msg += r"\subfigure{\includegraphics[width=0.49\textwidth]{graph" + str(i+1) + "}}" + "\n"
             msg += r"\subfigure{\includegraphics[height=6cm]{graph" + str(i+1) + "}}" + "\n"
 
         msg += r"\end{figure}" + "\n"
@@ -255,6 +267,7 @@ class Creator():
                 fld_name = fld[0]
                 fld_answer = fld[1]
                 msg += (r"\newpage" + "\n" +
+                        r"\section*{People who have answered\ldots}" +
                         r"\color{color1}\uppercase{\textbf{" + fld_name + r"}}\\" + "\n" +
                         r"\color{color2}People whose answer to the question of '" +
                         fld_name + "' has been '" + fld_answer + "':" + "\n" +
@@ -292,8 +305,11 @@ class Creator():
         c.order_by_name()
         msg = r"\section*{Participants}" + "\n"
 
+        len_fields = len(self.fields)
         for row in self.fields:
-            print (id)
+            porc = int(round((id*100)/103))
+            print(str(porc) + "%")
+
             row = c.make_chars_latex_friendly(row)
             image = c.download_image(row, id)
             flag = c.get_flag(row, id)
@@ -303,8 +319,9 @@ class Creator():
             width, height = im.size
 
             # Required data
-            msg += (r"\noindent\begin{minipage}{0.3\textwidth}" + "\n" +
-                   r"\centering" + "\n")
+            msg += (r"\noindent" + "\n" +
+                    r"\begin{minipage}{0.3\textwidth}" + "\n" +
+                    r"\centering" + "\n")
 
             if (width/height) > 1.2:
                 msg += r"\includegraphics[width=5cm]{" + image + "}" + "\n"
@@ -326,7 +343,7 @@ class Creator():
 
             # Checks if it is a Twitter handle
             if len(row.twitter.split()) == 1 and row.twitter[0] == "@":
-                msg += r"\hspace{0.2cm}\textit{" + row.twitter + r"}"
+                msg += r"\hspace{0.2cm}\textit{" + row.twitter + r"}" + "\n"
 
             if row.hiring == "Yes":
                 msg += r"\hspace{0.1cm}\includegraphics[height=0.5cm]{figs/hiring.png}" + "\n"
@@ -340,20 +357,22 @@ class Creator():
                 msg += (r"{\footnotesize " + description + r"}\\" + "\n")
 
             if row.homepage:
-                msg += (r"{\scriptsize " + row.homepage + r"}" + "\n")
+                msg += (r"\includegraphics[height=0.35cm]{figs/internet.png}\hspace{0.1cm}" +
+                        r"{\footnotesize \color{color1}\url{" + row.homepage + r"}}" + "\n")
 
             msg += r"\end{minipage}" + "\n"
 
-            msg += r"\newline\newline\newline\newline" + "\n"
+            msg += r"\newline\newline\newline\newline" + "\n\n"
             id += 1
 
         # Stats
-        #msg += c.generate_graphs(['hiring', 'looking'])
+        if GENERATE_GRAPHICS:
+            msg += c.generate_graph(GRAPHICS_TO_GENERATE)
 
         # List of people
-        msg += c.generate_list([['hiring', 'Yes'], ['looking', 'Yes'], ['nationality', 'Spain']])
+        if GENERATE_LISTS:
+            msg += c.generate_list(LISTS_TO_GENERATE)
 
-        self.err.close()
         return msg
 
 
@@ -361,7 +380,8 @@ if __name__ == "__main__":
     s = Template(open('defs.tpl').read())
     tex_header = s.safe_substitute(conference_long = LONG_NAME, conference_short = SHORT_NAME,
                                    conference_place = PLACE, conference_dates = DATES,
-                                   conference_frontimage = FRONT_IMAGE, conference_logo = LOGO)
+                                   conference_frontimage = FRONT_IMAGE, conference_logo = LOGO,
+                                   logo_height = LOGO_HEIGHT, frontimage_width = FRONT_IMAGE_WIDTH)
 
     c = Creator()
     c.spreadsheet_to_namedtuple()
