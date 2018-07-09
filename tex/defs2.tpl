@@ -51,7 +51,7 @@ head=0ex,foot=3ex}
 \newlength{\myheight}
 \lfoot{
 \settoheight{\myheight}{\thepage}
-\raisebox{-2ex-0.5\myheight}{\includegraphics[height=3ex]{$conference_logo}}
+\raisebox{-2ex-0.5\myheight}{\includegraphics[height=$logo_height]{$conference_logo}}
 }
 \cfoot{\color{color1}$conference_short - $conference_place}
 \rfoot{\color{color1}\thepage}
@@ -69,7 +69,7 @@ head=0ex,foot=3ex}
 {\bf CONFERENCE YEARBOOK} \\
 \end{Huge}
 \vspace{1cm}
-\includegraphics[width=16cm]{$conference_frontimage}% 
+\includegraphics[width=$frontimage_width]{$conference_frontimage}% 
 \vspace{1cm}
 \begin{Large}
 \\

@@ -10,15 +10,17 @@ LONG_NAME = "11\\textsuperscript{th} Seminar on Advanced Techniques \& Tools for
 SHORT_NAME = "SATToSE 2018"
 
 # Conference place and dates (LaTeX special chars have to be escaped)
-PLACE = "Athens, Greece"
+PLACE = "Madrid, Spain"
 DATES = "July 4\\textsuperscript{th}--6\\textsuperscript{th} 2018"
 
 # Conference Twitter hashtag (LaTeX special chars have to be escaped, e.g. # -> \#)
-HASHTAG = "\#sattose18"
+HASHTAG = "\#conference18"
 
-# Front Image of the ConfBook and logo of the conference
-FRONT_IMAGE = "Panepistimiou.jpg"
-LOGO = "sattose.png"
+# Front Image of the ConfBook and logo of the conference (and sizes)
+FRONTIMAGE = "cover.png"
+LOGO = "logo.png"
+FRONTIMAGE_WIDTH = "14cm"
+LOGO_HEIGHT = "1cm"
 
 # Google Spreadsheet id
 SPREADSHEET_ID = "1ythM16SC_OqYfwzg96NN6DzQrZLBU_gGMmS5AvfkWtI"
