@@ -10,26 +10,20 @@ Seila Oliva Muñoz
 Jesús Moreno-León
 """
 
-from __future__ import print_function
-
 import os
-import csv
 import string
-from collections import namedtuple
 import urllib.request
-from PIL import Image
 import pycountry
+from string import Template
+from collections import namedtuple
 
 import httplib2
+
 from apiclient import discovery
 from oauth2client import client, tools
 from oauth2client.file import Storage
+from PIL import Image
 
-from string import Template
-
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
 
 from settings import *
 
@@ -49,8 +43,8 @@ class Creator():
         except ImportError:
             self.flags = None
 
-        open(ERRORS_FILE, 'w').close() # empty error files
-        
+        open(ERRORS_FILE, 'w').close()  # empty error files
+
     def write_error(self, text):
         """
         Writes error messages to file
@@ -74,26 +68,23 @@ class Creator():
         if not credentials or credentials.invalid:
             flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPES)
             flow.user_agent = APPLICATION_NAME
-            if self.flags:
-                credentials = tools.run_flow(flow, store, self.flags)
-            else: # Needed only for compatibility with Python 2.6 - FIXME: then the rest of the script should work for Python2
-                credentials = tools.run(flow, store)
+            credentials = tools.run_flow(flow, store, self.flags)
             print('Storing credentials to ' + credential_path)
         return credentials
 
     def spreadsheet_to_namedtuple(self):
         """
         Obtains personal data from the Google spreadsheet
-        and returns a namedtuple in self.fields  
+        and returns a namedtuple in self.fields
         """
-        credentials = c.get_credentials()
+        credentials = self.get_credentials()
         http = credentials.authorize(httplib2.Http())
         discoveryUrl = ('https://sheets.googleapis.com/$discovery/rest?'
                         'version=v4')
         service = discovery.build('sheets', 'v4', http=http,
                                   discoveryServiceUrl=discoveryUrl)
 
-        rangeName = 'A2:'+ string.ascii_uppercase[len(HEADER)-1]  # sheet, and rows and columns
+        rangeName = 'A2:' + string.ascii_uppercase[len(HEADER)-1]  # sheet, and rows and columns
         result = service.spreadsheets().values().get(
             spreadsheetId=SPREADSHEET_ID, range=rangeName).execute()
         values = result.get('values', [])
@@ -109,7 +100,6 @@ class Creator():
                 else:
                     self.write_error("- Error. Not enough values in row: " + str(row) + "\n")
 
-
     def make_chars_latex_friendly(self, row):
         """
         Makes special characters in the data LaTeX-friendly
@@ -124,26 +114,25 @@ class Creator():
                             data = data.replace(c, "")
                         else:
                             data = data.replace(c, "\\" + c)
-                        row = row._replace(**{name:data})
+                        row = row._replace(**{name: data})
         return row
-
 
     def download_image(self, row, id):
         """
         Given the row (of data) and the id of the participants
         Downloads its image to a file (converts it to jpeg if necessary),
         and resizes it
-        
+
         Returns the (relative) path to the image file
-        
+
         FIXME: long try-excepts should be enhanced
         """
         url = row.picture
-        image = "images/img0.jpg" # default image
+        image = "images/img0.jpg"  # default image
         if not url:
             self.write_error("- Warning: No image for " + row.name + " (pos. " + str(id) + ") -> Image URL not provided.\n")
             return image
-            
+
         try:
             resp = urllib.request.urlopen(url)    # Reads URL (does not download)
             contentType = resp.info().get("Content-Type")
@@ -151,7 +140,7 @@ class Creator():
                 imgType = contentType.split('/')[-1]
                 imgType = imgType.split(';')[0]
                 urllib.request.urlretrieve(url, "images/img" + str(id) + "." + imgType)  # If URL is an image, then download
-                
+
                 if imgType == "webp":  # If webp image, convert to jpeg
                     im = Image.open("images/img" + str(id) + ".webp").convert("RGB")
                     im.thumbnail(IMAGE_SIZE, Image.ANTIALIAS)
@@ -175,11 +164,10 @@ class Creator():
 
         return image
 
-
     def get_flag(self, row, id):
         """
         Given the data (row) and participant id
-        
+
         Retunrs the (relative) path to its flag image
         """
         flag_icon = ""
@@ -197,7 +185,7 @@ class Creator():
     def cut_presentation(self, desc):
         """
         Given a participant's presentation (string) desc
-        
+
         Returns a version of it that is at most LIMIT_DESCRIPTION long
         """
         if '"' in desc:
@@ -215,12 +203,11 @@ class Creator():
 
         return description
 
-
     def generate_graphs(self):
         """
         FIXME: include docstring
         """
-        df = pd.DataFrame(self.fields,columns=["name", "text", "show", "statistics"])
+        df = pd.DataFrame(self.fields, columns=["name", "text", "show", "statistics"])
         stats = pd.crosstab(index=df["statistics"], columns="frecuencia")
         fila = stats.loc[stats.index == "yes"]
 
@@ -231,10 +218,10 @@ class Creator():
             data = pd.DataFrame(self.data_form, columns=self.field_names.split(" ")[:-1])
             for fld in self.fields:
                 if fld.statistics == "yes":
-                    plt.figure();
-                    tab = pd.crosstab(index=data[fld.name],columns="frecuencia")
+                    plt.figure()
+                    tab = pd.crosstab(index=data[fld.name], columns="frecuencia")
                     plt.pie(tab, autopct="%1.1f%%", pctdistance=0.8, radius=1.2)
-                    plt.legend(labels=tab.index,bbox_to_anchor=(0.9, 1), loc="upper left")
+                    plt.legend(labels=tab.index, bbox_to_anchor=(0.9, 1), loc="upper left")
                     if fld.text != "":
                         plt.title(fld.text, fontsize=15)
                     else:
@@ -248,27 +235,27 @@ class Creator():
                     r"\centering" + "\n")
 
             for i in range(n-1):
-                #msg += r"\subfigure{\includegraphics[width=0.49\textwidth]{graph" + str(i+1) + "}}" + "\n"
+                # msg += r"\subfigure{\includegraphics[width=0.49\textwidth]{graph" + str(i+1) + "}}" + "\n"
                 msg += r"\subfigure{\includegraphics[height=6cm]{graph" + str(i+1) + "}}" + "\n"
 
             msg += r"\end{figure}" + "\n"
 
         return msg
-        
+
     def order_by_name(self):
         """
         Orders participants data (self.fields) by surname
         """
         surnames = [field.name.split()[-1] for field in self.fields]
         surnames = list(set(surnames))
-        surnames.sort() 
+        surnames.sort()
 
         newList = []
         for surname in surnames:
             for field in self.fields:
                 if field.name.split()[-1] == surname:
                     newList.append(field)
-        
+
         self.fields = newList
 
     def generate_list(self, field_name, names):
@@ -293,23 +280,23 @@ class Creator():
         hiringList = []
         id = 1
         msg = r"\section*{Participants}" + "\n"
-        
+
         self.order_by_name()
 
         for row in self.fields:
             print(id)
             print(row)
-            row = c.make_chars_latex_friendly(row)
-            image = c.download_image(row, id)
-            flag = c.get_flag(row, id)
-            presentation = c.cut_presentation(row.presentation)
+            row = self.make_chars_latex_friendly(row)
+            image = self.download_image(row, id)
+            flag = self.get_flag(row, id)
+            presentation = self.cut_presentation(row.presentation)
 
             im = Image.open(image)
             width, height = im.size
 
             # Required data
             msg += (r"\noindent\begin{minipage}{0.3\textwidth}" + "\n" +
-                   r"\centering" + "\n")
+                    r"\centering" + "\n")
 
             if (width/height) > 1.2:
                 msg += r"\includegraphics[width=5cm]{" + image + "}" + "\n"
@@ -318,16 +305,16 @@ class Creator():
                 msg += r"\includegraphics[height=5cm]{" + image + "}" + "\n"
 
             msg += (r"\end{minipage}" + "\n" +
-                   r"\hfill" + "\n" +
-                   r"\begin{minipage}{0.6\textwidth}\raggedright" + "\n" +
-                   r"\color{color1}\uppercase{\textbf{" + row.name + r"}}" + "\n" +
-                   r"\color{color2}")
+                    r"\hfill" + "\n" +
+                    r"\begin{minipage}{0.6\textwidth}\raggedright" + "\n" +
+                    r"\color{color1}\uppercase{\textbf{" + row.name + r"}}" + "\n" +
+                    r"\color{color2}")
 
             if flag:
                 msg += r"\hspace{0.2cm}\includegraphics{" + flag + "}" + "\n"
 
             if row.graduation:
-                msg += (r"\hspace{0.1cm}{\scriptsize (PhD " + row.graduation + ")}\n")            
+                msg += (r"\hspace{0.1cm}{\scriptsize (PhD " + row.graduation + ")}\n")
 
             # Checks if it is a Twitter handle
             if len(row.twitter.split()) == 1 and row.twitter[0] == "@":
@@ -339,33 +326,32 @@ class Creator():
             if row.looking == "Yes":
                 msg += r"\hspace{0.1cm}\includegraphics[height=0.4cm]{figs/jobs.png}" + "\n"
 
-
             msg += (r"\\" + "\n" + row.position + " at " + row.affiliation + r"\\" + "\n")
             if presentation:
                 msg += (r"{\footnotesize " + presentation + "}")
             if row.homepage:
                 msg += (r"{\scriptsize " + row.homepage + "}\n")
-            
+
             if row.looking == "Yes":
                 lookingList.append(row.name)
-                
-            if row.hiring ==  "Yes":
+
+            if row.hiring == "Yes":
                 hiringList.append(row.name)
-                
+
             msg += "\n" + r"\end{minipage}" + "\n"
 
-            if id%4 == 0:   # 4 participants per page. After fourth, new page
+            if id % 4 == 0:  # 4 participants per page. After fourth, new page
                 msg += r"\newpage" + "\n"
             else:
                 msg += r"\newline\newline\newline\newline" + "\n"
             id += 1
 
-       # If you want to have the "Looking for a position" and "My lab is hiring" listed explicitly
+# If you want to have the "Looking for a position" and "My lab is hiring" listed explicitly
 #        msg += self.generate_list('Looking for a position', lookingList)
 #        msg += self.generate_list('My lab is hiring', hiringList)
 
         # Stats
-#        msg += c.generate_graphs()
+#        msg += self.generate_graphs()
 
         return msg
 
@@ -373,12 +359,12 @@ class Creator():
 if __name__ == "__main__":
     # Creating front page
     s = Template(open('tex/defs2.tpl').read())
-    tex_header = s.safe_substitute(conference_long = LONG_NAME, conference_short = SHORT_NAME, conference_place = PLACE, conference_dates = DATES, conference_hashtag = HASHTAG, conference_frontimage = FRONT_IMAGE, conference_logo = LOGO)
+    tex_header = s.safe_substitute(conference_long=LONG_NAME, conference_short=SHORT_NAME, conference_place=PLACE, conference_dates=DATES, conference_hashtag=HASHTAG, conference_frontimage=FRONT_IMAGE, conference_logo=LOGO)
 
     # Inserting participants
-    c = Creator()
-    c.spreadsheet_to_namedtuple()
-    participants_tex = c.namedtuple_to_latex()
+    creator = Creator()
+    creator.spreadsheet_to_namedtuple()
+    participants_tex = creator.namedtuple_to_latex()
     with open(GENERATED_FILE + ".tex", "w", encoding="utf-8") as generated_file:
         try:
             introd = open("tex/intro.tex", "r", encoding="utf-8")
@@ -395,4 +381,3 @@ if __name__ == "__main__":
         print("PDF has been generated --> " + GENERATED_FILE + ".pdf")
     except:
         print("Impossible to generate PDF automatically. You must compile in LaTeX manually")
-
