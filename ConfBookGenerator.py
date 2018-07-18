@@ -362,7 +362,7 @@ class Creator():
 
             msg += r"\end{minipage}" + "\n"
 
-            msg += r"\newline\newline\newline\newline" + "\n\n"
+            msg += r"\newline\newline\newline" + "\n\n"
             id += 1
 
         # Stats
