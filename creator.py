@@ -263,15 +263,23 @@ class Creator():
     def order_by_name(self):
         """
         Orders participants data (self.fields) by surname
+        
+        We consider surname the last name, BUT
+        if there are quotes in a name ("de Rover"), we will consider the quoted part as the surname
         """
-        surnames = [field.name.split()[-1] for field in self.fields]
+        surnames = [field.name.split()[-1] for field in self.fields if '"' not in field.name]
+        surnames_with_quotes = [field.name.split('"')[-2] for field in self.fields if '"' in field.name]
+        surnames = surnames + surnames_with_quotes
         surnames = list(set(surnames))
         surnames.sort()
+        print(surnames)
 
         new_list = []
         for surname in surnames:
             for field in self.fields:
-                if field.name.split()[-1] == surname:
+                if '"' not in field.name and field.name.split()[-1] == surname:
+                    new_list.append(field)
+                elif '"' in field.name and field.name.split('"')[-2] == surname:
                     new_list.append(field)
 
         self.fields = new_list
@@ -311,7 +319,7 @@ class Creator():
             msg += (r"\end{minipage}" + "\n" +
                     r"\hfill" + "\n" +
                     r"\begin{minipage}{0.6\textwidth}\raggedright" + "\n" +
-                    r"\color{color1}\uppercase{\textbf{" + row.name + r"}}" + "\n" +
+                    r"\color{color1}\uppercase{\textbf{" + row.name.replace('"', '') + r"}}" + "\n" +
                     r"\color{color2}")
 
             if flag:
@@ -330,7 +338,9 @@ class Creator():
             if row.looking == "Yes":
                 msg += r"\hspace{0.1cm}\includegraphics[height=0.4cm]{figs/jobs.png}" + "\n"
 
-            msg += (r"\\" + "\n" + row.position + " at " + row.affiliation + r"\\" + "\n")
+            msg += (r"\\" + "\n" + row.position + "\n")
+            if row.affiliation:
+                msg += (r" at " + row.affiliation + r"\\" + "\n")
             if presentation:
                 msg += (r"{\footnotesize " + presentation + "}")
             if row.homepage:
