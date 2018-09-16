@@ -64,7 +64,7 @@ def download_image(row, participant_id):
     url = row.picture
     image = "images/img0.jpg"  # default image
     if not url:
-        write_error("- Warning: No image for " + row.name + " (pos. " + str(id) + ") -> Image URL not provided.\n")
+        write_error("- Warning: No image for " + row.name + " (pos. " + str(participant_id) + ") -> Image URL not provided.\n")
         return image
 
     try:
@@ -363,7 +363,7 @@ class Creator():
 if __name__ == "__main__":
     # Creating front page
     s = Template(open('tex/defs2.tpl').read())
-    tex_header = s.safe_substitute(conference_long=settings.LONG_NAME, conference_short=settings.SHORT_NAME, conference_place=settings.PLACE, conference_dates=settings.DATES, conference_hashtag=settings.HASHTAG, conference_frontimage=settings.FRONT_IMAGE, conference_logo=settings.LOGO)
+    tex_header = s.safe_substitute(conference_long=settings.LONG_NAME, conference_short=settings.SHORT_NAME, conference_place=settings.PLACE, conference_dates=settings.DATES, conference_hashtag=settings.HASHTAG, conference_frontimage=settings.FRONTIMAGE, conference_logo=settings.LOGO, frontimage_width=settings.FRONTIMAGE_WIDTH, logo_height=settings.LOGO_HEIGHT)
 
     # Inserting participants
     creator = Creator()
